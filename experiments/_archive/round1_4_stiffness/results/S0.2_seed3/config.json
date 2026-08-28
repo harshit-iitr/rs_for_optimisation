@@ -1,0 +1,9 @@
+{
+  "provenance": "unrecoverable",
+  "note": "No archived launcher defines this run-id. Its configuration cannot be recovered; do not use it.",
+  "n_parquet_columns": 20,
+  "schema_generation": "gen7_oldest_no_retention",
+  "has_retention_column": false,
+  "status": "complete",
+  "archived_run_id": "S0.2_seed3"
+}

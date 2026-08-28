@@ -1,0 +1,9 @@
+{
+  "provenance": "unrecoverable",
+  "note": "No archived launcher defines this run-id. Its configuration cannot be recovered; do not use it.",
+  "n_parquet_columns": 31,
+  "schema_generation": "gen0_task_0_acc_added",
+  "has_retention_column": true,
+  "status": "complete",
+  "archived_run_id": "S5_2_test"
+}
