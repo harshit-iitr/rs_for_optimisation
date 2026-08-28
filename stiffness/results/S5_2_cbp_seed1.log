@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/stiffness/src/train.py", line 436, in <module>
+    main()
+  File "/home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/stiffness/src/train.py", line 77, in main
+    cbp = CBP(model)
+  File "/home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/stiffness/src/methods/cbp.py", line 14, in __init__
+    d = layer.out_features
+  File "/home/psquare_a6000/.local/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1964, in __getattr__
+    raise AttributeError(
+AttributeError: 'Conv2d' object has no attribute 'out_features'

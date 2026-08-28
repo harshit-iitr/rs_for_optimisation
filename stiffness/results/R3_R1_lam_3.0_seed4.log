@@ -1,0 +1,13 @@
+Run R3_R1_lam_3.0_seed4:   0%|          | 0/150 [00:00<?, ?it/s]Run R3_R1_lam_3.0_seed4:   0%|          | 0/150 [00:00<?, ?it/s]
+Traceback (most recent call last):
+  File "/home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/stiffness/src/train.py", line 434, in <module>
+    main()
+  File "/home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/stiffness/src/train.py", line 185, in main
+    loss.backward()
+  File "/home/psquare_a6000/.local/lib/python3.10/site-packages/torch/_tensor.py", line 625, in backward
+    torch.autograd.backward(
+  File "/home/psquare_a6000/.local/lib/python3.10/site-packages/torch/autograd/__init__.py", line 354, in backward
+    _engine_run_backward(
+  File "/home/psquare_a6000/.local/lib/python3.10/site-packages/torch/autograd/graph.py", line 841, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 47.36 GiB of which 12.31 MiB is free. Process 1314401 has 4.95 GiB memory in use. Process 1381976 has 4.84 GiB memory in use. Process 1605038 has 7.69 GiB memory in use. Process 1745031 has 4.09 GiB memory in use. Process 1787519 has 3.98 GiB memory in use. Process 1866151 has 426.00 MiB memory in use. Process 1866186 has 426.00 MiB memory in use. Process 1866170 has 426.00 MiB memory in use. Process 1866142 has 426.00 MiB memory in use. Process 1866226 has 426.00 MiB memory in use. Process 1866220 has 426.00 MiB memory in use. Process 1866147 has 426.00 MiB memory in use. Process 1866191 has 426.00 MiB memory in use. Process 1866211 has 426.00 MiB memory in use. Process 1866138 has 426.00 MiB memory in use. Process 1866128 has 426.00 MiB memory in use. Process 1866206 has 426.00 MiB memory in use. Process 1866134 has 426.00 MiB memory in use. Process 2106821 has 3.32 GiB memory in use. Process 1866201 has 426.00 MiB memory in use. Process 1866158 has 426.00 MiB memory in use. Process 2156658 has 3.05 GiB memory in use. Process 2248841 has 2.76 GiB memory in use. Process 2252074 has 2.75 GiB memory in use. Process 2540175 has 1.99 GiB memory in use. Process 1866196 has 426.00 MiB memory in use. Including non-PyTorch memory, this process has 988.00 MiB memory in use. Of the allocated memory 455.36 MiB is allocated by PyTorch, and 20.64 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)

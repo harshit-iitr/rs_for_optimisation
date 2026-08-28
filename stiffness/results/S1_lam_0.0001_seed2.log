@@ -1,0 +1,151 @@
+Run S1_lam_0.0001_seed2:   0%|          | 0/150 [00:00<?, ?it/s]Run S1_lam_0.0001_seed2:   1%|          | 1/150 [00:02<05:15,  2.12s/it]Run S1_lam_0.0001_seed2:   1%|▏         | 2/150 [00:03<04:45,  1.93s/it]Run S1_lam_0.0001_seed2:   2%|▏         | 3/150 [00:06<04:57,  2.02s/it]Run S1_lam_0.0001_seed2:   3%|▎         | 4/150 [00:08<05:17,  2.17s/it]Run S1_lam_0.0001_seed2:   3%|▎         | 5/150 [00:11<05:35,  2.31s/it]Run S1_lam_0.0001_seed2:   4%|▍         | 6/150 [00:13<05:49,  2.42s/it]Run S1_lam_0.0001_seed2:   5%|▍         | 7/150 [00:16<06:02,  2.53s/it]Run S1_lam_0.0001_seed2:   5%|▌         | 8/150 [00:19<06:18,  2.66s/it]Run S1_lam_0.0001_seed2:   6%|▌         | 9/150 [00:22<06:32,  2.78s/it]Run S1_lam_0.0001_seed2:   7%|▋         | 10/150 [00:25<06:35,  2.82s/it]Run S1_lam_0.0001_seed2:   7%|▋         | 11/150 [00:28<06:31,  2.81s/it]Run S1_lam_0.0001_seed2:   8%|▊         | 12/150 [00:30<06:25,  2.79s/it]Run S1_lam_0.0001_seed2:   9%|▊         | 13/150 [00:33<06:17,  2.76s/it]Run S1_lam_0.0001_seed2:   9%|▉         | 14/150 [00:36<06:10,  2.73s/it]Run S1_lam_0.0001_seed2:  10%|█         | 15/150 [00:38<06:08,  2.73s/it]Run S1_lam_0.0001_seed2:  11%|█         | 16/150 [00:42<06:22,  2.86s/it]Run S1_lam_0.0001_seed2:  11%|█▏        | 17/150 [00:44<06:14,  2.81s/it]Run S1_lam_0.0001_seed2:  12%|█▏        | 18/150 [00:47<06:05,  2.77s/it]Run S1_lam_0.0001_seed2:  13%|█▎        | 19/150 [00:50<06:07,  2.80s/it]Run S1_lam_0.0001_seed2:  13%|█▎        | 20/150 [00:53<06:06,  2.82s/it]Run S1_lam_0.0001_seed2:  14%|█▍        | 21/150 [00:55<06:01,  2.81s/it]Run S1_lam_0.0001_seed2:  15%|█▍        | 22/150 [00:58<05:58,  2.80s/it]Run S1_lam_0.0001_seed2:  15%|█▌        | 23/150 [01:01<06:04,  2.87s/it]Run S1_lam_0.0001_seed2:  16%|█▌        | 24/150 [01:05<06:33,  3.12s/it]Run S1_lam_0.0001_seed2:  17%|█▋        | 25/150 [01:08<06:20,  3.04s/it]Run S1_lam_0.0001_seed2:  17%|█▋        | 26/150 [01:11<06:10,  2.99s/it]Run S1_lam_0.0001_seed2:  18%|█▊        | 27/150 [01:14<06:00,  2.93s/it]Run S1_lam_0.0001_seed2:  19%|█▊        | 28/150 [01:16<05:45,  2.84s/it]Run S1_lam_0.0001_seed2:  19%|█▉        | 29/150 [01:19<05:39,  2.81s/it]Run S1_lam_0.0001_seed2:  20%|██        | 30/150 [01:22<05:36,  2.81s/it]Run S1_lam_0.0001_seed2:  21%|██        | 31/150 [01:25<05:35,  2.82s/it]Run S1_lam_0.0001_seed2:  21%|██▏       | 32/150 [01:27<05:30,  2.80s/it]Run S1_lam_0.0001_seed2:  22%|██▏       | 33/150 [01:30<05:23,  2.76s/it]Run S1_lam_0.0001_seed2:  23%|██▎       | 34/150 [01:33<05:31,  2.86s/it]Run S1_lam_0.0001_seed2:  23%|██▎       | 35/150 [01:36<05:20,  2.78s/it]Run S1_lam_0.0001_seed2:  24%|██▍       | 36/150 [01:38<05:17,  2.78s/it]Run S1_lam_0.0001_seed2:  25%|██▍       | 37/150 [01:41<05:09,  2.74s/it]Run S1_lam_0.0001_seed2:  25%|██▌       | 38/150 [01:44<05:09,  2.76s/it]Run S1_lam_0.0001_seed2:  26%|██▌       | 39/150 [01:47<05:11,  2.81s/it]Run S1_lam_0.0001_seed2:  27%|██▋       | 40/150 [01:50<05:11,  2.83s/it]Run S1_lam_0.0001_seed2:  27%|██▋       | 41/150 [01:52<05:06,  2.81s/it]Run S1_lam_0.0001_seed2:  28%|██▊       | 42/150 [01:55<05:00,  2.78s/it]Run S1_lam_0.0001_seed2:  29%|██▊       | 43/150 [01:58<04:52,  2.73s/it]Run S1_lam_0.0001_seed2:  29%|██▉       | 44/150 [02:01<04:52,  2.76s/it]Run S1_lam_0.0001_seed2:  30%|███       | 45/150 [02:05<05:25,  3.10s/it]Run S1_lam_0.0001_seed2:  31%|███       | 46/150 [02:07<05:11,  3.00s/it]Run S1_lam_0.0001_seed2:  31%|███▏      | 47/150 [02:10<05:04,  2.95s/it]Run S1_lam_0.0001_seed2:  32%|███▏      | 48/150 [02:13<05:00,  2.95s/it]Run S1_lam_0.0001_seed2:  33%|███▎      | 49/150 [02:16<04:48,  2.86s/it]Run S1_lam_0.0001_seed2:  33%|███▎      | 50/150 [02:19<04:44,  2.85s/it]Run S1_lam_0.0001_seed2:  34%|███▍      | 51/150 [02:21<04:40,  2.83s/it]Run S1_lam_0.0001_seed2:  35%|███▍      | 52/150 [02:24<04:47,  2.94s/it]Run S1_lam_0.0001_seed2:  35%|███▌      | 53/150 [02:27<04:33,  2.82s/it]Run S1_lam_0.0001_seed2:  36%|███▌      | 54/150 [02:30<04:22,  2.74s/it]Run S1_lam_0.0001_seed2:  37%|███▋      | 55/150 [02:32<04:25,  2.79s/it]Run S1_lam_0.0001_seed2:  37%|███▋      | 56/150 [02:36<04:34,  2.92s/it]Run S1_lam_0.0001_seed2:  38%|███▊      | 57/150 [02:38<04:27,  2.88s/it]Run S1_lam_0.0001_seed2:  39%|███▊      | 58/150 [02:41<04:22,  2.86s/it]Run S1_lam_0.0001_seed2:  39%|███▉      | 59/150 [02:44<04:22,  2.88s/it]Run S1_lam_0.0001_seed2:  40%|████      | 60/150 [02:47<04:19,  2.88s/it]Run S1_lam_0.0001_seed2:  41%|████      | 61/150 [02:50<04:13,  2.85s/it]Run S1_lam_0.0001_seed2:  41%|████▏     | 62/150 [02:52<04:04,  2.78s/it]Run S1_lam_0.0001_seed2:  42%|████▏     | 63/150 [02:55<04:02,  2.78s/it]Run S1_lam_0.0001_seed2:  43%|████▎     | 64/150 [02:58<04:02,  2.82s/it]Run S1_lam_0.0001_seed2:  43%|████▎     | 65/150 [03:01<03:56,  2.78s/it]Run S1_lam_0.0001_seed2:  44%|████▍     | 66/150 [03:04<03:52,  2.76s/it]Run S1_lam_0.0001_seed2:  45%|████▍     | 67/150 [03:06<03:41,  2.67s/it]Run S1_lam_0.0001_seed2:  45%|████▌     | 68/150 [03:09<03:42,  2.72s/it]Run S1_lam_0.0001_seed2:  46%|████▌     | 69/150 [03:12<03:40,  2.72s/it]Run S1_lam_0.0001_seed2:  47%|████▋     | 70/150 [03:15<03:47,  2.84s/it]Run S1_lam_0.0001_seed2:  47%|████▋     | 71/150 [03:18<03:45,  2.85s/it]Run S1_lam_0.0001_seed2:  48%|████▊     | 72/150 [03:21<03:46,  2.91s/it]Run S1_lam_0.0001_seed2:  49%|████▊     | 73/150 [03:24<03:43,  2.91s/it]Run S1_lam_0.0001_seed2:  49%|████▉     | 74/150 [03:26<03:40,  2.91s/it]Run S1_lam_0.0001_seed2:  50%|█████     | 75/150 [03:29<03:32,  2.83s/it]Run S1_lam_0.0001_seed2:  51%|█████     | 76/150 [03:32<03:28,  2.82s/it]Run S1_lam_0.0001_seed2:  51%|█████▏    | 77/150 [03:35<03:24,  2.81s/it]Run S1_lam_0.0001_seed2:  52%|█████▏    | 78/150 [03:38<03:29,  2.91s/it]Run S1_lam_0.0001_seed2:  53%|█████▎    | 79/150 [03:41<03:23,  2.86s/it]Run S1_lam_0.0001_seed2:  53%|█████▎    | 80/150 [03:43<03:16,  2.81s/it]Run S1_lam_0.0001_seed2:  54%|█████▍    | 81/150 [03:46<03:09,  2.75s/it]Run S1_lam_0.0001_seed2:  55%|█████▍    | 82/150 [03:49<03:08,  2.77s/it]Run S1_lam_0.0001_seed2:  55%|█████▌    | 83/150 [03:51<03:02,  2.72s/it]Run S1_lam_0.0001_seed2:  56%|█████▌    | 84/150 [03:54<03:04,  2.80s/it]Run S1_lam_0.0001_seed2:  57%|█████▋    | 85/150 [03:57<03:03,  2.82s/it]Run S1_lam_0.0001_seed2:  57%|█████▋    | 86/150 [04:00<03:02,  2.84s/it]Run S1_lam_0.0001_seed2:  58%|█████▊    | 87/150 [04:03<02:59,  2.86s/it]Run S1_lam_0.0001_seed2:  59%|█████▊    | 88/150 [04:06<02:56,  2.84s/it]Run S1_lam_0.0001_seed2:  59%|█████▉    | 89/150 [04:09<02:53,  2.85s/it]Run S1_lam_0.0001_seed2:  60%|██████    | 90/150 [04:11<02:47,  2.80s/it]Run S1_lam_0.0001_seed2:  61%|██████    | 91/150 [04:14<02:44,  2.79s/it]Run S1_lam_0.0001_seed2:  61%|██████▏   | 92/150 [04:17<02:43,  2.82s/it]Run S1_lam_0.0001_seed2:  62%|██████▏   | 93/150 [04:20<02:41,  2.84s/it]Run S1_lam_0.0001_seed2:  63%|██████▎   | 94/150 [04:23<02:38,  2.83s/it]Run S1_lam_0.0001_seed2:  63%|██████▎   | 95/150 [04:26<02:38,  2.87s/it]Run S1_lam_0.0001_seed2:  64%|██████▍   | 96/150 [04:29<02:35,  2.88s/it]Run S1_lam_0.0001_seed2:  65%|██████▍   | 97/150 [04:31<02:33,  2.90s/it]Run S1_lam_0.0001_seed2:  65%|██████▌   | 98/150 [04:34<02:30,  2.89s/it]Run S1_lam_0.0001_seed2:  66%|██████▌   | 99/150 [04:37<02:29,  2.94s/it]Run S1_lam_0.0001_seed2:  67%|██████▋   | 100/150 [04:40<02:24,  2.89s/it]Run S1_lam_0.0001_seed2:  67%|██████▋   | 101/150 [04:43<02:22,  2.90s/it]Run S1_lam_0.0001_seed2:  68%|██████▊   | 102/150 [04:46<02:17,  2.87s/it]Run S1_lam_0.0001_seed2:  69%|██████▊   | 103/150 [04:49<02:16,  2.90s/it]Run S1_lam_0.0001_seed2:  69%|██████▉   | 104/150 [04:52<02:10,  2.85s/it]Run S1_lam_0.0001_seed2:  70%|███████   | 105/150 [04:54<02:07,  2.83s/it]Run S1_lam_0.0001_seed2:  71%|███████   | 106/150 [04:57<02:06,  2.88s/it]Run S1_lam_0.0001_seed2:  71%|███████▏  | 107/150 [05:00<02:04,  2.89s/it]Run S1_lam_0.0001_seed2:  72%|███████▏  | 108/150 [05:03<01:59,  2.85s/it]Run S1_lam_0.0001_seed2:  73%|███████▎  | 109/150 [05:06<01:58,  2.88s/it]Run S1_lam_0.0001_seed2:  73%|███████▎  | 110/150 [05:09<01:55,  2.88s/it]Run S1_lam_0.0001_seed2:  74%|███████▍  | 111/150 [05:12<01:49,  2.81s/it]Run S1_lam_0.0001_seed2:  75%|███████▍  | 112/150 [05:14<01:46,  2.81s/it]Run S1_lam_0.0001_seed2:  75%|███████▌  | 113/150 [05:17<01:43,  2.79s/it]Run S1_lam_0.0001_seed2:  76%|███████▌  | 114/150 [05:20<01:41,  2.82s/it]Run S1_lam_0.0001_seed2:  77%|███████▋  | 115/150 [05:23<01:38,  2.81s/it]Run S1_lam_0.0001_seed2:  77%|███████▋  | 116/150 [05:25<01:33,  2.75s/it]Run S1_lam_0.0001_seed2:  78%|███████▊  | 117/150 [05:28<01:32,  2.81s/it]Run S1_lam_0.0001_seed2:  79%|███████▊  | 118/150 [05:31<01:28,  2.78s/it]Run S1_lam_0.0001_seed2:  79%|███████▉  | 119/150 [05:34<01:25,  2.77s/it]Run S1_lam_0.0001_seed2:  80%|████████  | 120/150 [05:37<01:24,  2.82s/it]Run S1_lam_0.0001_seed2:  81%|████████  | 121/150 [05:39<01:21,  2.81s/it]Run S1_lam_0.0001_seed2:  81%|████████▏ | 122/150 [05:42<01:18,  2.81s/it]Run S1_lam_0.0001_seed2:  82%|████████▏ | 123/150 [05:45<01:18,  2.91s/it]Run S1_lam_0.0001_seed2:  83%|████████▎ | 124/150 [05:48<01:13,  2.83s/it]Run S1_lam_0.0001_seed2:  83%|████████▎ | 125/150 [05:51<01:11,  2.86s/it]Run S1_lam_0.0001_seed2:  84%|████████▍ | 126/150 [05:54<01:09,  2.90s/it]Run S1_lam_0.0001_seed2:  85%|████████▍ | 127/150 [05:57<01:06,  2.89s/it]Run S1_lam_0.0001_seed2:  85%|████████▌ | 128/150 [06:00<01:04,  2.93s/it]Run S1_lam_0.0001_seed2:  86%|████████▌ | 129/150 [06:03<01:00,  2.89s/it]Run S1_lam_0.0001_seed2:  87%|████████▋ | 130/150 [06:05<00:55,  2.78s/it]Run S1_lam_0.0001_seed2:  87%|████████▋ | 131/150 [06:08<00:53,  2.79s/it]Run S1_lam_0.0001_seed2:  88%|████████▊ | 132/150 [06:11<00:50,  2.79s/it]Run S1_lam_0.0001_seed2:  89%|████████▊ | 133/150 [06:14<00:47,  2.78s/it]Run S1_lam_0.0001_seed2:  89%|████████▉ | 134/150 [06:17<00:45,  2.87s/it]Run S1_lam_0.0001_seed2:  90%|█████████ | 135/150 [06:20<00:43,  2.92s/it]Run S1_lam_0.0001_seed2:  91%|█████████ | 136/150 [06:23<00:40,  2.92s/it]Run S1_lam_0.0001_seed2:  91%|█████████▏| 137/150 [06:26<00:38,  2.93s/it]Run S1_lam_0.0001_seed2:  92%|█████████▏| 138/150 [06:28<00:34,  2.90s/it]Run S1_lam_0.0001_seed2:  93%|█████████▎| 139/150 [06:31<00:29,  2.69s/it]Run S1_lam_0.0001_seed2:  93%|█████████▎| 140/150 [06:33<00:25,  2.56s/it]Run S1_lam_0.0001_seed2:  94%|█████████▍| 141/150 [06:35<00:21,  2.43s/it]Run S1_lam_0.0001_seed2:  95%|█████████▍| 142/150 [06:37<00:18,  2.31s/it]Run S1_lam_0.0001_seed2:  95%|█████████▌| 143/150 [06:40<00:16,  2.37s/it]Run S1_lam_0.0001_seed2:  96%|█████████▌| 144/150 [06:42<00:13,  2.31s/it]Run S1_lam_0.0001_seed2:  97%|█████████▋| 145/150 [06:44<00:11,  2.30s/it]Run S1_lam_0.0001_seed2:  97%|█████████▋| 146/150 [06:46<00:09,  2.31s/it]Run S1_lam_0.0001_seed2:  98%|█████████▊| 147/150 [06:49<00:07,  2.57s/it]Run S1_lam_0.0001_seed2:  99%|█████████▊| 148/150 [06:52<00:05,  2.66s/it]Run S1_lam_0.0001_seed2:  99%|█████████▉| 149/150 [06:55<00:02,  2.72s/it]Run S1_lam_0.0001_seed2: 100%|██████████| 150/150 [06:58<00:00,  2.75s/it]Run S1_lam_0.0001_seed2: 100%|██████████| 150/150 [06:58<00:00,  2.79s/it]
+[Task 0] RS Penalty: 0.5664
+[Task 1] RS Penalty: 0.6191
+[Task 2] RS Penalty: 0.6823
+[Task 3] RS Penalty: 0.7655
+[Task 4] RS Penalty: 0.8518
+[Task 5] RS Penalty: 0.8988
+[Task 6] RS Penalty: 1.0767
+[Task 7] RS Penalty: 0.7395
+[Task 8] RS Penalty: 0.7278
+[Task 9] RS Penalty: 0.9851
+[Task 10] RS Penalty: 0.9313
+[Task 11] RS Penalty: 1.1033
+[Task 12] RS Penalty: 1.2635
+[Task 13] RS Penalty: 1.0517
+[Task 14] RS Penalty: 1.1247
+[Task 15] RS Penalty: 1.0854
+[Task 16] RS Penalty: 1.1490
+[Task 17] RS Penalty: 1.0651
+[Task 18] RS Penalty: 1.3558
+[Task 19] RS Penalty: 1.1755
+[Task 20] RS Penalty: 1.0312
+[Task 21] RS Penalty: 1.0070
+[Task 22] RS Penalty: 1.2382
+[Task 23] RS Penalty: 1.3193
+[Task 24] RS Penalty: 1.2606
+[Task 25] RS Penalty: 1.2646
+[Task 26] RS Penalty: 1.5784
+[Task 27] RS Penalty: 1.4735
+[Task 28] RS Penalty: 1.2582
+[Task 29] RS Penalty: 1.5888
+[Task 30] RS Penalty: 1.3785
+[Task 31] RS Penalty: 1.1838
+[Task 32] RS Penalty: 1.2325
+[Task 33] RS Penalty: 1.1422
+[Task 34] RS Penalty: 1.2434
+[Task 35] RS Penalty: 1.3469
+[Task 36] RS Penalty: 1.3208
+[Task 37] RS Penalty: 1.5492
+[Task 38] RS Penalty: 1.2663
+[Task 39] RS Penalty: 1.3966
+[Task 40] RS Penalty: 1.1855
+[Task 41] RS Penalty: 1.1218
+[Task 42] RS Penalty: 1.4784
+[Task 43] RS Penalty: 1.3208
+[Task 44] RS Penalty: 1.2919
+[Task 45] RS Penalty: 1.4800
+[Task 46] RS Penalty: 1.4190
+[Task 47] RS Penalty: 1.5931
+[Task 48] RS Penalty: 1.2578
+[Task 49] RS Penalty: 1.4024
+[Task 50] RS Penalty: 1.2619
+[Task 51] RS Penalty: 1.0905
+[Task 52] RS Penalty: 1.5120
+[Task 53] RS Penalty: 1.3505
+[Task 54] RS Penalty: 1.4874
+[Task 55] RS Penalty: 1.2949
+[Task 56] RS Penalty: 1.6696
+[Task 57] RS Penalty: 1.1894
+[Task 58] RS Penalty: 1.4461
+[Task 59] RS Penalty: 1.4498
+[Task 60] RS Penalty: 1.3865
+[Task 61] RS Penalty: 1.2097
+[Task 62] RS Penalty: 1.4052
+[Task 63] RS Penalty: 1.5172
+[Task 64] RS Penalty: 1.6617
+[Task 65] RS Penalty: 1.4292
+[Task 66] RS Penalty: 1.6579
+[Task 67] RS Penalty: 1.3500
+[Task 68] RS Penalty: 1.6262
+[Task 69] RS Penalty: 1.5790
+[Task 70] RS Penalty: 1.6171
+[Task 71] RS Penalty: 1.3653
+[Task 72] RS Penalty: 1.7058
+[Task 73] RS Penalty: 1.3704
+[Task 74] RS Penalty: 1.3892
+[Task 75] RS Penalty: 1.6271
+[Task 76] RS Penalty: 1.4818
+[Task 77] RS Penalty: 1.6363
+[Task 78] RS Penalty: 1.7855
+[Task 79] RS Penalty: 2.0388
+[Task 80] RS Penalty: 1.5756
+[Task 81] RS Penalty: 1.5580
+[Task 82] RS Penalty: 1.6831
+[Task 83] RS Penalty: 1.5981
+[Task 84] RS Penalty: 1.7831
+[Task 85] RS Penalty: 1.8991
+[Task 86] RS Penalty: 1.4474
+[Task 87] RS Penalty: 1.6016
+[Task 88] RS Penalty: 1.5207
+[Task 89] RS Penalty: 1.4873
+[Task 90] RS Penalty: 1.4905
+[Task 91] RS Penalty: 1.6659
+[Task 92] RS Penalty: 1.5802
+[Task 93] RS Penalty: 1.8391
+[Task 94] RS Penalty: 1.7691
+[Task 95] RS Penalty: 1.5210
+[Task 96] RS Penalty: 1.3435
+[Task 97] RS Penalty: 1.5513
+[Task 98] RS Penalty: 1.9116
+[Task 99] RS Penalty: 1.6034
+[Task 100] RS Penalty: 1.9213
+[Task 101] RS Penalty: 1.7351
+[Task 102] RS Penalty: 1.6972
+[Task 103] RS Penalty: 1.6912
+[Task 104] RS Penalty: 1.5207
+[Task 105] RS Penalty: 1.7008
+[Task 106] RS Penalty: 1.7271
+[Task 107] RS Penalty: 1.9530
+[Task 108] RS Penalty: 1.8269
+[Task 109] RS Penalty: 2.1507
+[Task 110] RS Penalty: 1.9303
+[Task 111] RS Penalty: 1.9464
+[Task 112] RS Penalty: 2.1609
+[Task 113] RS Penalty: 1.9867
+[Task 114] RS Penalty: 1.6829
+[Task 115] RS Penalty: 1.6123
+[Task 116] RS Penalty: 1.8221
+[Task 117] RS Penalty: 1.7389
+[Task 118] RS Penalty: 1.6494
+[Task 119] RS Penalty: 1.5151
+[Task 120] RS Penalty: 1.9948
+[Task 121] RS Penalty: 1.7562
+[Task 122] RS Penalty: 2.2553
+[Task 123] RS Penalty: 1.8752
+[Task 124] RS Penalty: 1.5343
+[Task 125] RS Penalty: 2.1449
+[Task 126] RS Penalty: 1.8944
+[Task 127] RS Penalty: 1.7898
+[Task 128] RS Penalty: 1.7702
+[Task 129] RS Penalty: 1.6870
+[Task 130] RS Penalty: 1.8635
+[Task 131] RS Penalty: 1.7816
+[Task 132] RS Penalty: 2.0598
+[Task 133] RS Penalty: 1.7967
+[Task 134] RS Penalty: 1.8533
+[Task 135] RS Penalty: 2.1633
+[Task 136] RS Penalty: 1.9728
+[Task 137] RS Penalty: 2.1340
+[Task 138] RS Penalty: 1.7312
+[Task 139] RS Penalty: 1.9706
+[Task 140] RS Penalty: 2.1058
+[Task 141] RS Penalty: 1.9596
+[Task 142] RS Penalty: 1.7423
+[Task 143] RS Penalty: 2.2115
+[Task 144] RS Penalty: 1.7019
+[Task 145] RS Penalty: 1.9835
+[Task 146] RS Penalty: 2.3440
+[Task 147] RS Penalty: 2.0767
+[Task 148] RS Penalty: 1.9034
+[Task 149] RS Penalty: 2.1697

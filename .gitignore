@@ -1,0 +1,22 @@
+# Datasets (re-downloadable)
+data/
+*/data/
+*.tar.gz
+*-batches-py/
+*-python/
+MNIST/
+
+# Model checkpoints (large, regenerable)
+*.pt
+*.pth
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Build artifacts
+*.aux
+*.log.tex
+*.out
+*.toc
