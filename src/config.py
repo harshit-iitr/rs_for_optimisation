@@ -53,14 +53,21 @@ def file_sha256(path):
     return h.hexdigest()
 
 
+# Fields that legitimately differ between seeds of the SAME arm. Excluded from
+# the comparability hash, but checked separately -- an isotropic run must point at
+# its own seed's target, and load_arm verifies that.
+SEED_SCOPED = {"seed", "iso_target", "iso_target_sha256"}
+
+
 def config_hash(cfg):
     """Stable hash over the scientific content of a config, ignoring seed,
     run directory, and timing. Two runs whose config_hash differs are not
     comparable; two runs in the same arm must agree."""
-    ignore = {
-        "seed", "run_dir", "started_at", "finished_at", "git_sha",
+    ignore = SEED_SCOPED | {
+        "run_dir", "started_at", "finished_at", "git_sha",
         "torch_version", "python_version", "hostname", "status",
-        "wall_clock_sec", "provenance",
+        "wall_clock_sec", "provenance", "n_rows", "n_steps",
+        "iso_target_exhausted", "config_hash",
     }
     payload = {k: v for k, v in sorted(cfg.items()) if k not in ignore}
     return hashlib.sha256(
