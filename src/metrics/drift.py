@@ -21,6 +21,8 @@ returned.
 
 import torch
 
+from src.metrics.linalg import safe_svd_u
+
 SUBSPACE_K = 50
 
 
@@ -59,20 +61,27 @@ def compute_drift(h_curr, h_past, eps=1e-8):
     }
 
 
-def compute_subspace_overlap(h_curr, h_past, k=SUBSPACE_K):
-    """Similarity of the top-k activation subspaces.
+def subspace_basis(h, k=SUBSPACE_K):
+    """Orthonormal basis of the dominant k-dimensional activation subspace.
 
-    Columns of the (d, B) matrix span the representation; the top-k left singular
-    vectors give the dominant k-dimensional subspace. The singular values of
-    U_curr[:, :k]^T U_past[:, :k] are the cosines of the principal angles.
-
-    k is fixed at 50 for every arm, so the same rank is always compared.
+    Split out from the overlap so the trainer can CACHE it: the previous task's
+    basis is recomputed every task otherwise, and the fixed task-0 reference
+    basis would be recomputed 150 times.
     """
-    a, b = _flat(h_curr).t(), _flat(h_past).t()
-    U_curr = torch.linalg.svd(a, full_matrices=False).U
-    U_past = torch.linalg.svd(b, full_matrices=False).U
-    kk = min(k, U_curr.shape[1], U_past.shape[1])
-    cos_angles = torch.linalg.svdvals(U_curr[:, :kk].t() @ U_past[:, :kk])
+    return safe_svd_u(_flat(h).t(), k)
+
+
+def overlap_from_bases(U_curr, U_past):
+    """Principal-angle similarity between two subspaces given their bases."""
+    nan = {"subspace_overlap": float("nan"), "subspace_proj_metric": float("nan"),
+           "subspace_k": 0}
+    if U_curr is None or U_past is None:
+        return nan
+    kk = min(U_curr.shape[1], U_past.shape[1])
+    try:
+        cos_angles = torch.linalg.svdvals(U_curr[:, :kk].t() @ U_past[:, :kk])
+    except Exception:
+        return nan
     return {
         # Round 1-4 definition, preserved for archive comparability.
         "subspace_overlap": cos_angles.mean().item(),
@@ -80,3 +89,9 @@ def compute_subspace_overlap(h_curr, h_past, k=SUBSPACE_K):
         "subspace_proj_metric": (cos_angles ** 2).mean().item(),
         "subspace_k": int(kk),
     }
+
+
+def compute_subspace_overlap(h_curr, h_past, k=SUBSPACE_K):
+    """Convenience wrapper. k is fixed at 50 for every arm, so the same rank is
+    always compared."""
+    return overlap_from_bases(subspace_basis(h_curr, k), subspace_basis(h_past, k))

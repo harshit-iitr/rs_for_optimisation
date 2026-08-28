@@ -40,12 +40,14 @@ from src.methods.isotropic import GradTrace, IsotropicControl
 from src.methods.mas import MAS
 from src.methods.rs import compute_rs_penalty
 from src.methods.si import SI
-from src.metrics.drift import compute_drift, compute_subspace_overlap
+from src.metrics.drift import (SUBSPACE_K, compute_drift, overlap_from_bases,
+                               subspace_basis)
 from src.metrics.gradients import group_grad_norms, param_groups
 from src.metrics.neurons import compute_dead_fraction, compute_dormant_fraction
 from src.metrics.norms import compute_activation_radius, compute_grad_norm, compute_weight_norm
 from src.metrics.phi_rad import compute_phi_rad_tilde
-from src.metrics.rank import compute_effective_rank, compute_stable_rank
+from src.metrics.linalg import FALLBACKS, reset_counters
+from src.metrics.rank import compute_ranks
 from src.metrics.readiness import compute_readiness
 from src.metrics.retention import evaluate_tasks, summarize
 from src.models.mlp import MLP
@@ -120,6 +122,7 @@ def main():
     cfg = build_config(args, extra={"iso_target_sha256": file_sha256(args.iso_target)})
     write_config(args.run_dir, cfg)
 
+    reset_counters()
     set_seed(args.seed)
     device = "cuda" if torch.cuda.is_available() else "cpu"
     act_class = nn.ReLU if args.act_fn == "relu" else nn.LeakyReLU
@@ -167,6 +170,7 @@ def main():
         probe0, _, _, _ = dataset.get_task_data(0)
         drift_probe_x = probe0[:args.drift_probe_size].clone().to(device)
         past_acts, ref_acts = None, None
+        past_bases, ref_bases = None, None
 
     for t in tqdm(range(args.n_tasks), desc=os.path.basename(args.run_dir)):
         x_train, y_train, x_test, y_test = dataset.get_task_data(t)
@@ -295,6 +299,9 @@ def main():
         g_tasks = torch.autograd.grad(loss_p, pre_p, retain_graph=True)
         loss_p.backward()
 
+        # Both ranks come from one decomposition, on the robust CPU path.
+        ranks = [compute_ranks(h.detach()) for h in pre_p]
+
         layer_metrics = []
         for l in range(len(pre_p)):
             h, h_post, g = pre_p[l].detach(), post_p[l].detach(), g_tasks[l].detach()
@@ -306,8 +313,8 @@ def main():
                 "phi_rad_tilde": compute_phi_rad_tilde(h, g),
                 "radial_excess": rad_mean - math.sqrt(h.shape[-1]),
                 "radius_mean": rad_mean, "radius_std": rad_std,
-                "eff_rank": compute_effective_rank(h),
-                "stable_rank": compute_stable_rank(h),
+                "eff_rank": ranks[l][0],
+                "stable_rank": ranks[l][1],
                 "dead_frac": compute_dead_fraction(h_post),
                 "dormant_frac": compute_dormant_fraction(h_post),
                 "weight_norm": compute_weight_norm(model.layers[l].weight),
@@ -331,21 +338,26 @@ def main():
             with torch.no_grad():
                 _, curr_acts, _ = model(drift_probe_x, return_activations=True, **fwd)
             curr_acts = [h.detach() for h in curr_acts]
+            # One decomposition per layer per task; the previous-task and
+            # task-0 bases are cached rather than recomputed.
+            curr_bases = [subspace_basis(h, SUBSPACE_K) for h in curr_acts]
             for l, h_curr in enumerate(curr_acts):
                 lm = layer_metrics[l]
                 if past_acts is not None:      # consecutive task boundaries
                     for k, v in compute_drift(h_curr, past_acts[l]).items():
                         lm[k] = v
-                    for k, v in compute_subspace_overlap(h_curr, past_acts[l]).items():
+                    for k, v in overlap_from_bases(curr_bases[l], past_bases[l]).items():
                         lm[k] = v
                 if ref_acts is not None:       # fixed task-0 reference
                     for k, v in compute_drift(h_curr, ref_acts[l]).items():
                         lm[k + "_ref"] = v
-                    for k, v in compute_subspace_overlap(h_curr, ref_acts[l]).items():
+                    for k, v in overlap_from_bases(curr_bases[l], ref_bases[l]).items():
                         lm[k + "_ref"] = v
             past_acts = [h.clone() for h in curr_acts]
+            past_bases = curr_bases
             if ref_acts is None:
                 ref_acts = [h.clone() for h in curr_acts]
+                ref_bases = curr_bases
 
         accs = evaluate_tasks(model, task_tests, args.probe_size, fwd)
         ret = summarize(accs)
@@ -371,7 +383,8 @@ def main():
     if trace is not None:
         trace.save(os.path.join(args.run_dir, "grad_trace.npz"))
 
-    extra = {"n_rows": len(df), "n_steps": global_step}
+    extra = {"n_rows": len(df), "n_steps": global_step,
+             "linalg_fallbacks": dict(FALLBACKS)}
     if iso is not None:
         extra["iso_target_exhausted"] = bool(iso.exhausted)
     finalize_config(args.run_dir, "complete", time.time() - t_start, extra)

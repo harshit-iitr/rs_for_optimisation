@@ -1,2 +1,15 @@
 seed_5:   0%|          | 0/150 [00:00<?, ?it/s]seed_5:   1%|          | 1/150 [01:31<3:48:14, 91.91s/it]seed_5:   1%|▏         | 2/150 [03:06<3:50:58, 93.64s/it]seed_5:   2%|▏         | 3/150 [04:41<3:50:56, 94.26s/it]seed_5:   3%|▎         | 4/150 [06:16<3:49:53, 94.48s/it]seed_5:   3%|▎         | 5/150 [07:51<3:49:02, 94.77s/it]seed_5:   4%|▍         | 6/150 [09:26<3:47:39, 94.86s/it]seed_5:   5%|▍         | 7/150 [11:02<3:46:20, 94.97s/it]/home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/src/metrics/rank.py:11: UserWarning: torch.linalg.svd: During SVD computation with the selected cusolver driver, batches 0 failed to converge. A more accurate method will be used to compute the SVD as a fallback. Check doc at https://pytorch.org/docs/stable/generated/torch.linalg.svd.html (Triggered internally at /pytorch/aten/src/ATen/native/cuda/linalg/BatchLinearAlgebraLib.cpp:702.)
   U, S, V = torch.linalg.svd(A, full_matrices=False)
+seed_5:   5%|▍         | 7/150 [1:15:14<25:37:11, 644.98s/it]
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/usr/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/src/train.py", line 381, in <module>
+    main()
+  File "/home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/src/train.py", line 339, in main
+    for k, v in compute_subspace_overlap(h_curr, past_acts[l]).items():
+  File "/home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/src/metrics/drift.py", line 72, in compute_subspace_overlap
+    U_curr = torch.linalg.svd(a, full_matrices=False).U
+torch._C._LinAlgError: linalg.svd: The algorithm failed to converge because the input matrix is ill-conditioned or has too many repeated singular values (error code: 1000).

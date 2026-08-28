@@ -1,2 +1,15 @@
 seed_4:   0%|          | 0/150 [00:00<?, ?it/s]seed_4:   1%|          | 1/150 [00:18<44:46, 18.03s/it]seed_4:   1%|▏         | 2/150 [00:42<53:27, 21.67s/it]seed_4:   2%|▏         | 3/150 [01:07<57:08, 23.32s/it]seed_4:   3%|▎         | 4/150 [01:33<58:52, 24.20s/it]seed_4:   3%|▎         | 5/150 [02:17<1:15:43, 31.34s/it]seed_4:   4%|▍         | 6/150 [04:02<2:15:25, 56.43s/it]seed_4:   5%|▍         | 7/150 [06:57<3:46:51, 95.19s/it]seed_4:   5%|▌         | 8/150 [10:01<4:52:29, 123.59s/it]seed_4:   6%|▌         | 9/150 [13:05<5:34:53, 142.51s/it]seed_4:   7%|▋         | 10/150 [16:10<6:02:39, 155.43s/it]/home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/src/metrics/rank.py:11: UserWarning: torch.linalg.svd: During SVD computation with the selected cusolver driver, batches 0 failed to converge. A more accurate method will be used to compute the SVD as a fallback. Check doc at https://pytorch.org/docs/stable/generated/torch.linalg.svd.html (Triggered internally at /pytorch/aten/src/ATen/native/cuda/linalg/BatchLinearAlgebraLib.cpp:702.)
   U, S, V = torch.linalg.svd(A, full_matrices=False)
+seed_4:   7%|▋         | 10/150 [2:24:48<33:47:20, 868.86s/it]
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/usr/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/src/train.py", line 381, in <module>
+    main()
+  File "/home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/src/train.py", line 339, in main
+    for k, v in compute_subspace_overlap(h_curr, past_acts[l]).items():
+  File "/home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/src/metrics/drift.py", line 72, in compute_subspace_overlap
+    U_curr = torch.linalg.svd(a, full_matrices=False).U
+torch._C._LinAlgError: linalg.svd: The algorithm failed to converge because the input matrix is ill-conditioned or has too many repeated singular values (error code: 1000).
