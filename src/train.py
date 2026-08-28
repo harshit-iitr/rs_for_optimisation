@@ -57,6 +57,17 @@ METHODS = ["bp", "rs", "isotropic", "l2", "l2_init", "ln", "ln_l2", "sp",
 PROJECTIONS = ["none", "tangential", "ste"]
 
 
+def limit_threads(n):
+    """Cap CPU intra-op parallelism.
+
+    The metric SVDs run on CPU (src/metrics/linalg.py). Left unbounded, every
+    concurrent job claims all 192 cores and they thrash: observed load average
+    484 with eight jobs, and a task failing to advance in four minutes. One job
+    per ~16 cores is ample for a 1000x1000 decomposition.
+    """
+    torch.set_num_threads(n)
+
+
 def set_seed(seed):
     random.seed(seed)
     np.random.seed(seed)
@@ -97,6 +108,8 @@ def build_args():
     p.add_argument("--drift_probe_size", type=int, default=1000)
     p.add_argument("--readiness_microbatches", type=int, default=8)
     p.add_argument("--seed", type=int, default=1)
+    p.add_argument("--num_threads", type=int, default=8,
+                   help="CPU intra-op threads for this job")
 
     p.add_argument("--run_dir", type=str, required=True)
     p.add_argument("--track_drift", action="store_true")
@@ -122,6 +135,7 @@ def main():
     cfg = build_config(args, extra={"iso_target_sha256": file_sha256(args.iso_target)})
     write_config(args.run_dir, cfg)
 
+    limit_threads(args.num_threads)
     reset_counters()
     set_seed(args.seed)
     device = "cuda" if torch.cuda.is_available() else "cpu"

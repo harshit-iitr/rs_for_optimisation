@@ -30,13 +30,13 @@
   "iso_target": null,
   "iso_granularity": "per_layer",
   "schema_version": 100,
-  "git_sha": "849596efcda8e0441b40db8a49d01f98861f0e59-dirty",
+  "git_sha": "81617b2246e9b7695355a37f194bda04a1e65bb0-dirty",
   "torch_version": "2.9.1+cu128",
   "python_version": "3.10.12",
   "hostname": "psquarelab4",
-  "started_at": "2026-08-28T15:08:04.012558+00:00",
-  "finished_at": "2026-08-28T16:13:26.572683+00:00",
-  "status": "complete",
+  "started_at": "2026-08-28T20:56:52.538129+00:00",
+  "finished_at": null,
+  "status": "running",
   "provenance": "round5",
   "canonical_reference": {
     "dataset": "permuted_mnist",
@@ -53,8 +53,5 @@
     "probe_size": 2000
   },
   "iso_target_sha256": null,
-  "config_hash": "b15debb54d10",
-  "wall_clock_sec": 3922.6,
-  "n_rows": 450,
-  "n_steps": 352500
+  "config_hash": "fbffada7b349"
 }

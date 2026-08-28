@@ -71,7 +71,8 @@ def build_cmd(run_dir, args, iso_target):
     return parts
 
 
-def launch_study(study_name, concurrency, reserve_mb, per_job_mb, dry_run, force):
+def launch_study(study_name, concurrency, reserve_mb, per_job_mb, dry_run,
+                 force, threads=8):
     st = STUDIES[study_name]
     plan = list(iter_runs(study_name))
     n_phases = len(st["phases"])
@@ -123,10 +124,13 @@ def launch_study(study_name, concurrency, reserve_mb, per_job_mb, dry_run, force
                     break
                 time.sleep(5)
 
-            env = dict(os.environ, PYTHONPATH=REPO)
+            # Set before the child imports torch, so BLAS picks them up.
+            env = dict(os.environ, PYTHONPATH=REPO,
+                       OMP_NUM_THREADS=str(threads), MKL_NUM_THREADS=str(threads),
+                       OPENBLAS_NUM_THREADS=str(threads))
             if gpu is not None:
                 env["CUDA_VISIBLE_DEVICES"] = str(gpu)
-            cmd = build_cmd(run_dir, args, dep)
+            cmd = build_cmd(run_dir, args, dep) + ["--num_threads", str(threads)]
             print(f"  [gpu {gpu}] {run_dir}")
             with open(os.path.join(abs_dir, "stdout.log"), "w") as f:
                 p = subprocess.Popen(cmd, cwd=REPO, env=env, stdout=f, stderr=subprocess.STDOUT)
@@ -217,6 +221,9 @@ def main():
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--measure", action="store_true")
     ap.add_argument("--force", action="store_true", help="re-run completed runs")
+    ap.add_argument("--threads", type=int, default=8,
+                    help="CPU intra-op threads per job; concurrency*threads "
+                         "should not exceed nproc")
     ap.add_argument("--tmux", action="store_true",
                     help="re-exec detached under tmux so disconnects cannot kill it")
     a = ap.parse_args()
@@ -242,7 +249,8 @@ def main():
         return
 
     for s in (sorted(STUDIES) if a.study == "all" else [a.study]):
-        launch_study(s, a.concurrency, a.reserve_mb, a.per_job_mb, a.dry_run, a.force)
+        launch_study(s, a.concurrency, a.reserve_mb, a.per_job_mb, a.dry_run,
+                     a.force, a.threads)
 
 
 if __name__ == "__main__":
