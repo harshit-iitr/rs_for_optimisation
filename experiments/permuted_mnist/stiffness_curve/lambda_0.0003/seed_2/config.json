@@ -1,6 +1,6 @@
 {
   "method": "rs",
-  "lambda_rs": 0.0001,
+  "lambda_rs": 0.0003,
   "projection": "none",
   "weight_decay": 0.0,
   "l2_init_coef": 0.01,
@@ -23,9 +23,9 @@
   "probe_size": 2000,
   "drift_probe_size": 1000,
   "readiness_microbatches": 8,
-  "seed": 1,
+  "seed": 2,
   "num_threads": 10,
-  "run_dir": "experiments/permuted_mnist/stiffness_curve/lambda_0.0001/seed_1",
+  "run_dir": "experiments/permuted_mnist/stiffness_curve/lambda_0.0003/seed_2",
   "track_drift": true,
   "log_grad_trace": false,
   "iso_target": null,
@@ -36,7 +36,7 @@
   "torch_version": "2.9.1+cu128",
   "python_version": "3.10.12",
   "hostname": "psquarelab4",
-  "started_at": "2026-08-29T18:31:03.721177+00:00",
+  "started_at": "2026-08-29T18:31:27.947833+00:00",
   "finished_at": null,
   "status": "running",
   "provenance": "round5",
@@ -55,5 +55,5 @@
     "probe_size": 2000
   },
   "iso_target_sha256": null,
-  "config_hash": "3fd41b82f686"
+  "config_hash": "aff895dd6269"
 }

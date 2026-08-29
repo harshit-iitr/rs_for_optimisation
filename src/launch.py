@@ -140,13 +140,22 @@ def launch_study(study_name, concurrency, reserve_mb, per_job_mb, dry_run,
             os.makedirs(abs_dir, exist_ok=True)
 
             while True:
-                running = [(p, d) for p, d in running if p.poll() is None]
+                running = [(p, d, g) for p, d, g in running if p.poll() is None]
                 free = gpu_free_mb(gpus)
                 gpu = None
                 if free:
-                    best = max(free, key=lambda i: free[i])
-                    if free[best] - reserve_mb >= per_job_mb:
-                        gpu = best
+                    # Balance by JOBS IN FLIGHT, not by free memory. A freshly
+                    # launched job takes seconds to allocate, so picking the
+                    # emptiest GPU repeatedly piles everything onto one of them
+                    # before any of it registers.
+                    onit = {g: sum(1 for _, _, gg in running if gg == g) for g in free}
+                    eligible = [g for g in free
+                                if free[g] - reserve_mb >= per_job_mb + onit[g] * per_job_mb]
+                    if not eligible:
+                        eligible = [g for g in free
+                                    if free[g] - reserve_mb >= per_job_mb]
+                    if eligible:
+                        gpu = min(eligible, key=lambda g: (onit[g], -free[g]))
                 if len(running) < concurrency and (gpu is not None or not free):
                     break
                 time.sleep(5)
@@ -161,11 +170,11 @@ def launch_study(study_name, concurrency, reserve_mb, per_job_mb, dry_run,
             print(f"  [gpu {gpu}] {run_dir}")
             with open(os.path.join(abs_dir, "stdout.log"), "w") as f:
                 p = subprocess.Popen(cmd, cwd=REPO, env=env, stdout=f, stderr=subprocess.STDOUT)
-            running.append((p, run_dir))
-            time.sleep(3)   # stagger allocator spikes
+            running.append((p, run_dir, gpu))
+            time.sleep(6)   # stagger allocator spikes; also lets memory register
 
         while running:
-            running = [(p, d) for p, d in running if p.poll() is None]
+            running = [(p, d, g) for p, d, g in running if p.poll() is None]
             time.sleep(5)
 
         for _, run_dir, exp_args, _ in [x for x in plan if x[0] == phase_i]:
