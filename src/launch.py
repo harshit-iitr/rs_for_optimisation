@@ -33,29 +33,54 @@ REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BOOL_FLAGS = {"track_drift", "log_grad_trace"}
 
 
-def gpu_free_mb():
+def gpu_free_mb(allowed=None):
+    """Free MB per visible GPU, restricted to `allowed` device ids if given."""
     try:
         out = subprocess.run(
             ["nvidia-smi", "--query-gpu=memory.free", "--format=csv,noheader,nounits"],
             capture_output=True, text=True, timeout=15)
-        return [int(x) for x in out.stdout.split()]
+        free = [int(x) for x in out.stdout.split()]
     except Exception:
-        return []
+        return {}
+    ids = allowed if allowed is not None else list(range(len(free)))
+    return {i: free[i] for i in ids if i < len(free)}
 
 
-def run_status(run_dir):
-    """'complete', 'running', 'failed', or None if never started."""
+def run_status(run_dir, expect_args=None):
+    """'complete', 'stale', 'diverged', 'failed', or None if never started.
+
+    'stale' means the run finished but under a DIFFERENT configuration than the
+    study now defines. Resuming past a stale run is how a study silently ends up
+    mixing configurations -- the failure mode that produced eight incompatible
+    schema generations in Rounds 1-4 -- so it is treated as not-done.
+    """
     cpath = os.path.join(run_dir, "config.json")
     if not os.path.exists(cpath):
         return None
     try:
         with open(cpath) as f:
-            st = json.load(f).get("status")
+            cfg = json.load(f)
     except Exception:
         return "failed"
-    if st == "complete" and os.path.exists(os.path.join(run_dir, "metrics.parquet")):
-        return "complete"
-    return "failed" if st == "running" else st
+    st = cfg.get("status")
+    if st == "diverged":
+        return "diverged"
+    if st != "complete" or not os.path.exists(os.path.join(run_dir, "metrics.parquet")):
+        return "failed" if st == "running" else (st or "failed")
+    if expect_args is not None:
+        want = {k: v for k, v in expect_args.items()}
+        for k, v in want.items():
+            got = cfg.get(k)
+            if isinstance(v, float) or isinstance(got, float):
+                try:
+                    if abs(float(got) - float(v)) > 1e-12:
+                        return "stale"
+                    continue
+                except (TypeError, ValueError):
+                    return "stale"
+            if got != v:
+                return "stale"
+    return "complete"
 
 
 def build_cmd(run_dir, args, iso_target):
@@ -72,7 +97,7 @@ def build_cmd(run_dir, args, iso_target):
 
 
 def launch_study(study_name, concurrency, reserve_mb, per_job_mb, dry_run,
-                 force, threads=8):
+                 force, threads=8, gpus=None):
     st = STUDIES[study_name]
     plan = list(iter_runs(study_name))
     n_phases = len(st["phases"])
@@ -87,7 +112,9 @@ def launch_study(study_name, concurrency, reserve_mb, per_job_mb, dry_run,
             if pi != phase_i:
                 continue
             abs_dir = os.path.join(REPO, run_dir)
-            status = run_status(abs_dir)
+            status = run_status(abs_dir, args)
+            if status == "stale":
+                print(f"  STALE (config changed since it ran), will re-run: {run_dir}")
             if status == "complete" and not force:
                 report["skipped"].append(run_dir)
                 continue
@@ -114,10 +141,10 @@ def launch_study(study_name, concurrency, reserve_mb, per_job_mb, dry_run,
 
             while True:
                 running = [(p, d) for p, d in running if p.poll() is None]
-                free = gpu_free_mb()
+                free = gpu_free_mb(gpus)
                 gpu = None
                 if free:
-                    best = max(range(len(free)), key=lambda i: free[i])
+                    best = max(free, key=lambda i: free[i])
                     if free[best] - reserve_mb >= per_job_mb:
                         gpu = best
                 if len(running) < concurrency and (gpu is not None or not free):
@@ -141,8 +168,8 @@ def launch_study(study_name, concurrency, reserve_mb, per_job_mb, dry_run,
             running = [(p, d) for p, d in running if p.poll() is None]
             time.sleep(5)
 
-        for _, run_dir, _, _ in [x for x in plan if x[0] == phase_i]:
-            s = run_status(os.path.join(REPO, run_dir))
+        for _, run_dir, exp_args, _ in [x for x in plan if x[0] == phase_i]:
+            s = run_status(os.path.join(REPO, run_dir), exp_args)
             if s == "complete":
                 if run_dir not in report["skipped"]:
                     report["complete"].append(run_dir)
@@ -175,14 +202,14 @@ def measure(study_name, tasks=3):
     cmd = build_cmd(probe, args, None)
     print("measuring:", " ".join(shlex.quote(c) for c in cmd))
 
-    before = gpu_free_mb()
+    before = list(gpu_free_mb().values())
     t0 = time.time()
     env = dict(os.environ, PYTHONPATH=REPO)
     p = subprocess.Popen(cmd, cwd=REPO, env=env,
                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
     peak_used = 0
     while p.poll() is None:
-        now = gpu_free_mb()
+        now = list(gpu_free_mb().values())
         if before and now:
             peak_used = max(peak_used, max(b - n for b, n in zip(before, now)))
         time.sleep(2)
@@ -203,7 +230,7 @@ def measure(study_name, tasks=3):
     print(f"  {tot} runs across all studies -> ~{tot*per_run/3600:.0f} GPU-hours "
           f"(studies differ in cost; this extrapolates from {study_name})")
     if peak_used > 0:
-        free = gpu_free_mb()
+        free = list(gpu_free_mb().values())
         cap = sum(max(0, f - 2000) // max(peak_used, 1) for f in free)
         print(f"  free now {free} MB -> safe concurrency ~{cap} "
               f"(2 GB/GPU reserve)")
@@ -221,6 +248,9 @@ def main():
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--measure", action="store_true")
     ap.add_argument("--force", action="store_true", help="re-run completed runs")
+    ap.add_argument("--gpus", type=str, default=None,
+                    help="comma-separated device ids to use, e.g. '0'. "
+                         "Default: all visible GPUs.")
     ap.add_argument("--threads", type=int, default=8,
                     help="CPU intra-op threads per job; concurrency*threads "
                          "should not exceed nproc")
@@ -249,8 +279,9 @@ def main():
         return
 
     for s in (sorted(STUDIES) if a.study == "all" else [a.study]):
+        gpus = [int(x) for x in a.gpus.split(",")] if a.gpus else None
         launch_study(s, a.concurrency, a.reserve_mb, a.per_job_mb, a.dry_run,
-                     a.force, a.threads)
+                     a.force, a.threads, gpus)
 
 
 if __name__ == "__main__":

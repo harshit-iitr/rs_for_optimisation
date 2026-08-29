@@ -24,19 +24,20 @@
   "drift_probe_size": 1000,
   "readiness_microbatches": 8,
   "seed": 2,
+  "num_threads": 16,
   "run_dir": "experiments/permuted_mnist/isotropic_control/unclipped/arm_penalty_lam0.003/seed_2",
   "track_drift": true,
   "log_grad_trace": true,
   "iso_target": null,
   "iso_granularity": "per_layer",
   "schema_version": 100,
-  "git_sha": "849596efcda8e0441b40db8a49d01f98861f0e59-dirty",
+  "git_sha": "7b60db7d9d10f028034b7f4bd2432d04071b9025-dirty",
   "torch_version": "2.9.1+cu128",
   "python_version": "3.10.12",
   "hostname": "psquarelab4",
-  "started_at": "2026-08-28T18:01:50.172229+00:00",
-  "finished_at": null,
-  "status": "running",
+  "started_at": "2026-08-28T23:16:47.684911+00:00",
+  "finished_at": "2026-08-28T23:46:21.407523+00:00",
+  "status": "complete",
   "provenance": "round5",
   "canonical_reference": {
     "dataset": "permuted_mnist",
@@ -53,5 +54,12 @@
     "probe_size": 2000
   },
   "iso_target_sha256": null,
-  "config_hash": "b516f8d099f9"
+  "config_hash": "ae68c531e05a",
+  "wall_clock_sec": 1773.7,
+  "n_rows": 450,
+  "n_steps": 352500,
+  "linalg_fallbacks": {
+    "svdvals_failed": 408,
+    "svd_u_failed": 408
+  }
 }

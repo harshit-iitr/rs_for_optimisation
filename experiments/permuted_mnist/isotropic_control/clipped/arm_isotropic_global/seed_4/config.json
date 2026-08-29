@@ -24,18 +24,19 @@
   "drift_probe_size": 1000,
   "readiness_microbatches": 8,
   "seed": 4,
+  "num_threads": 16,
   "run_dir": "experiments/permuted_mnist/isotropic_control/clipped/arm_isotropic_global/seed_4",
   "track_drift": true,
   "log_grad_trace": true,
   "iso_target": "experiments/permuted_mnist/isotropic_control/clipped/arm_penalty_lam0.003/seed_4/grad_trace.npz",
   "iso_granularity": "global",
   "schema_version": 100,
-  "git_sha": "849596efcda8e0441b40db8a49d01f98861f0e59-dirty",
+  "git_sha": "7b60db7d9d10f028034b7f4bd2432d04071b9025-dirty",
   "torch_version": "2.9.1+cu128",
   "python_version": "3.10.12",
   "hostname": "psquarelab4",
-  "started_at": "2026-08-28T17:20:13.473272+00:00",
-  "finished_at": "2026-08-28T18:01:15.000829+00:00",
+  "started_at": "2026-08-28T22:42:53.421684+00:00",
+  "finished_at": "2026-08-28T23:16:12.206074+00:00",
   "status": "complete",
   "provenance": "round5",
   "canonical_reference": {
@@ -53,9 +54,13 @@
     "probe_size": 2000
   },
   "iso_target_sha256": "3afe3998196f77e45f0e147db0287c79109a470aed502770f501c9ba9f380c75",
-  "config_hash": "931bb6a7ac09",
-  "wall_clock_sec": 2461.5,
+  "config_hash": "4e8c091095d6",
+  "wall_clock_sec": 1998.8,
   "n_rows": 450,
   "n_steps": 352500,
+  "linalg_fallbacks": {
+    "svdvals_failed": 0,
+    "svd_u_failed": 0
+  },
   "iso_target_exhausted": false
 }

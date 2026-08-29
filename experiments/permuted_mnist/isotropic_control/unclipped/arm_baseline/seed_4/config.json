@@ -24,19 +24,20 @@
   "drift_probe_size": 1000,
   "readiness_microbatches": 8,
   "seed": 4,
+  "num_threads": 16,
   "run_dir": "experiments/permuted_mnist/isotropic_control/unclipped/arm_baseline/seed_4",
   "track_drift": true,
   "log_grad_trace": true,
   "iso_target": null,
   "iso_granularity": "per_layer",
   "schema_version": 100,
-  "git_sha": "849596efcda8e0441b40db8a49d01f98861f0e59-dirty",
+  "git_sha": "7b60db7d9d10f028034b7f4bd2432d04071b9025-dirty",
   "torch_version": "2.9.1+cu128",
   "python_version": "3.10.12",
   "hostname": "psquarelab4",
-  "started_at": "2026-08-28T18:01:40.973682+00:00",
-  "finished_at": null,
-  "status": "running",
+  "started_at": "2026-08-28T23:16:38.474189+00:00",
+  "finished_at": "2026-08-29T00:01:05.843389+00:00",
+  "status": "complete",
   "provenance": "round5",
   "canonical_reference": {
     "dataset": "permuted_mnist",
@@ -53,5 +54,12 @@
     "probe_size": 2000
   },
   "iso_target_sha256": null,
-  "config_hash": "a00e4da50fae"
+  "config_hash": "00a6b0756c36",
+  "wall_clock_sec": 2667.4,
+  "n_rows": 450,
+  "n_steps": 352500,
+  "linalg_fallbacks": {
+    "svdvals_failed": 420,
+    "svd_u_failed": 420
+  }
 }

@@ -36,7 +36,8 @@ from src.data.permuted_mnist import PermutedMNIST
 from src.data.rotating_mnist import RotatingMNIST
 from src.methods.baselines import apply_shrink_and_perturb, compute_l2_init_penalty
 from src.methods.ewc import EWC
-from src.methods.isotropic import GradTrace, IsotropicControl
+from src.methods.isotropic import (GradTrace, IsotropicControl,
+                                   WeightNormControl)
 from src.methods.mas import MAS
 from src.methods.rs import compute_rs_penalty
 from src.methods.si import SI
@@ -52,8 +53,8 @@ from src.metrics.readiness import compute_readiness
 from src.metrics.retention import evaluate_tasks, summarize
 from src.models.mlp import MLP
 
-METHODS = ["bp", "rs", "isotropic", "l2", "l2_init", "ln", "ln_l2", "sp",
-           "ewc", "si", "mas", "rs_ewc"]
+METHODS = ["bp", "rs", "isotropic", "iso_wnorm", "l2", "l2_init", "ln", "ln_l2",
+           "sp", "ewc", "si", "mas", "rs_ewc"]
 PROJECTIONS = ["none", "tangential", "ste"]
 
 
@@ -120,6 +121,10 @@ def build_args():
                    help="path to the target run's grad_trace.npz (method=isotropic)")
     p.add_argument("--iso_granularity", type=str, default="per_layer",
                    choices=["per_layer", "global"])
+    p.add_argument("--spectral_every", type=int, default=1,
+                   help="compute the SVD-based metrics (eff_rank, stable_rank, "
+                        "drift, subspace overlap) every N tasks. The final 20 "
+                        "tasks -- the reported window -- are ALWAYS computed.")
     return p.parse_args()
 
 
@@ -127,8 +132,8 @@ def main():
     args = build_args()
     t_start = time.time()
 
-    if args.method == "isotropic" and not args.iso_target:
-        raise SystemExit("--method isotropic requires --iso_target")
+    if args.method in ("isotropic", "iso_wnorm") and not args.iso_target:
+        raise SystemExit(f"--method {args.method} requires --iso_target")
 
     # Config sidecar FIRST, so a run that dies mid-way is still identifiable.
     os.makedirs(args.run_dir, exist_ok=True)
@@ -154,12 +159,16 @@ def main():
     si = SI(model) if args.method == "si" else None
     mas = MAS(model) if args.method == "mas" else None
 
-    iso = None
+    iso = wnorm_ctl = None
     if args.method == "isotropic":
         iso = IsotropicControl(args.iso_target, args.iso_granularity)
         iso.check_compatible(group_names)
+    elif args.method == "iso_wnorm":
+        wnorm_ctl = WeightNormControl(args.iso_target)
+        wnorm_ctl.check_compatible(group_names)
 
-    trace = GradTrace(group_names) if (args.log_grad_trace or iso is not None) else None
+    trace = GradTrace(group_names) if (args.log_grad_trace or iso is not None
+                                       or wnorm_ctl is not None) else None
 
     ds_cls = {"permuted_mnist": PermutedMNIST, "rotating_mnist": RotatingMNIST}[args.dataset]
     dataset = ds_cls(n_tasks=args.n_tasks, device=device, seed=args.seed)
@@ -244,8 +253,7 @@ def main():
                 else:
                     realized = post_clip_norms
 
-                if trace is not None:
-                    trace.record(t, pre_clip_global, realized)
+                _pending_trace = (t, pre_clip_global, realized)
 
                 is_last = (ep == args.epochs - 1) and (start + args.batch_size >= n_samples)
                 if is_last:
@@ -256,12 +264,19 @@ def main():
 
                 optimizer.step()
 
+                if wnorm_ctl is not None:
+                    wnorm_ctl.apply(groups, global_step)
                 if si is not None:
                     si.update_W(old_params)
                 if is_last:
                     for l, layer in enumerate(model.layers):
                         last_update_norms[l] = torch.norm(
                             layer.weight.detach() - old_w[l]).item()
+                if trace is not None:
+                    with torch.no_grad():
+                        wn = [sum(float(p.detach().pow(2).sum()) for p in ps) ** 0.5
+                              for _, ps in groups]
+                    trace.record(*_pending_trace, weight_norms=wn)
                 global_step += 1
 
         if args.method == "sp":
@@ -313,8 +328,12 @@ def main():
         g_tasks = torch.autograd.grad(loss_p, pre_p, retain_graph=True)
         loss_p.backward()
 
-        # Both ranks come from one decomposition, on the robust CPU path.
-        ranks = [compute_ranks(h.detach()) for h in pre_p]
+        # Spectral metrics are the expensive part. Compute them on a stride, but
+        # ALWAYS in the final 20 tasks, which is the window every table reports.
+        in_window = t >= args.n_tasks - 20
+        do_spectral = in_window or (t % args.spectral_every == 0)
+        ranks = ([compute_ranks(h.detach()) for h in pre_p] if do_spectral
+                 else [(float("nan"), float("nan"))] * len(pre_p))
 
         layer_metrics = []
         for l in range(len(pre_p)):
@@ -347,7 +366,7 @@ def main():
                 lm[k] = float("nan")
                 lm[k + "_ref"] = float("nan")
 
-        if args.track_drift:
+        if args.track_drift and do_spectral:
             model.eval()
             with torch.no_grad():
                 _, curr_acts, _ = model(drift_probe_x, return_activations=True, **fwd)
@@ -373,6 +392,11 @@ def main():
                 ref_acts = [h.clone() for h in curr_acts]
                 ref_bases = curr_bases
 
+        # Divergence check. A run whose activations have gone non-finite is
+        # producing chance accuracy for every remaining task; averaging those
+        # into an arm would be worse than having no data at all.
+        diverged = any(not torch.isfinite(h).all().item() for h in pre_p)
+
         accs = evaluate_tasks(model, task_tests, args.probe_size, fwd)
         ret = summarize(accs)
         model.eval()
@@ -391,6 +415,18 @@ def main():
         )
         for lm in layer_metrics:
             records.append({**common, **lm})
+
+        if diverged:
+            print(f"\nDIVERGED at task {t}: activations are non-finite. "
+                  f"Stopping; this run is marked non-reportable.")
+            df = pd.DataFrame(records)
+            df.to_parquet(os.path.join(args.run_dir, "metrics.parquet"))
+            if trace is not None:
+                trace.save(os.path.join(args.run_dir, "grad_trace.npz"))
+            finalize_config(args.run_dir, "diverged", time.time() - t_start,
+                            {"diverged_at_task": t, "n_rows": len(df),
+                             "linalg_fallbacks": dict(FALLBACKS)})
+            return
 
     df = pd.DataFrame(records)
     df.to_parquet(os.path.join(args.run_dir, "metrics.parquet"))

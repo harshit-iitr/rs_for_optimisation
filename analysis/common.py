@@ -28,8 +28,16 @@ from scipy import stats
 from src.config import SEED_SCOPED, config_hash
 
 
+IGNORED = SEED_SCOPED | {
+    "run_dir", "started_at", "finished_at", "git_sha", "torch_version",
+    "python_version", "hostname", "status", "wall_clock_sec", "provenance",
+    "n_rows", "n_steps", "iso_target_exhausted", "config_hash",
+    "linalg_fallbacks", "diverged_at_task",
+}
+
+
 def _first_differing_key(cfgs):
-    keys = set().union(*[set(c) for c in cfgs]) - SEED_SCOPED
+    keys = set().union(*[set(c) for c in cfgs]) - IGNORED
     for k in sorted(keys):
         vals = {json.dumps(c.get(k), sort_keys=True, default=str) for c in cfgs}
         if len(vals) > 1:
@@ -94,7 +102,16 @@ def load_arm(arm_dir, expect_seeds, allow_missing=False):
                 f"{arm_dir}: seed {c['seed']} is matched against {tgt} -- the "
                 f"isotropic control must pair per seed, not across seeds.")
     out = pd.concat(frames, ignore_index=True)
+    fb = {s: c.get("linalg_fallbacks", {}) for s, c in zip(expect_seeds, cfgs)}
+    degraded = {s: v for s, v in fb.items() if any(v.values())}
+    if degraded:
+        print(f"  [WARNING] {os.path.basename(arm_dir)}: spectral metrics degraded "
+              f"-- SVD failures per seed {[sum(v.values()) for v in degraded.values()]}. "
+              f"eff_rank / stable_rank / subspace_* are NaN for those tasks and "
+              f"must not be reported for this arm.")
     out.attrs["config"] = cfgs[0]
+    out.attrs["linalg_fallbacks"] = fb
+    out.attrs["degraded"] = bool(degraded)
     out.attrs["n_seeds"] = len(frames)
     out.attrs["missing_seeds"] = [m[0] for m in missing]
     return out

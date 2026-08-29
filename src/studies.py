@@ -24,6 +24,7 @@ def _canon(**over):
         depth=CANONICAL["depth"], act_fn=CANONICAL["act_fn"], lr=CANONICAL["lr"],
         optimizer=CANONICAL["optimizer"], batch_size=CANONICAL["batch_size"],
         clip_norm=CANONICAL["clip_norm"], probe_size=CANONICAL["probe_size"],
+        spectral_every=5,
     )
     cfg.update(over)
     return cfg
@@ -42,56 +43,68 @@ def study(name, root, question, claim, seeds, phases):
 
 
 # ---------------------------------------------------------------- S1
-# The decisive experiment. Two phases: the baseline and penalty arms record their
-# realized per-step gradient magnitudes; the isotropic arms then replay the
-# penalty arm's magnitudes onto the baseline's gradient direction.
+# The decisive experiment. Two phases per regime: the baseline and penalty arms
+# record their realized per-step gradient magnitudes AND weight norms; the
+# control arms then replay the penalty arm's magnitudes onto the baseline.
 #
-# Run in TWO clipping regimes, because a pre-flight measurement showed that
-# clip_grad_norm_(0.5) binds on 94-97% of steps at the canonical config and pins
-# BOTH arms to a global gradient norm of exactly 0.500. Under clipping there is
-# therefore no global magnitude confound at all -- only a ~3-5% reallocation of a
-# fixed budget across layers. The magnitude hypothesis the control exists to test
-# is only fully exposed with clipping off, where the penalty does move the global
-# norm (measured ratio 0.975 at three tasks, and the arms diverge further).
+# THREE controls, because they answer three different objections:
+#   isotropic_per_layer  matches realized gradient magnitude per parameter group.
+#                        Rules out "the penalty is an anisotropic step-size schedule".
+#   isotropic_global     matches only the total gradient norm. Under clipping this
+#                        is already equal, so it doubles as a null control: it
+#                        should reproduce the baseline exactly.
+#   iso_wnorm            matches the penalty's per-group WEIGHT-norm trajectory.
+#                        Rules out "the penalty just parks the net at a smaller
+#                        norm". The gradient controls do NOT reproduce the
+#                        penalty's weight-norm drop (45.3 vs 50.6) so without this
+#                        arm the objection stands open.
 #
-#   clipped    canonical, comparable with the Round 1-4 archive
-#   unclipped  where the magnitude confound is unmasked
+# TWO clipping regimes, both stable:
+#   clipped  clip_norm=0.5, canonical. Binds on 89% of steps and pins BOTH arms to
+#            a global gradient norm of exactly 0.500, so the global magnitude
+#            confound is 0.00% and only the per-layer confound (up to 10.7%) is
+#            real here.
+#   loose    clip_norm=10, which almost never binds and leaves the global
+#            magnitude confound exposed, but still catches the rare gradient
+#            spikes that make the fully-unclipped run diverge.
 #
-# The global-granularity arm is retained in the clipped regime as a null control:
-# there it matches a quantity that is already equal, so it should reproduce the
-# baseline. If it does not, the apparatus is wrong.
-_S1_TARGET_ARMS = [
+# A fully unclipped regime was measured and DISCARDED: at lr=0.1 it diverges
+# (activation radius 45 -> 253 by task ~10, then 130 tasks of chance accuracy).
+# Probes: no-clip/lr0.1 diverges; clip10/lr0.1 0.971; clip2/lr0.1 0.968;
+# no-clip/lr0.03 0.961. Clipping is load-bearing for stability at lr=0.1.
+_S1_TARGETS = [
     ("arm_baseline", dict(method="bp", lambda_rs=0.0)),
     (f"arm_penalty_lam{LAMBDA_STAR}", dict(method="rs", lambda_rs=LAMBDA_STAR)),
 ]
-_S1_CONTROL_ARMS = [
-    ("arm_isotropic_per_layer", "per_layer"),
-    ("arm_isotropic_global", "global"),
+_S1_CONTROLS = [
+    ("arm_isotropic_per_layer", dict(method="isotropic", iso_granularity="per_layer")),
+    ("arm_isotropic_global", dict(method="isotropic", iso_granularity="global")),
+    ("arm_iso_wnorm", dict(method="iso_wnorm")),
 ]
 
 
 def _s1_phases():
     phases = []
-    for regime, clip in [("clipped", 0.5), ("unclipped", 0.0)]:
+    for regime, clip in [("clipped", 0.5), ("loose", 10.0)]:
         phases.append({"name": f"{regime}_A_targets", "arms": [
             {"dir": f"{regime}/{d}",
              "args": _canon(clip_norm=clip, track_drift=True, log_grad_trace=True, **a)}
-            for d, a in _S1_TARGET_ARMS]})
-        phases.append({"name": f"{regime}_B_control", "arms": [
+            for d, a in _S1_TARGETS]})
+        phases.append({"name": f"{regime}_B_controls", "arms": [
             {"dir": f"{regime}/{d}",
-             "args": _canon(method="isotropic", lambda_rs=0.0, clip_norm=clip,
-                            track_drift=True, log_grad_trace=True,
-                            iso_granularity=g),
+             "args": _canon(lambda_rs=0.0, clip_norm=clip, track_drift=True,
+                            log_grad_trace=True, **a),
              "iso_target_from": f"{regime}/arm_penalty_lam{LAMBDA_STAR}"}
-            for d, g in _S1_CONTROL_ARMS]})
+            for d, a in _S1_CONTROLS]})
     return phases
 
 
 study(
     "S1_isotropic_control",
     root="permuted_mnist/isotropic_control",
-    question="Is the penalty's retention benefit reproduced by an equal-magnitude, "
-             "direction-unconstrained intervention?",
+    question="Is the penalty's retention benefit reproduced by an equal-magnitude "
+             "or equal-weight-norm intervention that carries no directional "
+             "information?",
     claim="Paper claim 3 (mechanism: direction vs magnitude). Decisive.",
     seeds=[1, 2, 3, 4, 5],
     phases=_s1_phases(),
