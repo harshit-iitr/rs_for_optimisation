@@ -219,3 +219,33 @@ def acceptance_test(realized_npz, target_npz, granularity, tol=0.05):
         report["step_count_match"] and not np.isnan(criterion) and criterion < tol
     )
     return report["passed"], report
+
+
+def wnorm_acceptance_test(realized_npz, target_npz, tol=0.05):
+    """Did the weight-space control actually match the weight-norm trajectory?
+
+    Same pre-registered criterion as the gradient control: median absolute log
+    ratio below `tol`, per group. An arm that fails is not reported.
+    """
+    r = np.load(realized_npz, allow_pickle=True)
+    t = np.load(target_npz, allow_pickle=True)
+    if "wnorm" not in r or "wnorm" not in t:
+        return False, {"passed": False, "reason": "no weight-norm trace"}
+    rn, tn = r["wnorm"], t["wnorm"]
+    n = min(len(rn), len(tn))
+    names = [str(x) for x in t["group_names"]]
+    rep = {"n_steps_compared": int(n), "tolerance": tol, "per_group": {}}
+    worst = 0.0
+    for i, nm in enumerate(names):
+        m = (rn[:n, i] > 1e-12) & (tn[:n, i] > 1e-12)
+        v = (float(np.median(np.abs(np.log(rn[:n][m, i] / tn[:n][m, i]))))
+             if m.any() else float("nan"))
+        rep["per_group"][nm] = {"median_abs_log_ratio": v, "n": int(m.sum())}
+        if not np.isnan(v):
+            worst = max(worst, v)
+    rep["worst_median_abs_log_ratio"] = worst
+    rep["criterion_value"] = worst
+    rep["criterion"] = "weight norm, max over groups"
+    rep["step_count_match"] = bool(len(rn) == len(tn))
+    rep["passed"] = bool(rep["step_count_match"] and worst < tol)
+    return rep["passed"], rep

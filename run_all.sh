@@ -12,14 +12,15 @@ set -u
 cd "$(dirname "$0")"
 export PYTHONPATH=.
 
-GPUS=${GPUS:-0}
-CONC=${CONC:-7}
-THREADS=${THREADS:-16}
-PERJOB=${PERJOB:-2800}
+GPUS=${GPUS:-0,1}
+CONC=${CONC:-18}
+THREADS=${THREADS:-10}
+PERJOB=${PERJOB:-2200}
 
+# CORE first (the paper's four legs), then supporting in value order.
 STUDIES="S3_stiffness_curve S2_lr_frontier S1_isotropic_control \
-         S9_plasticity_vs_forgetting S6_baselines S5_width_scaling \
-         S7_optimizers S8_rotating_mnist"
+         S9_plasticity_vs_forgetting S6_baselines S8_rotating_mnist \
+         S7_optimizers S5_width_scaling"
 
 echo "=========================================================="
 echo "ROUND 5 -- full programme"

@@ -37,6 +37,13 @@ def _lam_dir(lam):
 STUDIES = {}
 
 
+# Seed policy. Five seeds only where a paired test between two arms is itself
+# the result -- that is S1, the decisive control. The curve-shaped studies get
+# their statistical power from the number of arms along the curve rather than
+# from seeds within an arm, so three is sufficient and buys back the compute.
+SEEDS_DECISIVE = [1, 2, 3, 4, 5]
+SEEDS_CURVE = [1, 2, 3]
+
 def study(name, root, question, claim, seeds, phases):
     STUDIES[name] = dict(name=name, root=root, question=question, claim=claim,
                          seeds=seeds, phases=phases)
@@ -106,7 +113,7 @@ study(
              "or equal-weight-norm intervention that carries no directional "
              "information?",
     claim="Paper claim 3 (mechanism: direction vs magnitude). Decisive.",
-    seeds=[1, 2, 3, 4, 5],
+    seeds=SEEDS_DECISIVE,
     phases=_s1_phases(),
 )
 
@@ -117,7 +124,7 @@ study(
     question="Does lowering the step size buy retention, and is the relationship "
              "monotone?",
     claim="Paper claim 1. Becomes the reference frontier for claim 2.",
-    seeds=[1, 2, 3, 4, 5],
+    seeds=SEEDS_CURVE,
     phases=[{"name": "sweep", "arms": [
         {"dir": f"lr_{lr}", "args": _canon(method="bp", lambda_rs=0.0, lr=lr,
                                            track_drift=True)}
@@ -132,12 +139,12 @@ study(
     question="Where is the retention optimum in penalty strength, and does the "
              "benefit vanish once the constraint is enforced?",
     claim="Paper claims 2 and 4; supplies the data for the equilibrium-law fit (S4).",
-    seeds=[1, 2, 3, 4, 5],
+    seeds=SEEDS_CURVE,
     phases=[{"name": "sweep", "arms": [
         {"dir": _lam_dir(lam),
          "args": _canon(method="rs" if lam else "bp", lambda_rs=lam, track_drift=True)}
         for lam in [0.0, 0.0001, 0.0003, 0.001, 0.003, 0.006, 0.01, 0.03,
-                    0.1, 0.3, 1.0, 3.0, 10.0]
+                    0.1, 1.0, 10.0]
     ] + [
         # The two limit arms are different algorithms and are never aliased.
         {"dir": "limit_tangential",
@@ -156,7 +163,7 @@ study(
     question="Does the penalty's advantage grow with width?",
     claim="Supporting. Round 1-4's version lacked per-width baselines at the "
           "canonical budget.",
-    seeds=[1, 2, 3],
+    seeds=SEEDS_CURVE,
     phases=[{"name": "sweep", "arms": [
         {"dir": f"width_{w}/{'penalty' if lam else 'baseline'}",
          "args": _canon(method="rs" if lam else "bp", lambda_rs=lam, width=w)}
@@ -175,7 +182,7 @@ study(
     question="Where does the penalty sit on the plasticity-stability frontier "
              "relative to parameter-regularization baselines, and does it compose?",
     claim="Supporting (Pareto position and additivity).",
-    seeds=[1, 2, 3, 4, 5],
+    seeds=SEEDS_CURVE,
     phases=[{"name": "sweep", "arms": [
         {"dir": "baseline", "args": _canon(method="bp")},
         {"dir": "weight_decay_1e-3", "args": _canon(method="l2", weight_decay=1e-3)},
@@ -205,7 +212,7 @@ study(
     question="Does the effect survive momentum, and does it survive adaptive "
              "preconditioning?",
     claim="Supporting. Single code generation; lr stated per optimizer.",
-    seeds=[1, 2, 3, 4, 5],
+    seeds=SEEDS_CURVE,
     phases=[{"name": "sweep", "arms": [
         {"dir": f"{opt}/{'penalty' if lam else 'baseline'}",
          "args": _canon(method="rs" if lam else "bp", lambda_rs=lam,
@@ -222,7 +229,7 @@ study(
     root="rotating_mnist/stiffness_curve",
     question="Does the stiffness curve reproduce on a second benchmark?",
     claim="Supporting (generality).",
-    seeds=[1, 2, 3, 4, 5],
+    seeds=SEEDS_CURVE,
     phases=[{"name": "sweep", "arms": [
         {"dir": _lam_dir(lam),
          "args": _canon(method="rs" if lam else "bp", lambda_rs=lam,
@@ -239,7 +246,7 @@ study(
     question="Which failure mode does this benchmark exhibit at the canonical "
              "config -- loss of plasticity or forgetting?",
     claim="Setup. Establishes what the paper is measuring.",
-    seeds=[1, 2, 3, 4, 5],
+    seeds=SEEDS_CURVE,
     phases=[{"name": "sweep", "arms": [
         {"dir": "baseline_300tasks", "args": _canon(method="bp", n_tasks=300)},
         {"dir": "penalty_300tasks",

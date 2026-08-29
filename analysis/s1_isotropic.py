@@ -25,14 +25,15 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from analysis.common import (EXP, IncompleteArm, config_header, fmt_paired,
                              load_arm, outdir, paired, per_seed)
-from src.methods.isotropic import acceptance_test
+from src.methods.isotropic import acceptance_test, wnorm_acceptance_test
 from src.studies import LAMBDA_STAR, STUDIES
 
 STUDY = "S1_isotropic_control"
 ROOT = os.path.join(EXP, STUDIES[STUDY]["root"])
 SEEDS = STUDIES[STUDY]["seeds"]
 PENALTY = f"arm_penalty_lam{LAMBDA_STAR}"
-ARMS = ["arm_baseline", PENALTY, "arm_isotropic_per_layer", "arm_isotropic_global"]
+ARMS = ["arm_baseline", PENALTY, "arm_isotropic_per_layer",
+        "arm_isotropic_global", "arm_iso_wnorm"]
 METRICS = ["prev_only_acc", "avg_seen_acc", "test_acc", "task_0_acc",
            "weight_norm", "radius_mean", "drift_abs", "drift_rel",
            "subspace_overlap"]
@@ -71,7 +72,10 @@ def gate(regime, arm, granularity):
         if not (os.path.exists(real) and os.path.exists(tgt)):
             reports[s] = {"passed": False, "reason": "missing grad_trace"}
             continue
-        ok, rep = acceptance_test(real, tgt, granularity, tol=0.05)
+        if granularity == "wnorm":
+            ok, rep = wnorm_acceptance_test(real, tgt, tol=0.05)
+        else:
+            ok, rep = acceptance_test(real, tgt, granularity, tol=0.05)
         reports[s] = rep
     passed = all(r.get("passed") for r in reports.values())
     return passed, reports
@@ -128,7 +132,8 @@ def main():
         reportable = ["arm_baseline", PENALTY]
         reg["acceptance"] = {}
         for arm, gran in [("arm_isotropic_per_layer", "per_layer"),
-                          ("arm_isotropic_global", "global")]:
+                          ("arm_isotropic_global", "global"),
+                          ("arm_iso_wnorm", "wnorm")]:
             if arm not in arms:
                 continue
             ok, reps = gate(regime, arm, gran)
@@ -170,7 +175,9 @@ def main():
                 ("arm_baseline", PENALTY, "baseline", "penalty"),
                 ("arm_baseline", "arm_isotropic_per_layer", "baseline", "iso_per_layer"),
                 ("arm_baseline", "arm_isotropic_global", "baseline", "iso_global"),
+                ("arm_baseline", "arm_iso_wnorm", "baseline", "iso_wnorm"),
                 (PENALTY, "arm_isotropic_per_layer", "penalty", "iso_per_layer"),
+                (PENALTY, "arm_iso_wnorm", "penalty", "iso_wnorm"),
             ]:
                 if a in stats_by_arm and b in stats_by_arm:
                     r = paired(stats_by_arm[a], stats_by_arm[b], la, lb, metric)
@@ -179,7 +186,8 @@ def main():
         # fraction of the penalty's gain that magnitude matching recovers
         if base is not None and pen is not None:
             for arm, lbl in [("arm_isotropic_per_layer", "per_layer"),
-                             ("arm_isotropic_global", "global")]:
+                             ("arm_isotropic_global", "global"),
+                             ("arm_iso_wnorm", "weight_norm")]:
                 if arm not in stats_by_arm:
                     continue
                 b0 = base["prev_only_acc"].mean()
