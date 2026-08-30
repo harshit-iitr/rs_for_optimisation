@@ -7,3 +7,335 @@ started 2026-08-30T00:00:43+05:30
 ##########################################################
 ## S3_stiffness_curve   2026-08-30T00:00:43+05:30
 ##########################################################
+
+=== phase 0 (sweep): 39 to run, 0 already complete ===
+  [gpu 1] experiments/permuted_mnist/stiffness_curve/lambda_0.0000/seed_1
+  [gpu 0] experiments/permuted_mnist/stiffness_curve/lambda_0.0000/seed_2
+  [gpu 1] experiments/permuted_mnist/stiffness_curve/lambda_0.0000/seed_3
+  [gpu 0] experiments/permuted_mnist/stiffness_curve/lambda_0.0001/seed_1
+  [gpu 1] experiments/permuted_mnist/stiffness_curve/lambda_0.0001/seed_2
+  [gpu 0] experiments/permuted_mnist/stiffness_curve/lambda_0.0001/seed_3
+  [gpu 1] experiments/permuted_mnist/stiffness_curve/lambda_0.0003/seed_1
+  [gpu 0] experiments/permuted_mnist/stiffness_curve/lambda_0.0003/seed_2
+  [gpu 1] experiments/permuted_mnist/stiffness_curve/lambda_0.0003/seed_3
+  [gpu 0] experiments/permuted_mnist/stiffness_curve/lambda_0.0010/seed_1
+  [gpu 1] experiments/permuted_mnist/stiffness_curve/lambda_0.0010/seed_2
+  [gpu 1] experiments/permuted_mnist/stiffness_curve/lambda_0.0010/seed_3
+  [gpu 1] experiments/permuted_mnist/stiffness_curve/lambda_0.0030/seed_1
+  [gpu 1] experiments/permuted_mnist/stiffness_curve/lambda_0.0030/seed_2
+  [gpu 1] experiments/permuted_mnist/stiffness_curve/lambda_0.0030/seed_3
+  [gpu 1] experiments/permuted_mnist/stiffness_curve/lambda_0.0060/seed_1
+  [gpu 1] experiments/permuted_mnist/stiffness_curve/lambda_0.0060/seed_2
+  [gpu 0] experiments/permuted_mnist/stiffness_curve/lambda_0.0060/seed_3
+  [gpu 1] experiments/permuted_mnist/stiffness_curve/lambda_0.0100/seed_1
+  [gpu 0] experiments/permuted_mnist/stiffness_curve/lambda_0.0100/seed_2
+  [gpu 0] experiments/permuted_mnist/stiffness_curve/lambda_0.0100/seed_3
+  [gpu 0] experiments/permuted_mnist/stiffness_curve/lambda_0.0300/seed_1
+  [gpu 0] experiments/permuted_mnist/stiffness_curve/lambda_0.0300/seed_2
+  [gpu 0] experiments/permuted_mnist/stiffness_curve/lambda_0.0300/seed_3
+  [gpu 0] experiments/permuted_mnist/stiffness_curve/lambda_0.1000/seed_1
+  [gpu 0] experiments/permuted_mnist/stiffness_curve/lambda_0.1000/seed_2
+  [gpu 1] experiments/permuted_mnist/stiffness_curve/lambda_0.1000/seed_3
+  [gpu 1] experiments/permuted_mnist/stiffness_curve/lambda_1.0000/seed_1
+  [gpu 1] experiments/permuted_mnist/stiffness_curve/lambda_1.0000/seed_2
+  [gpu 0] experiments/permuted_mnist/stiffness_curve/lambda_1.0000/seed_3
+  [gpu 1] experiments/permuted_mnist/stiffness_curve/lambda_10.0000/seed_1
+  [gpu 1] experiments/permuted_mnist/stiffness_curve/lambda_10.0000/seed_2
+  [gpu 0] experiments/permuted_mnist/stiffness_curve/lambda_10.0000/seed_3
+  [gpu 0] experiments/permuted_mnist/stiffness_curve/limit_tangential/seed_1
+  [gpu 0] experiments/permuted_mnist/stiffness_curve/limit_tangential/seed_2
+  [gpu 1] experiments/permuted_mnist/stiffness_curve/limit_tangential/seed_3
+  [gpu 0] experiments/permuted_mnist/stiffness_curve/limit_ste/seed_1
+  [gpu 0] experiments/permuted_mnist/stiffness_curve/limit_ste/seed_2
+  [gpu 1] experiments/permuted_mnist/stiffness_curve/limit_ste/seed_3
+
+=== S3_stiffness_curve: 21 complete, 0 skipped, 18 FAILED ===
+   FAILED: {'run': 'experiments/permuted_mnist/stiffness_curve/lambda_0.0003/seed_1', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/stiffness_curve/lambda_0.0003/seed_2', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/stiffness_curve/lambda_0.0003/seed_3', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/stiffness_curve/lambda_0.0010/seed_1', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/stiffness_curve/lambda_0.0010/seed_2', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/stiffness_curve/lambda_0.0010/seed_3', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/stiffness_curve/lambda_0.0030/seed_1', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/stiffness_curve/lambda_0.0030/seed_3', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/stiffness_curve/lambda_0.0060/seed_1', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/stiffness_curve/lambda_0.0060/seed_3', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/stiffness_curve/lambda_0.0300/seed_1', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/stiffness_curve/lambda_0.0300/seed_2', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/stiffness_curve/lambda_0.0300/seed_3', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/stiffness_curve/lambda_0.1000/seed_3', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/stiffness_curve/lambda_1.0000/seed_3', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/stiffness_curve/limit_tangential/seed_1', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/stiffness_curve/limit_tangential/seed_2', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/stiffness_curve/limit_tangential/seed_3', 'reason': 'status=failed'}
+report: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/stiffness_curve/_launch_report.json
+==============================================================================
+S2 -- LEARNING-RATE FRONTIER
+==============================================================================
+
+==============================================================================
+S3 -- STIFFNESS CURVE
+==============================================================================
+  [skipped] lambda_0.0003: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/stiffness_curve/lambda_0.0003: 3 of 3 seeds m
+  [skipped] lambda_0.0010: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/stiffness_curve/lambda_0.0010: 3 of 3 seeds m
+  [skipped] lambda_0.0030: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/stiffness_curve/lambda_0.0030: 2 of 3 seeds m
+  [skipped] lambda_0.0060: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/stiffness_curve/lambda_0.0060: 2 of 3 seeds m
+  [skipped] lambda_0.0300: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/stiffness_curve/lambda_0.0300: 3 of 3 seeds m
+  [skipped] lambda_0.1000: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/stiffness_curve/lambda_0.1000: 1 of 3 seeds m
+  [skipped] lambda_1.0000: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/stiffness_curve/lambda_1.0000: 1 of 3 seeds m
+  [skipped] limit_tangential: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/stiffness_curve/limit_tangential: 3 of 3 seed
+ lambda  n  test_acc  test_sd  prev_only  prev_sd  radial_excess  weight_norm
+ 0.0000  3    0.9585   0.0011     0.2067   0.0024        18.1280      50.5705
+ 0.0001  3    0.9594   0.0006     0.2340   0.0038        17.5029      50.0961
+ 0.0100  3    0.9610   0.0012     0.3367   0.0054         7.2298      41.6720
+10.0000  3    0.9624   0.0013     0.2910   0.0018        -0.0152      29.8378
+
+  LEG 4a: retention optimum at lambda=0.01 (prev_only=0.3367); interior=True
+
+  paired vs lambda=0:
+  lam=0.0001 vs lam=0 [prev_only_acc]: 0.2067 -> 0.2340  delta=+0.0273+-0.0043  t=+11.103 p=8.01e-03 wilcoxon_p=0.250 dz=+6.41 n=3 wins=3/3
+  lam=0.01 vs lam=0 [prev_only_acc]: 0.2067 -> 0.3367  delta=+0.1299+-0.0076  t=+29.681 p=1.13e-03 wilcoxon_p=0.250 dz=+17.14 n=3 wins=3/3
+  lam=10.0 vs lam=0 [prev_only_acc]: 0.2067 -> 0.2910  delta=+0.0843+-0.0026  t=+56.448 p=3.14e-04 wilcoxon_p=0.250 dz=+32.59 n=3 wins=3/3
+
+  LEG 4b limit arm [limit_ste]: test=0.9588+-0.0003 prev_only=0.2049+-0.0025 radial_excess=-0.0000
+  limit_ste vs lam=0 [prev_only_acc]: 0.2067 -> 0.2049  delta=-0.0018+-0.0022  t=-1.395 p=2.98e-01 wilcoxon_p=0.500 dz=-0.81 n=3 wins=1/3
+
+wrote /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/_analysis/S2_S3_frontier
+  [skipped] lambda_0.0003: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/stiffness_curve/lambda_0.
+  [skipped] lambda_0.0010: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/stiffness_curve/lambda_0.
+  [skipped] lambda_0.0030: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/stiffness_curve/lambda_0.
+  [skipped] lambda_0.0060: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/stiffness_curve/lambda_0.
+  [skipped] lambda_0.0300: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/stiffness_curve/lambda_0.
+  [skipped] lambda_0.1000: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/stiffness_curve/lambda_0.
+  [skipped] lambda_1.0000: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/stiffness_curve/lambda_1.
+==============================================================================
+S4 -- EQUILIBRIUM LAW  (log-log fits, per layer; prediction: slope -1)
+==============================================================================
+layer  n_lam   slope(u*)     ci95  slope(g_rad)=a      a-1  residual
+    0  too few positive-excess points (2)
+    1      3     -0.8810   2.0149          0.0728  -0.9272    0.0462
+    2  too few positive-excess points (1)
+
+  'slope(u*)' is the measured log-log slope of radial excess vs lambda.
+  Naive theory predicts -1. The refined prediction is a-1, where a is
+  the measured exponent of the radial task-gradient component.
+    layer 1: naive -1 within CI = True, refined a-1 within CI = True
+
+wrote /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/_analysis/S4_equilibrium
+## S3_stiffness_curve done 2026-08-30T02:32:29+05:30
+
+##########################################################
+## S2_lr_frontier   2026-08-30T02:32:29+05:30
+##########################################################
+
+=== phase 0 (sweep): 21 to run, 0 already complete ===
+  [gpu 1] experiments/permuted_mnist/lr_frontier/lr_0.003/seed_1
+  [gpu 0] experiments/permuted_mnist/lr_frontier/lr_0.003/seed_2
+  [gpu 1] experiments/permuted_mnist/lr_frontier/lr_0.003/seed_3
+  [gpu 0] experiments/permuted_mnist/lr_frontier/lr_0.01/seed_1
+  [gpu 1] experiments/permuted_mnist/lr_frontier/lr_0.01/seed_2
+  [gpu 0] experiments/permuted_mnist/lr_frontier/lr_0.01/seed_3
+  [gpu 1] experiments/permuted_mnist/lr_frontier/lr_0.015/seed_1
+  [gpu 0] experiments/permuted_mnist/lr_frontier/lr_0.015/seed_2
+  [gpu 1] experiments/permuted_mnist/lr_frontier/lr_0.015/seed_3
+  [gpu 0] experiments/permuted_mnist/lr_frontier/lr_0.025/seed_1
+  [gpu 1] experiments/permuted_mnist/lr_frontier/lr_0.025/seed_2
+  [gpu 1] experiments/permuted_mnist/lr_frontier/lr_0.025/seed_3
+  [gpu 1] experiments/permuted_mnist/lr_frontier/lr_0.05/seed_1
+  [gpu 1] experiments/permuted_mnist/lr_frontier/lr_0.05/seed_2
+  [gpu 1] experiments/permuted_mnist/lr_frontier/lr_0.05/seed_3
+  [gpu 1] experiments/permuted_mnist/lr_frontier/lr_0.1/seed_1
+  [gpu 0] experiments/permuted_mnist/lr_frontier/lr_0.1/seed_2
+  [gpu 0] experiments/permuted_mnist/lr_frontier/lr_0.1/seed_3
+  [gpu 1] experiments/permuted_mnist/lr_frontier/lr_0.3/seed_1
+  [gpu 1] experiments/permuted_mnist/lr_frontier/lr_0.3/seed_2
+  [gpu 0] experiments/permuted_mnist/lr_frontier/lr_0.3/seed_3
+
+=== S2_lr_frontier: 10 complete, 0 skipped, 11 FAILED ===
+   FAILED: {'run': 'experiments/permuted_mnist/lr_frontier/lr_0.003/seed_1', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/lr_frontier/lr_0.01/seed_1', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/lr_frontier/lr_0.015/seed_1', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/lr_frontier/lr_0.015/seed_2', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/lr_frontier/lr_0.015/seed_3', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/lr_frontier/lr_0.025/seed_1', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/lr_frontier/lr_0.05/seed_2', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/lr_frontier/lr_0.1/seed_3', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/lr_frontier/lr_0.3/seed_1', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/lr_frontier/lr_0.3/seed_2', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/lr_frontier/lr_0.3/seed_3', 'reason': 'status=failed'}
+report: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/lr_frontier/_launch_report.json
+==============================================================================
+S2 -- LEARNING-RATE FRONTIER
+==============================================================================
+  [skipped] lr_0.003: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/lr_frontier/lr_0.003: 1 of 3 seeds missing ([
+  [skipped] lr_0.01: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/lr_frontier/lr_0.01: 1 of 3 seeds missing ([1
+  [skipped] lr_0.015: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/lr_frontier/lr_0.015: 3 of 3 seeds missing ([
+  [skipped] lr_0.025: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/lr_frontier/lr_0.025: 1 of 3 seeds missing ([
+  [skipped] lr_0.05: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/lr_frontier/lr_0.05: 1 of 3 seeds missing ([2
+  [skipped] lr_0.1: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/lr_frontier/lr_0.1: 1 of 3 seeds missing ([3]
+  [skipped] lr_0.3: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/lr_frontier/lr_0.3: 3 of 3 seeds missing ([1,
+
+==============================================================================
+S3 -- STIFFNESS CURVE
+==============================================================================
+  [skipped] lambda_0.0003: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/stiffness_curve/lambda_0.0003: 3 of 3 seeds m
+  [skipped] lambda_0.0010: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/stiffness_curve/lambda_0.0010: 3 of 3 seeds m
+  [skipped] lambda_0.0030: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/stiffness_curve/lambda_0.0030: 2 of 3 seeds m
+  [skipped] lambda_0.0060: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/stiffness_curve/lambda_0.0060: 2 of 3 seeds m
+  [skipped] lambda_0.0300: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/stiffness_curve/lambda_0.0300: 3 of 3 seeds m
+  [skipped] lambda_0.1000: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/stiffness_curve/lambda_0.1000: 1 of 3 seeds m
+  [skipped] lambda_1.0000: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/stiffness_curve/lambda_1.0000: 1 of 3 seeds m
+  [skipped] limit_tangential: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/stiffness_curve/limit_tangential: 3 of 3 seed
+ lambda  n  test_acc  test_sd  prev_only  prev_sd  radial_excess  weight_norm
+ 0.0000  3    0.9585   0.0011     0.2067   0.0024        18.1280      50.5705
+ 0.0001  3    0.9594   0.0006     0.2340   0.0038        17.5029      50.0961
+ 0.0100  3    0.9610   0.0012     0.3367   0.0054         7.2298      41.6720
+10.0000  3    0.9624   0.0013     0.2910   0.0018        -0.0152      29.8378
+
+  LEG 4a: retention optimum at lambda=0.01 (prev_only=0.3367); interior=True
+
+  paired vs lambda=0:
+  lam=0.0001 vs lam=0 [prev_only_acc]: 0.2067 -> 0.2340  delta=+0.0273+-0.0043  t=+11.103 p=8.01e-03 wilcoxon_p=0.250 dz=+6.41 n=3 wins=3/3
+  lam=0.01 vs lam=0 [prev_only_acc]: 0.2067 -> 0.3367  delta=+0.1299+-0.0076  t=+29.681 p=1.13e-03 wilcoxon_p=0.250 dz=+17.14 n=3 wins=3/3
+  lam=10.0 vs lam=0 [prev_only_acc]: 0.2067 -> 0.2910  delta=+0.0843+-0.0026  t=+56.448 p=3.14e-04 wilcoxon_p=0.250 dz=+32.59 n=3 wins=3/3
+
+  LEG 4b limit arm [limit_ste]: test=0.9588+-0.0003 prev_only=0.2049+-0.0025 radial_excess=-0.0000
+  limit_ste vs lam=0 [prev_only_acc]: 0.2067 -> 0.2049  delta=-0.0018+-0.0022  t=-1.395 p=2.98e-01 wilcoxon_p=0.500 dz=-0.81 n=3 wins=1/3
+
+wrote /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/_analysis/S2_S3_frontier
+## S2_lr_frontier done 2026-08-30T04:07:04+05:30
+
+##########################################################
+## S1_isotropic_control   2026-08-30T04:07:04+05:30
+##########################################################
+  STALE (config changed since it ran), will re-run: experiments/permuted_mnist/isotropic_control/clipped/arm_baseline/seed_1
+  STALE (config changed since it ran), will re-run: experiments/permuted_mnist/isotropic_control/clipped/arm_baseline/seed_2
+  STALE (config changed since it ran), will re-run: experiments/permuted_mnist/isotropic_control/clipped/arm_baseline/seed_3
+  STALE (config changed since it ran), will re-run: experiments/permuted_mnist/isotropic_control/clipped/arm_baseline/seed_4
+  STALE (config changed since it ran), will re-run: experiments/permuted_mnist/isotropic_control/clipped/arm_baseline/seed_5
+  STALE (config changed since it ran), will re-run: experiments/permuted_mnist/isotropic_control/clipped/arm_penalty_lam0.003/seed_1
+  STALE (config changed since it ran), will re-run: experiments/permuted_mnist/isotropic_control/clipped/arm_penalty_lam0.003/seed_2
+  STALE (config changed since it ran), will re-run: experiments/permuted_mnist/isotropic_control/clipped/arm_penalty_lam0.003/seed_3
+  STALE (config changed since it ran), will re-run: experiments/permuted_mnist/isotropic_control/clipped/arm_penalty_lam0.003/seed_4
+  STALE (config changed since it ran), will re-run: experiments/permuted_mnist/isotropic_control/clipped/arm_penalty_lam0.003/seed_5
+
+=== phase 0 (clipped_A_targets): 10 to run, 0 already complete ===
+  [gpu 1] experiments/permuted_mnist/isotropic_control/clipped/arm_baseline/seed_1
+  [gpu 0] experiments/permuted_mnist/isotropic_control/clipped/arm_baseline/seed_2
+  [gpu 1] experiments/permuted_mnist/isotropic_control/clipped/arm_baseline/seed_3
+  [gpu 0] experiments/permuted_mnist/isotropic_control/clipped/arm_baseline/seed_4
+  [gpu 1] experiments/permuted_mnist/isotropic_control/clipped/arm_baseline/seed_5
+  [gpu 0] experiments/permuted_mnist/isotropic_control/clipped/arm_penalty_lam0.003/seed_1
+  [gpu 1] experiments/permuted_mnist/isotropic_control/clipped/arm_penalty_lam0.003/seed_2
+  [gpu 0] experiments/permuted_mnist/isotropic_control/clipped/arm_penalty_lam0.003/seed_3
+  [gpu 1] experiments/permuted_mnist/isotropic_control/clipped/arm_penalty_lam0.003/seed_4
+  [gpu 0] experiments/permuted_mnist/isotropic_control/clipped/arm_penalty_lam0.003/seed_5
+  STALE (config changed since it ran), will re-run: experiments/permuted_mnist/isotropic_control/clipped/arm_isotropic_per_layer/seed_1
+  BLOCKED (dependency incomplete): experiments/permuted_mnist/isotropic_control/clipped/arm_isotropic_per_layer/seed_1
+  STALE (config changed since it ran), will re-run: experiments/permuted_mnist/isotropic_control/clipped/arm_isotropic_per_layer/seed_2
+  STALE (config changed since it ran), will re-run: experiments/permuted_mnist/isotropic_control/clipped/arm_isotropic_per_layer/seed_3
+  BLOCKED (dependency incomplete): experiments/permuted_mnist/isotropic_control/clipped/arm_isotropic_per_layer/seed_3
+  STALE (config changed since it ran), will re-run: experiments/permuted_mnist/isotropic_control/clipped/arm_isotropic_per_layer/seed_4
+  STALE (config changed since it ran), will re-run: experiments/permuted_mnist/isotropic_control/clipped/arm_isotropic_per_layer/seed_5
+  STALE (config changed since it ran), will re-run: experiments/permuted_mnist/isotropic_control/clipped/arm_isotropic_global/seed_1
+  BLOCKED (dependency incomplete): experiments/permuted_mnist/isotropic_control/clipped/arm_isotropic_global/seed_1
+  STALE (config changed since it ran), will re-run: experiments/permuted_mnist/isotropic_control/clipped/arm_isotropic_global/seed_2
+  STALE (config changed since it ran), will re-run: experiments/permuted_mnist/isotropic_control/clipped/arm_isotropic_global/seed_3
+  BLOCKED (dependency incomplete): experiments/permuted_mnist/isotropic_control/clipped/arm_isotropic_global/seed_3
+  STALE (config changed since it ran), will re-run: experiments/permuted_mnist/isotropic_control/clipped/arm_isotropic_global/seed_4
+  STALE (config changed since it ran), will re-run: experiments/permuted_mnist/isotropic_control/clipped/arm_isotropic_global/seed_5
+  BLOCKED (dependency incomplete): experiments/permuted_mnist/isotropic_control/clipped/arm_iso_wnorm/seed_1
+  BLOCKED (dependency incomplete): experiments/permuted_mnist/isotropic_control/clipped/arm_iso_wnorm/seed_3
+
+=== phase 1 (clipped_B_controls): 9 to run, 0 already complete ===
+  [gpu 1] experiments/permuted_mnist/isotropic_control/clipped/arm_isotropic_per_layer/seed_2
+  [gpu 0] experiments/permuted_mnist/isotropic_control/clipped/arm_isotropic_per_layer/seed_4
+  [gpu 1] experiments/permuted_mnist/isotropic_control/clipped/arm_isotropic_per_layer/seed_5
+  [gpu 0] experiments/permuted_mnist/isotropic_control/clipped/arm_isotropic_global/seed_2
+  [gpu 1] experiments/permuted_mnist/isotropic_control/clipped/arm_isotropic_global/seed_4
+  [gpu 0] experiments/permuted_mnist/isotropic_control/clipped/arm_isotropic_global/seed_5
+  [gpu 1] experiments/permuted_mnist/isotropic_control/clipped/arm_iso_wnorm/seed_2
+  [gpu 0] experiments/permuted_mnist/isotropic_control/clipped/arm_iso_wnorm/seed_4
+  [gpu 1] experiments/permuted_mnist/isotropic_control/clipped/arm_iso_wnorm/seed_5
+
+=== phase 2 (loose_A_targets): 10 to run, 0 already complete ===
+  [gpu 1] experiments/permuted_mnist/isotropic_control/loose/arm_baseline/seed_1
+  [gpu 0] experiments/permuted_mnist/isotropic_control/loose/arm_baseline/seed_2
+  [gpu 1] experiments/permuted_mnist/isotropic_control/loose/arm_baseline/seed_3
+  [gpu 0] experiments/permuted_mnist/isotropic_control/loose/arm_baseline/seed_4
+  [gpu 1] experiments/permuted_mnist/isotropic_control/loose/arm_baseline/seed_5
+  [gpu 0] experiments/permuted_mnist/isotropic_control/loose/arm_penalty_lam0.003/seed_1
+  [gpu 1] experiments/permuted_mnist/isotropic_control/loose/arm_penalty_lam0.003/seed_2
+  [gpu 0] experiments/permuted_mnist/isotropic_control/loose/arm_penalty_lam0.003/seed_3
+  [gpu 1] experiments/permuted_mnist/isotropic_control/loose/arm_penalty_lam0.003/seed_4
+  [gpu 0] experiments/permuted_mnist/isotropic_control/loose/arm_penalty_lam0.003/seed_5
+  BLOCKED (dependency incomplete): experiments/permuted_mnist/isotropic_control/loose/arm_isotropic_per_layer/seed_3
+  BLOCKED (dependency incomplete): experiments/permuted_mnist/isotropic_control/loose/arm_isotropic_per_layer/seed_5
+  BLOCKED (dependency incomplete): experiments/permuted_mnist/isotropic_control/loose/arm_isotropic_global/seed_3
+  BLOCKED (dependency incomplete): experiments/permuted_mnist/isotropic_control/loose/arm_isotropic_global/seed_5
+  BLOCKED (dependency incomplete): experiments/permuted_mnist/isotropic_control/loose/arm_iso_wnorm/seed_3
+  BLOCKED (dependency incomplete): experiments/permuted_mnist/isotropic_control/loose/arm_iso_wnorm/seed_5
+
+=== phase 3 (loose_B_controls): 9 to run, 0 already complete ===
+  [gpu 1] experiments/permuted_mnist/isotropic_control/loose/arm_isotropic_per_layer/seed_1
+  [gpu 0] experiments/permuted_mnist/isotropic_control/loose/arm_isotropic_per_layer/seed_2
+  [gpu 1] experiments/permuted_mnist/isotropic_control/loose/arm_isotropic_per_layer/seed_4
+  [gpu 0] experiments/permuted_mnist/isotropic_control/loose/arm_isotropic_global/seed_1
+  [gpu 1] experiments/permuted_mnist/isotropic_control/loose/arm_isotropic_global/seed_2
+  [gpu 0] experiments/permuted_mnist/isotropic_control/loose/arm_isotropic_global/seed_4
+  [gpu 1] experiments/permuted_mnist/isotropic_control/loose/arm_iso_wnorm/seed_1
+  [gpu 0] experiments/permuted_mnist/isotropic_control/loose/arm_iso_wnorm/seed_2
+  [gpu 1] experiments/permuted_mnist/isotropic_control/loose/arm_iso_wnorm/seed_4
+
+=== S1_isotropic_control: 34 complete, 0 skipped, 28 FAILED ===
+   FAILED: {'run': 'experiments/permuted_mnist/isotropic_control/clipped/arm_penalty_lam0.003/seed_1', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/isotropic_control/clipped/arm_penalty_lam0.003/seed_3', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/isotropic_control/clipped/arm_isotropic_per_layer/seed_1', 'reason': 'dependency incomplete'}
+   FAILED: {'run': 'experiments/permuted_mnist/isotropic_control/clipped/arm_isotropic_per_layer/seed_3', 'reason': 'dependency incomplete'}
+   FAILED: {'run': 'experiments/permuted_mnist/isotropic_control/clipped/arm_isotropic_global/seed_1', 'reason': 'dependency incomplete'}
+   FAILED: {'run': 'experiments/permuted_mnist/isotropic_control/clipped/arm_isotropic_global/seed_3', 'reason': 'dependency incomplete'}
+   FAILED: {'run': 'experiments/permuted_mnist/isotropic_control/clipped/arm_iso_wnorm/seed_1', 'reason': 'dependency incomplete'}
+   FAILED: {'run': 'experiments/permuted_mnist/isotropic_control/clipped/arm_iso_wnorm/seed_3', 'reason': 'dependency incomplete'}
+   FAILED: {'run': 'experiments/permuted_mnist/isotropic_control/clipped/arm_isotropic_per_layer/seed_1', 'reason': 'status=stale'}
+   FAILED: {'run': 'experiments/permuted_mnist/isotropic_control/clipped/arm_isotropic_per_layer/seed_3', 'reason': 'status=stale'}
+   FAILED: {'run': 'experiments/permuted_mnist/isotropic_control/clipped/arm_isotropic_global/seed_1', 'reason': 'status=stale'}
+   FAILED: {'run': 'experiments/permuted_mnist/isotropic_control/clipped/arm_isotropic_global/seed_3', 'reason': 'status=stale'}
+   FAILED: {'run': 'experiments/permuted_mnist/isotropic_control/clipped/arm_iso_wnorm/seed_1', 'reason': 'status=None'}
+   FAILED: {'run': 'experiments/permuted_mnist/isotropic_control/clipped/arm_iso_wnorm/seed_3', 'reason': 'status=None'}
+   FAILED: {'run': 'experiments/permuted_mnist/isotropic_control/loose/arm_penalty_lam0.003/seed_3', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/isotropic_control/loose/arm_penalty_lam0.003/seed_5', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/isotropic_control/loose/arm_isotropic_per_layer/seed_3', 'reason': 'dependency incomplete'}
+   FAILED: {'run': 'experiments/permuted_mnist/isotropic_control/loose/arm_isotropic_per_layer/seed_5', 'reason': 'dependency incomplete'}
+   FAILED: {'run': 'experiments/permuted_mnist/isotropic_control/loose/arm_isotropic_global/seed_3', 'reason': 'dependency incomplete'}
+   FAILED: {'run': 'experiments/permuted_mnist/isotropic_control/loose/arm_isotropic_global/seed_5', 'reason': 'dependency incomplete'}
+   FAILED: {'run': 'experiments/permuted_mnist/isotropic_control/loose/arm_iso_wnorm/seed_3', 'reason': 'dependency incomplete'}
+   FAILED: {'run': 'experiments/permuted_mnist/isotropic_control/loose/arm_iso_wnorm/seed_5', 'reason': 'dependency incomplete'}
+   FAILED: {'run': 'experiments/permuted_mnist/isotropic_control/loose/arm_isotropic_per_layer/seed_3', 'reason': 'status=None'}
+   FAILED: {'run': 'experiments/permuted_mnist/isotropic_control/loose/arm_isotropic_per_layer/seed_5', 'reason': 'status=None'}
+   FAILED: {'run': 'experiments/permuted_mnist/isotropic_control/loose/arm_isotropic_global/seed_3', 'reason': 'status=None'}
+   FAILED: {'run': 'experiments/permuted_mnist/isotropic_control/loose/arm_isotropic_global/seed_5', 'reason': 'status=None'}
+   FAILED: {'run': 'experiments/permuted_mnist/isotropic_control/loose/arm_iso_wnorm/seed_3', 'reason': 'status=None'}
+   FAILED: {'run': 'experiments/permuted_mnist/isotropic_control/loose/arm_iso_wnorm/seed_5', 'reason': 'status=None'}
+report: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/isotropic_control/_launch_report.json
+==============================================================================
+S1 -- ISOTROPIC CONTROL
+==============================================================================
+
+
+##############################################################################
+# REGIME: clipped
+##############################################################################
+  [arm not reportable] arm_penalty_lam0.003: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/isotropic_control/clipped/arm_penalty_lam0.003: 2 of 5 seeds missing ([1, 3]). Refusing to report a partial arm; re-run or pass allow_missing=True and say so in the table.
+Traceback (most recent call last):
+  File "/home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/analysis/s1_isotropic.py", line 210, in <module>
+    main()
+  File "/home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/analysis/s1_isotropic.py", line 97, in main
+    d = load_arm(os.path.join(ROOT, regime, a), SEEDS)
+  File "/home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/analysis/common.py", line 95, in load_arm
+    raise ValueError(f"{arm_dir}: seeds do not share a configuration "
+ValueError: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/isotropic_control/clipped/arm_isotropic_per_layer: seeds do not share a configuration (hashes {'7e8552bb055c', '90960422945a'}); first differing key: num_threads: {'16', '10'}
+## S1_isotropic_control done 2026-08-30T09:19:29+05:30
+
+##########################################################
+## S9_plasticity_vs_forgetting   2026-08-30T09:19:29+05:30
+##########################################################

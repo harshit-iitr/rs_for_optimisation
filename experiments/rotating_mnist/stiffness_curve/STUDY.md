@@ -4,7 +4,7 @@
 
 **Supports.** Supporting (generality).
 
-**Status.** planned — 0 complete, 0 failed, 30 not started, of 30 planned runs.
+**Status.** planned — 0 complete, 0 failed, 18 not started, of 18 planned runs.
 
 ## Finding
 
@@ -28,20 +28,21 @@ Shared by every arm unless the arm table says otherwise. Read from the study reg
 | `n_tasks` | `100` |
 | `optimizer` | `sgd` |
 | `probe_size` | `2000` |
+| `spectral_every` | `5` |
 | `width` | `256` |
 
-Seeds: `[1, 2, 3, 4, 5]`
+Seeds: `[1, 2, 3]`
 
 ## Arms
 
 | arm | seeds complete | status |
 |---|---|---|
-| `lambda_0.0000` | 0/5 | 0/5 done |
-| `lambda_0.0010` | 0/5 | 0/5 done |
-| `lambda_0.0030` | 0/5 | 0/5 done |
-| `lambda_0.0100` | 0/5 | 0/5 done |
-| `lambda_0.0300` | 0/5 | 0/5 done |
-| `lambda_0.1000` | 0/5 | 0/5 done |
+| `lambda_0.0000` | 0/3 | 0/3 done |
+| `lambda_0.0010` | 0/3 | 0/3 done |
+| `lambda_0.0030` | 0/3 | 0/3 done |
+| `lambda_0.0100` | 0/3 | 0/3 done |
+| `lambda_0.0300` | 0/3 | 0/3 done |
+| `lambda_0.1000` | 0/3 | 0/3 done |
 
 ## Phases
 

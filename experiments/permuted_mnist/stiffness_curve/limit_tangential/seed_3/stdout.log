@@ -1,0 +1,13 @@
+seed_3:   0%|          | 0/150 [00:00<?, ?it/s]seed_3:   1%|          | 1/150 [00:43<1:47:59, 43.49s/it]seed_3:   1%|▏         | 2/150 [01:26<1:45:58, 42.97s/it]seed_3:   2%|▏         | 3/150 [02:08<1:44:34, 42.68s/it]seed_3:   3%|▎         | 4/150 [02:50<1:43:41, 42.62s/it]seed_3:   3%|▎         | 5/150 [03:33<1:42:36, 42.46s/it]seed_3:   4%|▍         | 6/150 [04:16<1:42:30, 42.71s/it]seed_3:   5%|▍         | 7/150 [04:58<1:41:36, 42.63s/it]seed_3:   5%|▌         | 8/150 [05:41<1:40:37, 42.52s/it]seed_3:   6%|▌         | 9/150 [06:23<1:39:47, 42.47s/it]seed_3:   7%|▋         | 10/150 [07:05<1:38:49, 42.35s/it]seed_3:   7%|▋         | 10/150 [07:05<1:39:17, 42.55s/it]
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/usr/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/src/train.py", line 444, in <module>
+    main()
+  File "/home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/src/train.py", line 199, in main
+    x_train, y_train, x_test, y_test = dataset.get_task_data(t)
+  File "/home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/src/data/permuted_mnist.py", line 42, in get_task_data
+    self.x_train[:, perm], self.y_train,
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 180.00 MiB. GPU 0 has a total capacity of 47.37 GiB of which 181.25 MiB is free. Process 1564595 has 3.76 GiB memory in use. Process 3702226 has 5.84 GiB memory in use. Process 3702349 has 5.74 GiB memory in use. Process 3702481 has 5.62 GiB memory in use. Process 3703003 has 5.55 GiB memory in use. Process 3703162 has 5.57 GiB memory in use. Process 3710048 has 4.52 GiB memory in use. Process 3718485 has 2.23 GiB memory in use. Process 3718528 has 2.23 GiB memory in use. Process 3718960 has 2.08 GiB memory in use. Process 3719025 has 2.08 GiB memory in use. Including non-PyTorch memory, this process has 1.89 GiB memory in use. Of the allocated memory 1.11 GiB is allocated by PyTorch, and 284.60 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)

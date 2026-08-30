@@ -4,7 +4,7 @@
 
 **Supports.** Supporting. Single code generation; lr stated per optimizer.
 
-**Status.** planned — 0 complete, 0 failed, 30 not started, of 30 planned runs.
+**Status.** planned — 0 complete, 0 failed, 18 not started, of 18 planned runs.
 
 ## Finding
 
@@ -28,20 +28,21 @@ Shared by every arm unless the arm table says otherwise. Read from the study reg
 | `n_tasks` | `150` |
 | `optimizer` | `sgd` |
 | `probe_size` | `2000` |
+| `spectral_every` | `5` |
 | `width` | `1000` |
 
-Seeds: `[1, 2, 3, 4, 5]`
+Seeds: `[1, 2, 3]`
 
 ## Arms
 
 | arm | seeds complete | status |
 |---|---|---|
-| `adam/baseline` | 0/5 | 0/5 done |
-| `adam/penalty` | 0/5 | 0/5 done |
-| `sgd/baseline` | 0/5 | 0/5 done |
-| `sgd/penalty` | 0/5 | 0/5 done |
-| `sgd_momentum/baseline` | 0/5 | 0/5 done |
-| `sgd_momentum/penalty` | 0/5 | 0/5 done |
+| `adam/baseline` | 0/3 | 0/3 done |
+| `adam/penalty` | 0/3 | 0/3 done |
+| `sgd/baseline` | 0/3 | 0/3 done |
+| `sgd/penalty` | 0/3 | 0/3 done |
+| `sgd_momentum/baseline` | 0/3 | 0/3 done |
+| `sgd_momentum/penalty` | 0/3 | 0/3 done |
 
 ## Phases
 

@@ -4,7 +4,7 @@
 
 **Supports.** Paper claim 1. Becomes the reference frontier for claim 2.
 
-**Status.** planned — 0 complete, 0 failed, 35 not started, of 35 planned runs.
+**Status.** INCOMPLETE (failures present) — 10 complete, 11 failed, 0 not started, of 21 planned runs.
 
 ## Finding
 
@@ -28,22 +28,23 @@ Shared by every arm unless the arm table says otherwise. Read from the study reg
 | `n_tasks` | `150` |
 | `optimizer` | `sgd` |
 | `probe_size` | `2000` |
+| `spectral_every` | `5` |
 | `track_drift` | `True` |
 | `width` | `1000` |
 
-Seeds: `[1, 2, 3, 4, 5]`
+Seeds: `[1, 2, 3]`
 
 ## Arms
 
 | arm | seeds complete | status |
 |---|---|---|
-| `lr_0.003` | 0/5 | 0/5 done |
-| `lr_0.01` | 0/5 | 0/5 done |
-| `lr_0.015` | 0/5 | 0/5 done |
-| `lr_0.025` | 0/5 | 0/5 done |
-| `lr_0.05` | 0/5 | 0/5 done |
-| `lr_0.1` | 0/5 | 0/5 done |
-| `lr_0.3` | 0/5 | 0/5 done |
+| `lr_0.003` | 2/3 | FAILED: seed_1 |
+| `lr_0.01` | 2/3 | FAILED: seed_1 |
+| `lr_0.015` | 0/3 | FAILED: seed_1, seed_2, seed_3 |
+| `lr_0.025` | 2/3 | FAILED: seed_1 |
+| `lr_0.05` | 2/3 | FAILED: seed_2 |
+| `lr_0.1` | 2/3 | FAILED: seed_3 |
+| `lr_0.3` | 0/3 | FAILED: seed_1, seed_2, seed_3 |
 
 ## Phases
 

@@ -197,7 +197,13 @@ def main():
 
     for t in tqdm(range(args.n_tasks), desc=os.path.basename(args.run_dir)):
         x_train, y_train, x_test, y_test = dataset.get_task_data(t)
-        task_tests.append((x_test, y_test))
+        # Keep only what retention evaluation actually reads. Retaining the full
+        # 10k-image test set per task grew GPU memory by ~31 MB per task -- 4.7 GB
+        # by task 150 -- and OOM-killed 37 runs at progressively later tasks.
+        # evaluate_tasks() only ever indexes [:probe_size], so this is identical.
+        task_tests.append((x_test[:args.probe_size].clone(),
+                           y_test[:args.probe_size].clone()))
+        del x_test, y_test
 
         model.eval()
         with torch.no_grad():
@@ -294,8 +300,8 @@ def main():
             mas.update_omega(); model.zero_grad()
 
         # ---------------- end-of-task probes ----------------
-        n_probe = min(args.probe_size, len(x_test))
-        probe_x, probe_y = x_test[:n_probe], y_test[:n_probe]
+        probe_x, probe_y = task_tests[-1]
+        n_probe = len(probe_x)
 
         # Readiness, PER LAYER. Round 1-4 computed one network-wide value and
         # broadcast it into every layer row (audit section 5.2).

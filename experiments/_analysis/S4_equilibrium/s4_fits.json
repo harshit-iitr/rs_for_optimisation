@@ -1,0 +1,13 @@
+[
+  {
+    "layer": 1,
+    "n_lambda": 3,
+    "slope_u": -0.8810201447100925,
+    "ci95": 2.0149376527043557,
+    "slope_grad": 0.07281825453481247,
+    "predicted_slope": -0.9271817454651875,
+    "residual": 0.04616160075509501,
+    "naive_prediction_minus1_within_ci": true,
+    "refined_prediction_within_ci": true
+  }
+]

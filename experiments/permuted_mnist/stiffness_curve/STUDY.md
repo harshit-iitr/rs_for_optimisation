@@ -4,7 +4,7 @@
 
 **Supports.** Paper claims 2 and 4; supplies the data for the equilibrium-law fit (S4).
 
-**Status.** planned — 0 complete, 0 failed, 75 not started, of 75 planned runs.
+**Status.** INCOMPLETE (failures present) — 21 complete, 18 failed, 0 not started, of 39 planned runs.
 
 ## Finding
 
@@ -28,34 +28,33 @@ Shared by every arm unless the arm table says otherwise. Read from the study reg
 | `n_tasks` | `150` |
 | `optimizer` | `sgd` |
 | `probe_size` | `2000` |
+| `spectral_every` | `5` |
 | `track_drift` | `True` |
 | `width` | `1000` |
 
-Seeds: `[1, 2, 3, 4, 5]`
+Seeds: `[1, 2, 3]`
 
 ## Arms
 
 | arm | seeds complete | status |
 |---|---|---|
-| `lambda_0.0000` | 0/5 | 0/5 done |
-| `lambda_0.0001` | 0/5 | 0/5 done |
-| `lambda_0.0003` | 0/5 | 0/5 done |
-| `lambda_0.0010` | 0/5 | 0/5 done |
-| `lambda_0.0030` | 0/5 | 0/5 done |
-| `lambda_0.0060` | 0/5 | 0/5 done |
-| `lambda_0.0100` | 0/5 | 0/5 done |
-| `lambda_0.0300` | 0/5 | 0/5 done |
-| `lambda_0.1000` | 0/5 | 0/5 done |
-| `lambda_0.3000` | 0/5 | 0/5 done |
-| `lambda_1.0000` | 0/5 | 0/5 done |
-| `lambda_10.0000` | 0/5 | 0/5 done |
-| `lambda_3.0000` | 0/5 | 0/5 done |
-| `limit_ste` | 0/5 | 0/5 done |
-| `limit_tangential` | 0/5 | 0/5 done |
+| `lambda_0.0000` | 3/3 | complete |
+| `lambda_0.0001` | 3/3 | complete |
+| `lambda_0.0003` | 0/3 | FAILED: seed_1, seed_2, seed_3 |
+| `lambda_0.0010` | 0/3 | FAILED: seed_1, seed_2, seed_3 |
+| `lambda_0.0030` | 1/3 | FAILED: seed_1, seed_3 |
+| `lambda_0.0060` | 1/3 | FAILED: seed_1, seed_3 |
+| `lambda_0.0100` | 3/3 | complete |
+| `lambda_0.0300` | 0/3 | FAILED: seed_1, seed_2, seed_3 |
+| `lambda_0.1000` | 2/3 | FAILED: seed_3 |
+| `lambda_1.0000` | 2/3 | FAILED: seed_3 |
+| `lambda_10.0000` | 3/3 | complete |
+| `limit_ste` | 3/3 | complete |
+| `limit_tangential` | 0/3 | FAILED: seed_1, seed_2, seed_3 |
 
 ## Phases
 
-0. `sweep` — 15 arm(s)
+0. `sweep` — 13 arm(s)
 
 ---
 

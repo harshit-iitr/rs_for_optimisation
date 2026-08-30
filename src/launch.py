@@ -97,7 +97,7 @@ def build_cmd(run_dir, args, iso_target):
 
 
 def launch_study(study_name, concurrency, reserve_mb, per_job_mb, dry_run,
-                 force, threads=8, gpus=None):
+                 force, threads=8, gpus=None, retries=2):
     st = STUDIES[study_name]
     plan = list(iter_runs(study_name))
     n_phases = len(st["phases"])
@@ -176,6 +176,44 @@ def launch_study(study_name, concurrency, reserve_mb, per_job_mb, dry_run,
         while running:
             running = [(p, d, g) for p, d, g in running if p.poll() is None]
             time.sleep(5)
+
+        # Retry pass. On a shared GPU a run can be OOM-killed by another user's
+        # allocation through no fault of its own; one attempt is not enough.
+        for attempt in range(1, retries + 1):
+            again = [(rd, a, d) for rd, a, d in todo
+                     if run_status(os.path.join(REPO, rd), a) != "complete"]
+            if not again:
+                break
+            print(f"  --- retry {attempt}/{retries}: {len(again)} run(s) ---")
+            running = []
+            for run_dir, args, dep in again:
+                abs_dir = os.path.join(REPO, run_dir)
+                while True:
+                    running = [(p, d, g) for p, d, g in running if p.poll() is None]
+                    free = gpu_free_mb(gpus)
+                    gpu = None
+                    if free:
+                        onit = {g: sum(1 for _, _, gg in running if gg == g) for g in free}
+                        el = [g for g in free if free[g] - reserve_mb >= per_job_mb]
+                        if el:
+                            gpu = min(el, key=lambda g: (onit[g], -free[g]))
+                    if len(running) < max(1, concurrency // 2) and (gpu is not None or not free):
+                        break
+                    time.sleep(5)
+                env = dict(os.environ, PYTHONPATH=REPO, OMP_NUM_THREADS=str(threads),
+                           MKL_NUM_THREADS=str(threads), OPENBLAS_NUM_THREADS=str(threads))
+                if gpu is not None:
+                    env["CUDA_VISIBLE_DEVICES"] = str(gpu)
+                cmd = build_cmd(run_dir, args, dep) + ["--num_threads", str(threads)]
+                print(f"  [retry gpu {gpu}] {run_dir}")
+                with open(os.path.join(abs_dir, "stdout.log"), "w") as f:
+                    p = subprocess.Popen(cmd, cwd=REPO, env=env, stdout=f,
+                                         stderr=subprocess.STDOUT)
+                running.append((p, run_dir, gpu))
+                time.sleep(6)
+            while running:
+                running = [(p, d, g) for p, d, g in running if p.poll() is None]
+                time.sleep(5)
 
         for _, run_dir, exp_args, _ in [x for x in plan if x[0] == phase_i]:
             s = run_status(os.path.join(REPO, run_dir), exp_args)
@@ -257,6 +295,9 @@ def main():
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--measure", action="store_true")
     ap.add_argument("--force", action="store_true", help="re-run completed runs")
+    ap.add_argument("--retries", type=int, default=2,
+                    help="re-attempt runs that failed; a shared GPU can OOM-kill "
+                         "a run through no fault of its own")
     ap.add_argument("--gpus", type=str, default=None,
                     help="comma-separated device ids to use, e.g. '0'. "
                          "Default: all visible GPUs.")
@@ -290,7 +331,7 @@ def main():
     for s in (sorted(STUDIES) if a.study == "all" else [a.study]):
         gpus = [int(x) for x in a.gpus.split(",")] if a.gpus else None
         launch_study(s, a.concurrency, a.reserve_mb, a.per_job_mb, a.dry_run,
-                     a.force, a.threads, gpus)
+                     a.force, a.threads, gpus, a.retries)
 
 
 if __name__ == "__main__":

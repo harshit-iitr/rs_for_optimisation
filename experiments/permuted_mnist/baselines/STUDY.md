@@ -4,7 +4,7 @@
 
 **Supports.** Supporting (Pareto position and additivity).
 
-**Status.** planned — 0 complete, 0 failed, 65 not started, of 65 planned runs.
+**Status.** planned — 0 complete, 0 failed, 39 not started, of 39 planned runs.
 
 ## Finding
 
@@ -28,27 +28,28 @@ Shared by every arm unless the arm table says otherwise. Read from the study reg
 | `n_tasks` | `150` |
 | `optimizer` | `sgd` |
 | `probe_size` | `2000` |
+| `spectral_every` | `5` |
 | `width` | `1000` |
 
-Seeds: `[1, 2, 3, 4, 5]`
+Seeds: `[1, 2, 3]`
 
 ## Arms
 
 | arm | seeds complete | status |
 |---|---|---|
-| `baseline` | 0/5 | 0/5 done |
-| `ewc_100` | 0/5 | 0/5 done |
-| `ewc_1000` | 0/5 | 0/5 done |
-| `ewc_10000` | 0/5 | 0/5 done |
-| `l2_init` | 0/5 | 0/5 done |
-| `layernorm_wd_1e-4` | 0/5 | 0/5 done |
-| `mas` | 0/5 | 0/5 done |
-| `penalty` | 0/5 | 0/5 done |
-| `penalty_plus_ewc_10000` | 0/5 | 0/5 done |
-| `shrink_perturb` | 0/5 | 0/5 done |
-| `si` | 0/5 | 0/5 done |
-| `weight_decay_1e-3` | 0/5 | 0/5 done |
-| `weight_decay_1e-4` | 0/5 | 0/5 done |
+| `baseline` | 0/3 | 0/3 done |
+| `ewc_100` | 0/3 | 0/3 done |
+| `ewc_1000` | 0/3 | 0/3 done |
+| `ewc_10000` | 0/3 | 0/3 done |
+| `l2_init` | 0/3 | 0/3 done |
+| `layernorm_wd_1e-4` | 0/3 | 0/3 done |
+| `mas` | 0/3 | 0/3 done |
+| `penalty` | 0/3 | 0/3 done |
+| `penalty_plus_ewc_10000` | 0/3 | 0/3 done |
+| `shrink_perturb` | 0/3 | 0/3 done |
+| `si` | 0/3 | 0/3 done |
+| `weight_decay_1e-3` | 0/3 | 0/3 done |
+| `weight_decay_1e-4` | 0/3 | 0/3 done |
 
 ## Phases
 

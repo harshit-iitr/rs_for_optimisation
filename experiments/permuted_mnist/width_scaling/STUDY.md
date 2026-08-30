@@ -28,6 +28,7 @@ Shared by every arm unless the arm table says otherwise. Read from the study reg
 | `n_tasks` | `150` |
 | `optimizer` | `sgd` |
 | `probe_size` | `2000` |
+| `spectral_every` | `5` |
 | `width` | `256` |
 
 Seeds: `[1, 2, 3]`

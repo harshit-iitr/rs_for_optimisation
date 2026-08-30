@@ -37,8 +37,8 @@
   "python_version": "3.10.12",
   "hostname": "psquarelab4",
   "started_at": "2026-08-29T18:31:15.850954+00:00",
-  "finished_at": null,
-  "status": "running",
+  "finished_at": "2026-08-29T19:24:04.873633+00:00",
+  "status": "complete",
   "provenance": "round5",
   "canonical_reference": {
     "dataset": "permuted_mnist",
@@ -55,5 +55,12 @@
     "probe_size": 2000
   },
   "iso_target_sha256": null,
-  "config_hash": "3fd41b82f686"
+  "config_hash": "3fd41b82f686",
+  "wall_clock_sec": 3169.0,
+  "n_rows": 450,
+  "n_steps": 352500,
+  "linalg_fallbacks": {
+    "svdvals_failed": 0,
+    "svd_u_failed": 0
+  }
 }

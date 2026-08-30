@@ -1,0 +1,64 @@
+{
+  "study": "S2_lr_frontier",
+  "started_at": 1788037349.7848933,
+  "complete": [
+    "experiments/permuted_mnist/lr_frontier/lr_0.003/seed_2",
+    "experiments/permuted_mnist/lr_frontier/lr_0.003/seed_3",
+    "experiments/permuted_mnist/lr_frontier/lr_0.01/seed_2",
+    "experiments/permuted_mnist/lr_frontier/lr_0.01/seed_3",
+    "experiments/permuted_mnist/lr_frontier/lr_0.025/seed_2",
+    "experiments/permuted_mnist/lr_frontier/lr_0.025/seed_3",
+    "experiments/permuted_mnist/lr_frontier/lr_0.05/seed_1",
+    "experiments/permuted_mnist/lr_frontier/lr_0.05/seed_3",
+    "experiments/permuted_mnist/lr_frontier/lr_0.1/seed_1",
+    "experiments/permuted_mnist/lr_frontier/lr_0.1/seed_2"
+  ],
+  "skipped": [],
+  "failed": [
+    {
+      "run": "experiments/permuted_mnist/lr_frontier/lr_0.003/seed_1",
+      "reason": "status=failed"
+    },
+    {
+      "run": "experiments/permuted_mnist/lr_frontier/lr_0.01/seed_1",
+      "reason": "status=failed"
+    },
+    {
+      "run": "experiments/permuted_mnist/lr_frontier/lr_0.015/seed_1",
+      "reason": "status=failed"
+    },
+    {
+      "run": "experiments/permuted_mnist/lr_frontier/lr_0.015/seed_2",
+      "reason": "status=failed"
+    },
+    {
+      "run": "experiments/permuted_mnist/lr_frontier/lr_0.015/seed_3",
+      "reason": "status=failed"
+    },
+    {
+      "run": "experiments/permuted_mnist/lr_frontier/lr_0.025/seed_1",
+      "reason": "status=failed"
+    },
+    {
+      "run": "experiments/permuted_mnist/lr_frontier/lr_0.05/seed_2",
+      "reason": "status=failed"
+    },
+    {
+      "run": "experiments/permuted_mnist/lr_frontier/lr_0.1/seed_3",
+      "reason": "status=failed"
+    },
+    {
+      "run": "experiments/permuted_mnist/lr_frontier/lr_0.3/seed_1",
+      "reason": "status=failed"
+    },
+    {
+      "run": "experiments/permuted_mnist/lr_frontier/lr_0.3/seed_2",
+      "reason": "status=failed"
+    },
+    {
+      "run": "experiments/permuted_mnist/lr_frontier/lr_0.3/seed_3",
+      "reason": "status=failed"
+    }
+  ],
+  "finished_at": 1788043023.4075341
+}

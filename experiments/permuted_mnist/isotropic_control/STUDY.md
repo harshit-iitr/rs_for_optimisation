@@ -1,10 +1,10 @@
 # S1_isotropic_control
 
-**Question.** Is the penalty's retention benefit reproduced by an equal-magnitude, direction-unconstrained intervention?
+**Question.** Is the penalty's retention benefit reproduced by an equal-magnitude or equal-weight-norm intervention that carries no directional information?
 
 **Supports.** Paper claim 3 (mechanism: direction vs magnitude). Decisive.
 
-**Status.** INCOMPLETE (failures present) — 20 complete, 10 failed, 10 not started, of 40 planned runs.
+**Status.** INCOMPLETE (failures present) — 38 complete, 4 failed, 8 not started, of 50 planned runs.
 
 ## Finding
 
@@ -64,6 +64,7 @@ Shared by every arm unless the arm table says otherwise. Read from the study reg
 | `n_tasks` | `150` |
 | `optimizer` | `sgd` |
 | `probe_size` | `2000` |
+| `spectral_every` | `5` |
 | `track_drift` | `True` |
 | `width` | `1000` |
 
@@ -74,20 +75,22 @@ Seeds: `[1, 2, 3, 4, 5]`
 | arm | seeds complete | status |
 |---|---|---|
 | `clipped/arm_baseline` | 5/5 | complete |
+| `clipped/arm_iso_wnorm` | 3/5 | 3/5 done |
 | `clipped/arm_isotropic_global` | 5/5 | complete |
 | `clipped/arm_isotropic_per_layer` | 5/5 | complete |
-| `clipped/arm_penalty_lam0.003` | 5/5 | complete |
-| `unclipped/arm_baseline` | 0/5 | FAILED: seed_1, seed_2, seed_3, seed_4, seed_5 |
-| `unclipped/arm_isotropic_global` | 0/5 | 0/5 done |
-| `unclipped/arm_isotropic_per_layer` | 0/5 | 0/5 done |
-| `unclipped/arm_penalty_lam0.003` | 0/5 | FAILED: seed_1, seed_2, seed_3, seed_4, seed_5 |
+| `clipped/arm_penalty_lam0.003` | 3/5 | FAILED: seed_1, seed_3 |
+| `loose/arm_baseline` | 5/5 | complete |
+| `loose/arm_iso_wnorm` | 3/5 | 3/5 done |
+| `loose/arm_isotropic_global` | 3/5 | 3/5 done |
+| `loose/arm_isotropic_per_layer` | 3/5 | 3/5 done |
+| `loose/arm_penalty_lam0.003` | 3/5 | FAILED: seed_3, seed_5 |
 
 ## Phases
 
 0. `clipped_A_targets` — 2 arm(s)
-1. `clipped_B_control` — 2 arm(s)
-2. `unclipped_A_targets` — 2 arm(s)
-3. `unclipped_B_control` — 2 arm(s)
+1. `clipped_B_controls` — 3 arm(s)
+2. `loose_A_targets` — 2 arm(s)
+3. `loose_B_controls` — 3 arm(s)
 
 ---
 
