@@ -68,7 +68,7 @@ def config_hash(cfg):
         "torch_version", "python_version", "hostname", "status",
         "wall_clock_sec", "provenance", "n_rows", "n_steps",
         "iso_target_exhausted", "config_hash", "linalg_fallbacks",
-        "diverged_at_task",
+        "diverged_at_task", "num_threads",
     }
     payload = {k: v for k, v in sorted(cfg.items()) if k not in ignore}
     return hashlib.sha256(

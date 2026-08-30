@@ -1,12 +1,23 @@
 [
   {
+    "layer": 0,
+    "n_lambda": 4,
+    "slope_u": -0.17456146850453,
+    "ci95": 0.15281611185510746,
+    "slope_grad": -0.015791207628681664,
+    "predicted_slope": -1.0157912076286817,
+    "residual": 0.8412297391241517,
+    "naive_prediction_minus1_within_ci": false,
+    "refined_prediction_within_ci": false
+  },
+  {
     "layer": 1,
-    "n_lambda": 3,
-    "slope_u": -0.8810201447100925,
-    "ci95": 2.0149376527043557,
-    "slope_grad": 0.07281825453481247,
-    "predicted_slope": -0.9271817454651875,
-    "residual": 0.04616160075509501,
+    "n_lambda": 6,
+    "slope_u": -0.9313649866740537,
+    "ci95": 0.30524966460190534,
+    "slope_grad": 0.07632877684090002,
+    "predicted_slope": -0.9236712231591,
+    "residual": -0.007693763514953655,
     "naive_prediction_minus1_within_ci": true,
     "refined_prediction_within_ci": true
   }

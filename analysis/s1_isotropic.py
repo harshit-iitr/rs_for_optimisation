@@ -24,7 +24,7 @@ import pandas as pd
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from analysis.common import (EXP, IncompleteArm, config_header, fmt_paired,
-                             load_arm, outdir, paired, per_seed)
+                             is_preliminary, load_arm, outdir, paired, per_seed)
 from src.methods.isotropic import acceptance_test, wnorm_acceptance_test
 from src.studies import LAMBDA_STAR, STUDIES
 
@@ -34,6 +34,13 @@ SEEDS = STUDIES[STUDY]["seeds"]
 PENALTY = f"arm_penalty_lam{LAMBDA_STAR}"
 ARMS = ["arm_baseline", PENALTY, "arm_isotropic_per_layer",
         "arm_isotropic_global", "arm_iso_wnorm"]
+
+# Regimes come from the study definition, never a hardcoded list.
+REGIMES = []
+for _ph in STUDIES[STUDY]["phases"]:
+    _r = _ph["arms"][0]["dir"].split("/")[0]
+    if _r not in REGIMES:
+        REGIMES.append(_r)
 METRICS = ["prev_only_acc", "avg_seen_acc", "test_acc", "task_0_acc",
            "weight_norm", "radius_mean", "drift_abs", "drift_rel",
            "subspace_overlap"]
@@ -70,14 +77,18 @@ def gate(regime, arm, granularity):
         real = os.path.join(ROOT, regime, arm, f"seed_{s}", "grad_trace.npz")
         tgt = os.path.join(ROOT, regime, PENALTY, f"seed_{s}", "grad_trace.npz")
         if not (os.path.exists(real) and os.path.exists(tgt)):
-            reports[s] = {"passed": False, "reason": "missing grad_trace"}
+            # In preliminary mode a seed whose target has not run yet is simply
+            # absent from the gate, not a failure of the arm. In final mode it
+            # fails, because an arm cannot be reported on partial evidence.
+            if not is_preliminary():
+                reports[s] = {"passed": False, "reason": "missing grad_trace"}
             continue
         if granularity == "wnorm":
             ok, rep = wnorm_acceptance_test(real, tgt, tol=0.05)
         else:
             ok, rep = acceptance_test(real, tgt, granularity, tol=0.05)
         reports[s] = rep
-    passed = all(r.get("passed") for r in reports.values())
+    passed = bool(reports) and all(r.get("passed") for r in reports.values())
     return passed, reports
 
 
@@ -88,7 +99,7 @@ def main():
     print("S1 -- ISOTROPIC CONTROL")
     print("=" * 78)
 
-    for regime in ["clipped", "unclipped"]:
+    for regime in REGIMES:
         print(f"\n\n{'#' * 78}\n# REGIME: {regime}\n{'#' * 78}")
         reg = {}
         arms, cfg0 = {}, None
@@ -140,7 +151,8 @@ def main():
             vals = [r.get("criterion_value") for r in reps.values() if "criterion_value" in r]
             grp = [r.get("worst_per_group_median_abs_log_ratio") for r in reps.values()
                    if "worst_per_group_median_abs_log_ratio" in r]
-            print(f"  {arm:28s} granularity={gran:9s} PASSED={ok}  "
+            print(f"  {arm:28s} granularity={gran:9s} PASSED={ok} "
+                  f"(n={len(reps)} seeds)  "
                   f"criterion(max over seeds)={max(vals) if vals else float('nan'):.2e}  "
                   f"worst per-group residual={max(grp) if grp else float('nan'):.4f}")
             reg["acceptance"][arm] = {"passed": bool(ok),
@@ -207,4 +219,10 @@ def main():
 
 
 if __name__ == "__main__":
+    if "--preliminary" in sys.argv:
+        sys.argv.remove("--preliminary")
+        from analysis.common import set_preliminary
+        set_preliminary(True)
+        from analysis.common import banner; banner("S1 isotropic control")
+
     main()

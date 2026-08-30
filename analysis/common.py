@@ -32,7 +32,7 @@ IGNORED = SEED_SCOPED | {
     "run_dir", "started_at", "finished_at", "git_sha", "torch_version",
     "python_version", "hostname", "status", "wall_clock_sec", "provenance",
     "n_rows", "n_steps", "iso_target_exhausted", "config_hash",
-    "linalg_fallbacks", "diverged_at_task",
+    "linalg_fallbacks", "diverged_at_task", "num_threads",
 }
 
 
@@ -52,6 +52,37 @@ class IncompleteArm(Exception):
     pass
 
 
+# Preliminary mode. Off by default: an arm missing seeds is refused, because
+# Round 1-4's scripts silently averaged whatever survived and published a
+# single-seed mean with a nan standard deviation (audit 4.4).
+#
+# When ON, partial arms ARE reported -- but every row carries its true n, arms
+# below the planned seed count are flagged, and every table is stamped
+# PRELIMINARY. The guard is not removed, it is made visible.
+_PRELIM = {"on": False}
+
+
+def set_preliminary(on):
+    _PRELIM["on"] = bool(on)
+
+
+def is_preliminary():
+    return _PRELIM["on"]
+
+
+def banner(title, planned_seeds=None):
+    if not _PRELIM["on"]:
+        return
+    print("!" * 78)
+    print(f"!! PRELIMINARY -- {title}")
+    print("!! Arms below their planned seed count are included and marked. These")
+    print("!! numbers are NOT reportable: n varies per arm, some arms are single-")
+    print("!! seed, and no claim in the paper may rest on them.")
+    if planned_seeds:
+        print(f"!! planned seeds per arm: {planned_seeds}")
+    print("!" * 78)
+
+
 def _refuse_archive(path):
     if "_archive" in os.path.normpath(path).split(os.sep):
         raise ValueError(f"analysis must never read the archive: {path}")
@@ -68,8 +99,16 @@ def load_run(run_dir):
     return cfg, df
 
 
-def load_arm(arm_dir, expect_seeds, allow_missing=False):
-    """Load every seed of one arm. Raises if any planned seed is absent."""
+def load_arm(arm_dir, expect_seeds, allow_missing=None):
+    """Load every seed of one arm.
+
+    Raises if any planned seed is absent, unless preliminary mode is on (or
+    allow_missing is passed explicitly). The returned frame always carries
+    attrs['n_seeds'], attrs['missing_seeds'] and attrs['complete'] so a caller
+    can never lose track of what it is averaging.
+    """
+    if allow_missing is None:
+        allow_missing = _PRELIM["on"]
     _refuse_archive(arm_dir)
     frames, cfgs, missing = [], [], []
     for s in expect_seeds:
@@ -89,11 +128,18 @@ def load_arm(arm_dir, expect_seeds, allow_missing=False):
         raise IncompleteArm(f"{arm_dir}: no complete runs")
     # Recomputed, not read from the file, so the check reflects the current
     # definition of "same configuration" rather than whatever was stored.
-    hashes = {config_hash(c) for c in cfgs}
+    hashes = {config_hash({k: v for k, v in c.items() if k not in IGNORED})
+              for c in cfgs}
     if len(hashes) > 1:
         diff = _first_differing_key(cfgs)
-        raise ValueError(f"{arm_dir}: seeds do not share a configuration "
-                         f"(hashes {hashes}); first differing key: {diff}")
+        msg = (f"{arm_dir}: seeds do not share a configuration "
+               f"(hashes {hashes}); first differing key: {diff}")
+        if not _PRELIM["on"]:
+            raise ValueError(msg)
+        # Preliminary mode reports it rather than refusing, but never quietly.
+        print(f"  [MIXED CONFIG] {os.path.basename(arm_dir)}: seeds differ on "
+              f"{diff}. Reported anyway because this is a preliminary pass; this "
+              f"arm is NOT publishable until re-run under one configuration.")
     # An isotropic run must be matched against its OWN seed's target.
     for c in cfgs:
         tgt = c.get("iso_target")
@@ -102,6 +148,9 @@ def load_arm(arm_dir, expect_seeds, allow_missing=False):
                 f"{arm_dir}: seed {c['seed']} is matched against {tgt} -- the "
                 f"isotropic control must pair per seed, not across seeds.")
     out = pd.concat(frames, ignore_index=True)
+    if missing:
+        print(f"  [PARTIAL] {os.path.basename(arm_dir)}: {len(frames)}/"
+              f"{len(expect_seeds)} seeds (missing {[m[0] for m in missing]})")
     fb = {s: c.get("linalg_fallbacks", {}) for s, c in zip(expect_seeds, cfgs)}
     degraded = {s: v for s, v in fb.items() if any(v.values())}
     if degraded:
@@ -112,6 +161,8 @@ def load_arm(arm_dir, expect_seeds, allow_missing=False):
     out.attrs["config"] = cfgs[0]
     out.attrs["linalg_fallbacks"] = fb
     out.attrs["degraded"] = bool(degraded)
+    out.attrs["complete"] = not missing
+    out.attrs["planned_seeds"] = list(expect_seeds)
     out.attrs["n_seeds"] = len(frames)
     out.attrs["missing_seeds"] = [m[0] for m in missing]
     return out
@@ -179,3 +230,10 @@ def outdir(study):
     d = os.path.join(EXP, "_analysis", study)
     os.makedirs(d, exist_ok=True)
     return d
+
+
+def mark(n, planned):
+    """Flag for a table row: how far short of the planned seed count it is."""
+    if n >= planned:
+        return ""
+    return "  <-- SINGLE SEED" if n == 1 else f"  <-- partial n={n}/{planned}"

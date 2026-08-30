@@ -76,6 +76,12 @@ def report(study):
 
 
 if __name__ == "__main__":
+    if "--preliminary" in sys.argv:
+        sys.argv.remove("--preliminary")
+        from analysis.common import set_preliminary
+        set_preliminary(True)
+        from analysis.common import banner; banner("supporting sweeps")
+
     todo = sys.argv[1:] or ["S5_width_scaling", "S6_baselines",
                             "S7_optimizers", "S8_rotating_mnist",
                             "S9_plasticity_vs_forgetting"]

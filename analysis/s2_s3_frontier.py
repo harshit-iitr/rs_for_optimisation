@@ -139,4 +139,10 @@ def main():
 
 
 if __name__ == "__main__":
+    if "--preliminary" in sys.argv:
+        sys.argv.remove("--preliminary")
+        from analysis.common import set_preliminary
+        set_preliminary(True)
+        from analysis.common import banner; banner("S2/S3 frontier")
+
     main()
