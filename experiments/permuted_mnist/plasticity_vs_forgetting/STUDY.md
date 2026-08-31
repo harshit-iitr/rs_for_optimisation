@@ -4,7 +4,7 @@
 
 **Supports.** Setup. Establishes what the paper is measuring.
 
-**Status.** planned — 0 complete, 0 failed, 6 not started, of 6 planned runs.
+**Status.** INCOMPLETE (failures present) — 0 complete, 6 failed, 0 not started, of 6 planned runs.
 
 ## Finding
 
@@ -37,8 +37,8 @@ Seeds: `[1, 2, 3]`
 
 | arm | seeds complete | status |
 |---|---|---|
-| `baseline_300tasks` | 0/3 | 0/3 done |
-| `penalty_300tasks` | 0/3 | 0/3 done |
+| `baseline_300tasks` | 0/3 | FAILED: seed_1, seed_2, seed_3 |
+| `penalty_300tasks` | 0/3 | FAILED: seed_1, seed_2, seed_3 |
 
 ## Phases
 

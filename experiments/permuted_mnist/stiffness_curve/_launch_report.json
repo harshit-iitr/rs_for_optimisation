@@ -1,6 +1,6 @@
 {
   "study": "S3_stiffness_curve",
-  "started_at": 1788028244.002602,
+  "started_at": 1788173076.4692466,
   "complete": [
     "experiments/permuted_mnist/stiffness_curve/lambda_0.0000/seed_1",
     "experiments/permuted_mnist/stiffness_curve/lambda_0.0000/seed_2",
@@ -8,8 +8,10 @@
     "experiments/permuted_mnist/stiffness_curve/lambda_0.0001/seed_1",
     "experiments/permuted_mnist/stiffness_curve/lambda_0.0001/seed_2",
     "experiments/permuted_mnist/stiffness_curve/lambda_0.0001/seed_3",
-    "experiments/permuted_mnist/stiffness_curve/lambda_0.0030/seed_2",
-    "experiments/permuted_mnist/stiffness_curve/lambda_0.0060/seed_2",
+    "experiments/permuted_mnist/stiffness_curve/lambda_0.0030/seed_1",
+    "experiments/permuted_mnist/stiffness_curve/lambda_0.0030/seed_3",
+    "experiments/permuted_mnist/stiffness_curve/lambda_0.0060/seed_1",
+    "experiments/permuted_mnist/stiffness_curve/lambda_0.0060/seed_3",
     "experiments/permuted_mnist/stiffness_curve/lambda_0.0100/seed_1",
     "experiments/permuted_mnist/stiffness_curve/lambda_0.0100/seed_2",
     "experiments/permuted_mnist/stiffness_curve/lambda_0.0100/seed_3",
@@ -20,11 +22,17 @@
     "experiments/permuted_mnist/stiffness_curve/lambda_10.0000/seed_1",
     "experiments/permuted_mnist/stiffness_curve/lambda_10.0000/seed_2",
     "experiments/permuted_mnist/stiffness_curve/lambda_10.0000/seed_3",
+    "experiments/permuted_mnist/stiffness_curve/limit_tangential/seed_1",
+    "experiments/permuted_mnist/stiffness_curve/limit_tangential/seed_2",
+    "experiments/permuted_mnist/stiffness_curve/limit_tangential/seed_3",
     "experiments/permuted_mnist/stiffness_curve/limit_ste/seed_1",
     "experiments/permuted_mnist/stiffness_curve/limit_ste/seed_2",
     "experiments/permuted_mnist/stiffness_curve/limit_ste/seed_3"
   ],
-  "skipped": [],
+  "skipped": [
+    "experiments/permuted_mnist/stiffness_curve/lambda_0.0030/seed_2",
+    "experiments/permuted_mnist/stiffness_curve/lambda_0.0060/seed_2"
+  ],
   "failed": [
     {
       "run": "experiments/permuted_mnist/stiffness_curve/lambda_0.0003/seed_1",
@@ -51,22 +59,6 @@
       "reason": "status=failed"
     },
     {
-      "run": "experiments/permuted_mnist/stiffness_curve/lambda_0.0030/seed_1",
-      "reason": "status=failed"
-    },
-    {
-      "run": "experiments/permuted_mnist/stiffness_curve/lambda_0.0030/seed_3",
-      "reason": "status=failed"
-    },
-    {
-      "run": "experiments/permuted_mnist/stiffness_curve/lambda_0.0060/seed_1",
-      "reason": "status=failed"
-    },
-    {
-      "run": "experiments/permuted_mnist/stiffness_curve/lambda_0.0060/seed_3",
-      "reason": "status=failed"
-    },
-    {
       "run": "experiments/permuted_mnist/stiffness_curve/lambda_0.0300/seed_1",
       "reason": "status=failed"
     },
@@ -85,19 +77,7 @@
     {
       "run": "experiments/permuted_mnist/stiffness_curve/lambda_1.0000/seed_3",
       "reason": "status=failed"
-    },
-    {
-      "run": "experiments/permuted_mnist/stiffness_curve/limit_tangential/seed_1",
-      "reason": "status=failed"
-    },
-    {
-      "run": "experiments/permuted_mnist/stiffness_curve/limit_tangential/seed_2",
-      "reason": "status=failed"
-    },
-    {
-      "run": "experiments/permuted_mnist/stiffness_curve/limit_tangential/seed_3",
-      "reason": "status=failed"
     }
   ],
-  "finished_at": 1788037348.4685972
+  "finished_at": 1788176535.6631532
 }

@@ -4,7 +4,7 @@
 
 **Supports.** Paper claim 1. Becomes the reference frontier for claim 2.
 
-**Status.** INCOMPLETE (failures present) — 10 complete, 11 failed, 0 not started, of 21 planned runs.
+**Status.** INCOMPLETE (failures present) — 13 complete, 8 failed, 0 not started, of 21 planned runs.
 
 ## Finding
 
@@ -44,7 +44,7 @@ Seeds: `[1, 2, 3]`
 | `lr_0.025` | 2/3 | FAILED: seed_1 |
 | `lr_0.05` | 2/3 | FAILED: seed_2 |
 | `lr_0.1` | 2/3 | FAILED: seed_3 |
-| `lr_0.3` | 0/3 | FAILED: seed_1, seed_2, seed_3 |
+| `lr_0.3` | 3/3 | complete |
 
 ## Phases
 

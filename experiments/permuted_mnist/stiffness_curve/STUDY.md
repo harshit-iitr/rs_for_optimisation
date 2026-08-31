@@ -4,7 +4,7 @@
 
 **Supports.** Paper claims 2 and 4; supplies the data for the equilibrium-law fit (S4).
 
-**Status.** INCOMPLETE (failures present) — 21 complete, 18 failed, 0 not started, of 39 planned runs.
+**Status.** INCOMPLETE (failures present) — 28 complete, 11 failed, 0 not started, of 39 planned runs.
 
 ## Finding
 
@@ -42,15 +42,15 @@ Seeds: `[1, 2, 3]`
 | `lambda_0.0001` | 3/3 | complete |
 | `lambda_0.0003` | 0/3 | FAILED: seed_1, seed_2, seed_3 |
 | `lambda_0.0010` | 0/3 | FAILED: seed_1, seed_2, seed_3 |
-| `lambda_0.0030` | 1/3 | FAILED: seed_1, seed_3 |
-| `lambda_0.0060` | 1/3 | FAILED: seed_1, seed_3 |
+| `lambda_0.0030` | 3/3 | complete |
+| `lambda_0.0060` | 3/3 | complete |
 | `lambda_0.0100` | 3/3 | complete |
 | `lambda_0.0300` | 0/3 | FAILED: seed_1, seed_2, seed_3 |
 | `lambda_0.1000` | 2/3 | FAILED: seed_3 |
 | `lambda_1.0000` | 2/3 | FAILED: seed_3 |
 | `lambda_10.0000` | 3/3 | complete |
 | `limit_ste` | 3/3 | complete |
-| `limit_tangential` | 0/3 | FAILED: seed_1, seed_2, seed_3 |
+| `limit_tangential` | 3/3 | complete |
 
 ## Phases
 

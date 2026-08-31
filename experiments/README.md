@@ -7,13 +7,13 @@ Regenerate this file and every `STUDY.md` with `python3 -m src.docs`. Status is 
 | study | question | supports | status | runs |
 |---|---|---|---|---|
 | [`permuted_mnist/isotropic_control`](permuted_mnist/isotropic_control/STUDY.md) | Is the penalty's retention benefit reproduced by an equal-magnitude or equal-weight-norm intervention that carries no directional information? | Paper claim 3 (mechanism: direction vs magnitude). Decisive. | INCOMPLETE (failures present) | 38/50 |
-| [`permuted_mnist/lr_frontier`](permuted_mnist/lr_frontier/STUDY.md) | Does lowering the step size buy retention, and is the relationship monotone? | Paper claim 1. Becomes the reference frontier for claim 2. | INCOMPLETE (failures present) | 10/21 |
-| [`permuted_mnist/stiffness_curve`](permuted_mnist/stiffness_curve/STUDY.md) | Where is the retention optimum in penalty strength, and does the benefit vanish once the constraint is enforced? | Paper claims 2 and 4; supplies the data for the equilibrium-law fit (S4). | INCOMPLETE (failures present) | 21/39 |
+| [`permuted_mnist/lr_frontier`](permuted_mnist/lr_frontier/STUDY.md) | Does lowering the step size buy retention, and is the relationship monotone? | Paper claim 1. Becomes the reference frontier for claim 2. | INCOMPLETE (failures present) | 13/21 |
+| [`permuted_mnist/stiffness_curve`](permuted_mnist/stiffness_curve/STUDY.md) | Where is the retention optimum in penalty strength, and does the benefit vanish once the constraint is enforced? | Paper claims 2 and 4; supplies the data for the equilibrium-law fit (S4). | INCOMPLETE (failures present) | 28/39 |
 | [`permuted_mnist/width_scaling`](permuted_mnist/width_scaling/STUDY.md) | Does the penalty's advantage grow with width? | Supporting. Round 1-4's version lacked per-width baselines at the canonical budget. | planned | 0/24 |
 | [`permuted_mnist/baselines`](permuted_mnist/baselines/STUDY.md) | Where does the penalty sit on the plasticity-stability frontier relative to parameter-regularization baselines, and does it compose? | Supporting (Pareto position and additivity). | planned | 0/39 |
 | [`permuted_mnist/optimizers`](permuted_mnist/optimizers/STUDY.md) | Does the effect survive momentum, and does it survive adaptive preconditioning? | Supporting. Single code generation; lr stated per optimizer. | planned | 0/18 |
 | [`rotating_mnist/stiffness_curve`](rotating_mnist/stiffness_curve/STUDY.md) | Does the stiffness curve reproduce on a second benchmark? | Supporting (generality). | planned | 0/18 |
-| [`permuted_mnist/plasticity_vs_forgetting`](permuted_mnist/plasticity_vs_forgetting/STUDY.md) | Which failure mode does this benchmark exhibit at the canonical config -- loss of plasticity or forgetting? | Setup. Establishes what the paper is measuring. | planned | 0/6 |
+| [`permuted_mnist/plasticity_vs_forgetting`](permuted_mnist/plasticity_vs_forgetting/STUDY.md) | Which failure mode does this benchmark exhibit at the canonical config -- loss of plasticity or forgetting? | Setup. Establishes what the paper is measuring. | INCOMPLETE (failures present) | 0/6 |
 
 ## Layout
 

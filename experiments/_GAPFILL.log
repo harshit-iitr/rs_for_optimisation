@@ -1,0 +1,110 @@
+=== gap-fill started 2026-08-31T16:14:36+05:30 ===
+
+=== phase 0 (sweep): 3 to run, 0 already complete ===
+  [gpu 1] experiments/permuted_mnist/lr_frontier/lr_0.3/seed_1
+  [gpu 0] experiments/permuted_mnist/lr_frontier/lr_0.3/seed_2
+  [gpu 1] experiments/permuted_mnist/lr_frontier/lr_0.3/seed_3
+
+=== S2_lr_frontier: 13 complete, 0 skipped, 8 FAILED ===
+   FAILED: {'run': 'experiments/permuted_mnist/lr_frontier/lr_0.003/seed_1', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/lr_frontier/lr_0.01/seed_1', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/lr_frontier/lr_0.015/seed_1', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/lr_frontier/lr_0.015/seed_2', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/lr_frontier/lr_0.015/seed_3', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/lr_frontier/lr_0.025/seed_1', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/lr_frontier/lr_0.05/seed_2', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/lr_frontier/lr_0.1/seed_3', 'reason': 'status=failed'}
+report: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/lr_frontier/_launch_report.json
+
+=== phase 0 (sweep): 7 to run, 2 already complete ===
+  [gpu 1] experiments/permuted_mnist/stiffness_curve/lambda_0.0030/seed_1
+  [gpu 0] experiments/permuted_mnist/stiffness_curve/lambda_0.0030/seed_3
+  [gpu 1] experiments/permuted_mnist/stiffness_curve/lambda_0.0060/seed_1
+  [gpu 0] experiments/permuted_mnist/stiffness_curve/lambda_0.0060/seed_3
+  [gpu 1] experiments/permuted_mnist/stiffness_curve/limit_tangential/seed_1
+  [gpu 0] experiments/permuted_mnist/stiffness_curve/limit_tangential/seed_2
+  [gpu 1] experiments/permuted_mnist/stiffness_curve/limit_tangential/seed_3
+
+=== S3_stiffness_curve: 26 complete, 2 skipped, 11 FAILED ===
+   FAILED: {'run': 'experiments/permuted_mnist/stiffness_curve/lambda_0.0003/seed_1', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/stiffness_curve/lambda_0.0003/seed_2', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/stiffness_curve/lambda_0.0003/seed_3', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/stiffness_curve/lambda_0.0010/seed_1', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/stiffness_curve/lambda_0.0010/seed_2', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/stiffness_curve/lambda_0.0010/seed_3', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/stiffness_curve/lambda_0.0300/seed_1', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/stiffness_curve/lambda_0.0300/seed_2', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/stiffness_curve/lambda_0.0300/seed_3', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/stiffness_curve/lambda_0.1000/seed_3', 'reason': 'status=failed'}
+   FAILED: {'run': 'experiments/permuted_mnist/stiffness_curve/lambda_1.0000/seed_3', 'reason': 'status=failed'}
+report: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/stiffness_curve/_launch_report.json
+
+=== gap-fill done 2026-08-31T17:12:15+05:30 ===
+  monotone in lr? Spearman rho=-0.771 p=0.072 (NOT monotone)
+  interior optimum in lr: False
+
+==============================================================================
+S3 -- STIFFNESS CURVE
+==============================================================================
+  [skipped] lambda_0.0003: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/stiffness_curve/lambda_0.0003: no complete ru
+  [skipped] lambda_0.0010: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/stiffness_curve/lambda_0.0010: no complete ru
+  [skipped] lambda_0.0300: /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/permuted_mnist/stiffness_curve/lambda_0.0300: no complete ru
+  [PARTIAL] lambda_0.1000: 2/3 seeds (missing [3])
+  [PARTIAL] lambda_1.0000: 2/3 seeds (missing [3])
+ lambda  n  test_acc  test_sd  prev_only  prev_sd  radial_excess  weight_norm
+ 0.0000  3    0.9585   0.0011     0.2067   0.0024        18.1280      50.5705
+ 0.0001  3    0.9594   0.0006     0.2340   0.0038        17.5029      50.0961
+ 0.0030  3    0.9597   0.0002     0.3416   0.0020        11.4791      45.2445
+ 0.0060  3    0.9607   0.0003     0.3408   0.0052         9.1904      43.3352
+ 0.0100  3    0.9610   0.0012     0.3367   0.0054         7.2298      41.6720
+ 0.1000  2    0.9630   0.0001     0.3229   0.0027        -0.6514      33.7321
+ 1.0000  2    0.9619   0.0007     0.2968   0.0033        -0.1527      31.4619
+10.0000  3    0.9624   0.0013     0.2910   0.0018        -0.0152      29.8378
+
+  LEG 4a: retention optimum at lambda=0.003 (prev_only=0.3416); interior=True
+
+  paired vs lambda=0:
+  lam=0.0001 vs lam=0 [prev_only_acc]: 0.2067 -> 0.2340  delta=+0.0273+-0.0043  t=+11.103 p=8.01e-03 wilcoxon_p=0.250 dz=+6.41 n=3 wins=3/3
+  lam=0.003 vs lam=0 [prev_only_acc]: 0.2067 -> 0.3416  delta=+0.1349+-0.0042  t=+55.171 p=3.28e-04 wilcoxon_p=0.250 dz=+31.85 n=3 wins=3/3
+  lam=0.006 vs lam=0 [prev_only_acc]: 0.2067 -> 0.3408  delta=+0.1340+-0.0057  t=+40.445 p=6.11e-04 wilcoxon_p=0.250 dz=+23.35 n=3 wins=3/3
+  lam=0.01 vs lam=0 [prev_only_acc]: 0.2067 -> 0.3367  delta=+0.1299+-0.0076  t=+29.681 p=1.13e-03 wilcoxon_p=0.250 dz=+17.14 n=3 wins=3/3
+  lam=0.1 vs lam=0 [prev_only_acc]: 0.2068 -> 0.3229  delta=+0.1161+-0.0061  t=+26.965 p=2.36e-02 wilcoxon_p=0.500 dz=+19.07 n=2 wins=2/2
+  lam=1.0 vs lam=0 [prev_only_acc]: 0.2068 -> 0.2968  delta=+0.0901+-0.0001  t=+1714.781 p=3.71e-04 wilcoxon_p=0.500 dz=+1212.53 n=2 wins=2/2
+  lam=10.0 vs lam=0 [prev_only_acc]: 0.2067 -> 0.2910  delta=+0.0843+-0.0026  t=+56.448 p=3.14e-04 wilcoxon_p=0.250 dz=+32.59 n=3 wins=3/3
+
+  LEG 4b limit arm [limit_ste]: test=0.9588+-0.0003 prev_only=0.2049+-0.0025 radial_excess=-0.0000
+  limit_ste vs lam=0 [prev_only_acc]: 0.2067 -> 0.2049  delta=-0.0018+-0.0022  t=-1.395 p=2.98e-01 wilcoxon_p=0.500 dz=-0.81 n=3 wins=1/3
+
+  LEG 4b limit arm [limit_tangential]: test=0.9580+-0.0012 prev_only=0.1994+-0.0024 radial_excess=-0.0000
+  limit_tangential vs lam=0 [prev_only_acc]: 0.2067 -> 0.1994  delta=-0.0073+-0.0038  t=-3.358 p=7.84e-02 wilcoxon_p=0.250 dz=-1.94 n=3 wins=0/3
+
+==============================================================================
+LEG 2 -- DOES THE PENALTY CURVE LIE ABOVE THE LEARNING-RATE FRONTIER?
+==============================================================================
+    lambda  test_acc  prev_only | lr-matched  its prev      gap
+    0.0000    0.9585     0.2067 |     0.1000    0.2068  -0.0001
+    0.0001    0.9594     0.2340 |     0.1000    0.2068  +0.0272
+    0.0030    0.9597     0.3416 |     0.1000    0.2068  +0.1348
+    0.0060    0.9607     0.3408 |     0.1000    0.2068  +0.1340
+    0.0100    0.9610     0.3367 |     0.1000    0.2068  +0.1299
+    0.1000    0.9630     0.3229 |     0.3000    0.1536  +0.1693
+    1.0000    0.9619     0.2968 |     0.3000    0.1536  +0.1432
+   10.0000    0.9624     0.2910 |     0.3000    0.1536  +0.1374
+
+  max vertical gap above the lr frontier: +0.1693
+  penalty curve lies above at 7/8 lambda values
+
+wrote /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/_analysis/S2_S3_frontier
+
+layer  n_lam   slope(u*)     ci95  slope(g_rad)=a      a-1  residual
+    0      4     -0.1735   0.1568         -0.0152  -1.0152    0.8417
+    1      6     -0.9316   0.3054          0.0765  -0.9235   -0.0081
+    2  too few positive-excess points (1)
+
+  'slope(u*)' is the measured log-log slope of radial excess vs lambda.
+  Naive theory predicts -1. The refined prediction is a-1, where a is
+  the measured exponent of the radial task-gradient component.
+    layer 0: naive -1 within CI = False, refined a-1 within CI = False
+    layer 1: naive -1 within CI = True, refined a-1 within CI = True
+
+wrote /home/psquare_a6000/Desktop/grokking_mech_interp/non_algo/experiments/_analysis/S4_equilibrium

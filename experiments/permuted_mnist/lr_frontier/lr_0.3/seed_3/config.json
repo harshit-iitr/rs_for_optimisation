@@ -24,7 +24,7 @@
   "drift_probe_size": 1000,
   "readiness_microbatches": 8,
   "seed": 3,
-  "num_threads": 10,
+  "num_threads": 16,
   "run_dir": "experiments/permuted_mnist/lr_frontier/lr_0.3/seed_3",
   "track_drift": true,
   "log_grad_trace": false,
@@ -32,13 +32,13 @@
   "iso_granularity": "per_layer",
   "spectral_every": 5,
   "schema_version": 100,
-  "git_sha": "3b66bfd387dababe2764442edf1591f9cb7ac3d5-dirty",
+  "git_sha": "4eb3481edd7963a63d022d858af727dbef1d0010-dirty",
   "torch_version": "2.9.1+cu128",
   "python_version": "3.10.12",
   "hostname": "psquarelab4",
-  "started_at": "2026-08-29T21:40:54.244055+00:00",
-  "finished_at": null,
-  "status": "running",
+  "started_at": "2026-08-31T10:45:10.093850+00:00",
+  "finished_at": "2026-08-31T11:42:00.312186+00:00",
+  "status": "complete",
   "provenance": "round5",
   "canonical_reference": {
     "dataset": "permuted_mnist",
@@ -55,5 +55,12 @@
     "probe_size": 2000
   },
   "iso_target_sha256": null,
-  "config_hash": "d722a24a0a34"
+  "config_hash": "1ded70590699",
+  "wall_clock_sec": 3410.2,
+  "n_rows": 450,
+  "n_steps": 352500,
+  "linalg_fallbacks": {
+    "svdvals_failed": 0,
+    "svd_u_failed": 0
+  }
 }

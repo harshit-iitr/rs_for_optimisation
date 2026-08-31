@@ -63,57 +63,72 @@ real but minor part of the story, and it is now measured rather than argued.
 
 ### S3 stiffness curve — n=3 except λ=0.003 and λ=0.006 (n=1)
 
-| λ | n | test_acc | prev_only | radial_excess | weight_norm |
-|---|---|---|---|---|---|
-| 0 | 3 | 0.9585 | 0.2067 | +18.13 | 50.57 |
-| 1e-4 | 3 | 0.9594 | 0.2340 | +17.50 | 50.10 |
-| **3e-3** | **1** | 0.9599 | **0.3439** | +11.43 | 45.20 |
-| 6e-3 | 1 | 0.9605 | 0.3375 | +9.09 | 43.32 |
-| 1e-2 | 3 | 0.9610 | 0.3367 | +7.23 | 41.67 |
-| 0.1 | 2 | 0.9630 | 0.3229 | −0.65 | 33.73 |
-| 1.0 | 2 | 0.9619 | 0.2968 | −0.15 | 31.46 |
-| 10.0 | 3 | 0.9624 | 0.2910 | −0.02 | 29.84 |
+| λ | n | test_acc | prev_only | vs λ=0 (paired) | radial_excess | weight_norm |
+|---|---|---|---|---|---|---|
+| 0 | 3 | 0.9585 ± 0.0011 | 0.2067 ± 0.0024 | — | +18.13 | 50.57 |
+| 1e-4 | 3 | 0.9594 ± 0.0006 | 0.2340 ± 0.0038 | +0.027, t=11.1, p=8.0e-03, 3/3 | +17.50 | 50.10 |
+| **3e-3** | **3** | 0.9597 ± 0.0002 | **0.3416 ± 0.0020** | **+0.135, t=55.2, p=3.3e-04, 3/3** | +11.48 | 45.24 |
+| 6e-3 | 3 | 0.9607 ± 0.0003 | 0.3408 ± 0.0052 | +0.134, t=40.4, p=6.1e-04, 3/3 | +9.19 | 43.34 |
+| 1e-2 | 3 | 0.9610 ± 0.0012 | 0.3367 ± 0.0054 | +0.130, t=29.7, p=1.1e-03, 3/3 | +7.23 | 41.67 |
+| 0.1 | 2 | 0.9630 ± 0.0001 | 0.3229 ± 0.0027 | +0.116, n=2 | −0.65 | 33.73 |
+| 1.0 | 2 | 0.9619 ± 0.0007 | 0.2968 ± 0.0033 | +0.090, n=2 | −0.15 | 31.46 |
+| 10.0 | 3 | 0.9624 ± 0.0013 | 0.2910 ± 0.0018 | +0.084, t=56.4, p=3.1e-04, 3/3 | −0.02 | 29.84 |
+
+The optimum is a **plateau over λ ∈ [0.003, 0.006]**, not a sharp peak: 0.3416 vs
+0.3408 is well inside seed noise.
 
 **Leg 4a — interior optimum: yes.** Retention peaks at λ≈0.003 and declines
 either side. `radial_excess` falls monotonically from +18.1 through zero, so the
 constraint visibly engages across the whole sweep and the optimum sits well
 before it is enforced.
 
-**Leg 4b — the constraint limit gives nothing.** The straight-through limit arm
-(`limit_ste`, n=3) reaches `radial_excess` = 0.0000 and retention
-**0.2049 ± 0.0025** vs baseline 0.2067 — no benefit (p=0.30, 1/3 wins).
-*The true tangential-projection limit arm has not completed and is the one that
-matters; `ste` is the Round 1–4 straight-through variant, kept only for
-comparison.*
+**Leg 4b — the constraint limit gives nothing, on BOTH limit arms.** Both reach
+`radial_excess` = 0.0000, i.e. the constraint is exactly enforced:
+
+| limit arm | n | test_acc | prev_only | vs λ=0 |
+|---|---|---|---|---|
+| `limit_ste` (straight-through, the Round 1–4 variant) | 3 | 0.9588 ± 0.0003 | 0.2049 ± 0.0025 | −0.002, p=0.30, 1/3 |
+| **`limit_tangential`** (true projection, exact Jacobian) | 3 | 0.9580 ± 0.0012 | **0.1994 ± 0.0024** | **−0.007, p=0.078, 0/3** |
+
+The true limit is if anything **slightly worse than no penalty at all**, losing on
+all three seeds. So the entire +0.135 benefit lives at finite λ and vanishes
+completely once the constraint is enforced. This is the counterintuitive result
+the paper is built around, and it now rests on the correct arm rather than on the
+straight-through estimator.
 
 ### S2 learning-rate frontier — n=2 per point, lr=0.3 failed entirely
 
-| lr | test_acc | prev_only |
-|---|---|---|
-| 0.003 | 0.8675 | 0.2624 |
-| 0.010 | 0.9192 | 0.2245 |
-| 0.025 | 0.9454 | 0.2306 |
-| 0.050 | 0.9565 | 0.2375 |
-| 0.100 | 0.9579 | 0.2068 |
+| lr | n | test_acc | prev_only | weight_norm |
+|---|---|---|---|---|
+| 0.003 | 2 | 0.8675 | 0.2624 | 44.86 |
+| 0.010 | 2 | 0.9192 | 0.2245 | 45.09 |
+| 0.025 | 2 | 0.9454 | 0.2306 | 45.74 |
+| 0.050 | 2 | 0.9565 | 0.2375 | 47.24 |
+| 0.100 | 2 | 0.9579 | 0.2068 | 50.58 |
+| **0.300** | **3** | **0.9649** | **0.1536** | 68.34 |
 
-Not monotone in lr (Spearman ρ=−0.60, p=0.29), and retention is highest at the
-*lowest* lr — but at a 9-point accuracy cost. **This revises the working thesis:**
-the step-size knob does buy retention, it simply buys it by moving *along* a
-frontier, trading accuracy for it. The archived Round 1–4 hint that lowering lr
-made retention *worse* does not reproduce at 150 tasks.
+Spearman ρ=−0.77, p=0.072. Retention falls as lr rises and accuracy rises as lr
+rises: the step-size knob trades one axis for the other, moving *along* a
+frontier. **This revises the working thesis** — the archived Round 1–4 hint that
+lowering lr made retention *worse* does not reproduce at 150 tasks. The paper's
+leg 1 should be stated as "the step-size knob only trades along the frontier",
+which is what leg 2 then contrasts against.
 
 ### Leg 2 — does the penalty curve lie above the lr frontier?
 
-| λ | test_acc | prev_only | best lr-matched | its prev | gap |
-|---|---|---|---|---|---|
-| 3e-3 | 0.9599 | 0.3439 | 0.1 | 0.2068 | **+0.1371** |
-| 1e-2 | 0.9610 | 0.3367 | 0.1 | 0.2068 | +0.1299 |
-| 10.0 | 0.9624 | 0.2910 | 0.1 | 0.2068 | +0.0842 |
+| λ | test_acc | prev_only | best lr-matched | its test | its prev | gap |
+|---|---|---|---|---|---|---|
+| 3e-3 | 0.9597 | 0.3416 | 0.1 | 0.9579 | 0.2068 | **+0.1348** |
+| 6e-3 | 0.9607 | 0.3408 | 0.1 | 0.9579 | 0.2068 | +0.1340 |
+| 1e-2 | 0.9610 | 0.3367 | 0.1 | 0.9579 | 0.2068 | +0.1299 |
+| 0.1 | 0.9630 | 0.3229 | 0.3 | 0.9649 | 0.1536 | **+0.1693** |
+| 1.0 | 0.9619 | 0.2968 | 0.3 | 0.9649 | 0.1536 | +0.1432 |
+| 10.0 | 0.9624 | 0.2910 | 0.3 | 0.9649 | 0.1536 | +0.1374 |
 
-**Yes — above at 7 of 8 λ values, max vertical gap +0.137.** Caveat: every λ arm
-matches to lr=0.1 because no other lr reaches that accuracy, and lr=0.3 (which
-might) failed entirely. The frontier needs its high-accuracy end before this is
-solid.
+**Yes — above at 7 of 8 λ values, max vertical gap +0.169.** With lr=0.3 in place
+the frontier now reaches *higher* accuracy (0.9649) than any λ arm, so the
+comparison is conservative: the penalty arms are matched against an lr point that
+beats them on the plasticity axis and still loses 0.17 on retention.
 
 ---
 
@@ -143,9 +158,9 @@ neither. Too few λ points to say more; this needs the full S3 grid.
 
 Specific gaps that block specific claims:
 
-- `limit_tangential` (the true constraint limit) — **0/3**. Leg 4b currently
-  rests on the straight-through variant only.
-- `lr_0.3` — **0/3**. The high-accuracy end of the lr frontier, which leg 2 needs.
-- λ=0.003 and λ=0.006 are **n=1**, and λ=0.003 is the reported optimum.
+- λ=3e-4, 1e-3, 3e-2 have **0 complete seeds**, leaving gaps in the curve between
+  1e-4 and 3e-3 and between 1e-2 and 0.1.
+- λ=0.1 and λ=1.0 are **n=2**; every other λ point is n=3.
+- S2 is **n=2** at every lr except 0.3.
 - `iso_wnorm` is n=3 in both regimes; its clipped-regime acceptance test cannot
   run because two target runs predate the weight-norm trace.
