@@ -97,7 +97,7 @@ def build_cmd(run_dir, args, iso_target):
 
 
 def launch_study(study_name, concurrency, reserve_mb, per_job_mb, dry_run,
-                 force, threads=8, gpus=None, retries=2):
+                 force, threads=8, gpus=None, retries=2, only=None):
     st = STUDIES[study_name]
     plan = list(iter_runs(study_name))
     n_phases = len(st["phases"])
@@ -110,6 +110,10 @@ def launch_study(study_name, concurrency, reserve_mb, per_job_mb, dry_run,
         todo = []
         for pi, run_dir, args, dep in plan:
             if pi != phase_i:
+                continue
+            # --only restricts the run to named arms, so a targeted gap-fill does
+            # not drag the whole study's backlog along with it.
+            if only and not any(o in run_dir for o in only):
                 continue
             abs_dir = os.path.join(REPO, run_dir)
             status = run_status(abs_dir, args)
@@ -295,6 +299,8 @@ def main():
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--measure", action="store_true")
     ap.add_argument("--force", action="store_true", help="re-run completed runs")
+    ap.add_argument("--only", type=str, default=None,
+                    help="comma-separated substrings; run only matching arms")
     ap.add_argument("--retries", type=int, default=2,
                     help="re-attempt runs that failed; a shared GPU can OOM-kill "
                          "a run through no fault of its own")
@@ -330,8 +336,9 @@ def main():
 
     for s in (sorted(STUDIES) if a.study == "all" else [a.study]):
         gpus = [int(x) for x in a.gpus.split(",")] if a.gpus else None
+        only = [x.strip() for x in a.only.split(",")] if a.only else None
         launch_study(s, a.concurrency, a.reserve_mb, a.per_job_mb, a.dry_run,
-                     a.force, a.threads, gpus, a.retries)
+                     a.force, a.threads, gpus, a.retries, only)
 
 
 if __name__ == "__main__":
