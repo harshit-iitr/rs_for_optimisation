@@ -1,0 +1,542 @@
+%\documentclass{opt2026}          % include author names
+\documentclass[anon]{opt2026}     % author names withheld for submission
+
+% amsmath, amssymb, natbib, graphicx, url, algorithm2e are loaded by the class.
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{xcolor}
+
+% `proposition' is already provided by the jmlr class loaded by opt2026.
+\newcommand{\PH}[1]{\textcolor{red}{\texttt{#1}}}   % placeholder, remove before submission
+\newcommand{\phirad}{\tilde{\Phi}_{\mathrm{rad}}}
+\newcommand{\R}{\mathbb{R}}
+\DeclareMathOperator{\Tr}{Tr}
+
+\title[Soft Constraints and the Norm Ratchet]{%
+  A Soft Constraint Is Not Its Own Limit:\\
+  Activation-Norm Penalties, Weight-Norm Ratchets,\\
+  and the Geometry of Sequential Optimization}
+
+\optauthor{%
+\Name{\PH{Author One}} \Email{\PH{a1@example.edu}}\\
+\Name{\PH{Author Two}} \Email{\PH{a2@example.edu}}\\
+\addr \PH{Institution}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}%
+We study what a soft penalty on hidden-activation norms does to the optimization
+dynamics of a network trained on a long sequence of tasks. The penalty pulls
+pre-activations toward a fixed-radius sphere and has a single hyperparameter.
+Tracking a battery of geometric diagnostics across a sweep of penalty strengths,
+we find that it arrests a cumulative inflation of both activation and weight
+norms that otherwise proceeds monotonically across tasks, and that retention of
+earlier tasks improves by \PH{13.5} points at unchanged current-task accuracy.
+We give a decomposition of activation-space gradient flow that accounts for three
+of the observed effects, and we show that the reduction in radial gradient energy
+which the decomposition predicts arises for an unexpected reason: the radial
+gradient is essentially unchanged and the tangential gradient grows.
+Running through the paper is a comparison with the penalty's own exactly-enforced
+limit. Projection makes the layer scale-invariant in its weights, so the loss
+gradient becomes orthogonal to the weight vector and the weight norm can only
+increase: the constraint holds exactly and the inflation it was meant to prevent
+moves into the weights. The hard-projection arm retains \PH{19.9}\%, below an
+unpenalized baseline, against \PH{34.2}\% for the soft penalty.
+\end{abstract}
+
+% =====================================================================
+\section{Introduction}
+\label{sec:intro}
+
+Penalty and projection methods are usually presented as two routes to the same
+constrained optimum, differing in convergence rate rather than in the solution
+reached \citep{nocedal2006numerical}. For a network trained by stochastic
+gradient descent this need not hold: the two constructions place different
+implicit biases on the trajectory, and in a sequential setting the trajectory
+determines how much previously fitted structure survives.
+
+This paper characterizes one such penalty. Let
+$h \in \R^{d}$ be the pre-activation of a hidden layer. We add to the task loss
+\begin{equation}
+\label{eq:penalty}
+L_{\mathrm{pen}}(h) \;=\; \frac{1}{d}\bigl(\|h\|_2 - \sqrt{d}\bigr)^{2},
+\end{equation}
+with a single coefficient $\lambda$. The target $\sqrt{d}$ keeps the mean squared
+activation per unit at $\mathcal{O}(1)$, matching standard initialization.
+The same penalty has been studied in the context of delayed generalization on
+algorithmic tasks \citep{anon2026radial}; here we ask a different question, in a
+setting where the optimizer must repeatedly refit without destroying what it
+already has.
+
+Our instrument is a long task sequence, which gives a direct readout of how much
+of a previously fitted solution an optimization path destroys. We are not
+proposing a continual-learning method and do not compete with replay or
+parameter-importance schemes; the sequence is a probe.
+
+\paragraph{What we find.}
+\begin{enumerate}
+\item Unpenalized training inflates both activation radius and weight norm
+      \emph{monotonically across tasks}. The penalty arrests both
+      (\S\ref{sec:ratchet}).
+\item The normalized radial gradient energy $\phirad$ falls sharply at the first
+      hidden layer and tracks retention across the sweep. It falls because the
+      \emph{tangential} gradient grows by \PH{43.5}\%, not because the radial
+      gradient shrinks, which it does by \PH{4.9}\% (\S\ref{sec:radial}).
+\item Reducing the learning rate reproduces the penalty's entire static geometric
+      signature (radius, radial excess, weight norm, effective rank) and
+      reproduces neither its accuracy nor its retention (\S\ref{sec:lr}).
+\item Exactly enforcing the constraint removes the benefit. We give a short
+      argument for why: projection makes the layer degree-zero homogeneous in
+      $W$, the loss gradient becomes orthogonal to $W$, and the weight norm
+      becomes non-decreasing (\S\ref{sec:projection}).
+\end{enumerate}
+
+% =====================================================================
+\section{Setup}
+\label{sec:setup}
+
+\paragraph{Task sequence.} Permuted MNIST, $T = 150$ tasks, a fresh input
+permutation per task, 10 epochs per task, no replay and no task identifier at
+test time. Network: \PH{3}-hidden-layer MLP of width \PH{1000}, ReLU, single head.
+SGD, learning rate \PH{0.1}, batch \PH{256}, global gradient-norm clip
+\PH{0.5}. The penalty is applied to pre-activations of all hidden layers, per
+sample, averaged over the batch. Unless stated otherwise, quantities are reported
+at layer $0$, averaged over the final $20$ tasks, over \PH{3} seeds.
+
+\paragraph{Metrics.} We report current-task accuracy and \emph{retention}, the
+mean accuracy over previously seen tasks, excluding the current one. Geometric
+diagnostics are computed at each task boundary on a fixed probe of \PH{1000}
+task-$0$ inputs, held constant for the run. Per-layer quantities are never
+averaged across layers. Definitions in Appendix~\ref{app:metrics}.
+
+\paragraph{Radial gradient energy.} With $P_r = \hat h \hat h^{\top}$,
+$\hat h = h/\|h\|_2$, and $g = \nabla_h L_{\mathrm{task}}$ the \emph{task}-loss
+gradient only,
+\begin{equation}
+\label{eq:phirad}
+\phirad \;=\; d \cdot \frac{\|P_r g\|_2^{2}}{\|g\|_2^{2}},
+\qquad
+\mathbb{E}[\phirad] = 1 \text{ for isotropic } g .
+\end{equation}
+The penalty gradient is excluded by construction: it is purely radial, so
+including it would make \eqref{eq:phirad} partly a measurement of the regularizer.
+
+% =====================================================================
+\section{Analytical framework}
+\label{sec:analysis}
+
+We give three propositions. Each is a statement about the gradient field, each
+yields a prediction, and each prediction is checked immediately.
+
+% ---------------------------------------------------------------------
+\subsection{Radial--angular decomposition and the relaxation timescale}
+\label{sec:radial}
+
+\begin{proposition}
+\label{prop:flow}
+The penalty gradient $\nabla_h L_{\mathrm{pen}} = \tfrac{2}{d}(\|h\|_2-\sqrt d)\,\hat h$
+is purely radial. Writing $u = \|h\|_2 - \sqrt d$ and
+$g_r = \langle \hat h, \nabla_h L_{\mathrm{task}}\rangle$, the activation-space
+gradient flow $\dot h = -\nabla_h L_{\mathrm{total}}$ separates as
+\begin{equation}
+\label{eq:radial_ode}
+\dot u \;=\; -\,g_r \;-\; \frac{2\lambda}{d}\,u ,
+\qquad
+\dot h_{\mathrm{tan}} \;=\; -(I - P_r)\,\nabla_h L_{\mathrm{task}} .
+\end{equation}
+The radial coordinate is a first-order lag driven by $g_r$, with relaxation time
+and stationary point
+\begin{equation}
+\label{eq:tau}
+\tau = \frac{d}{2\lambda},
+\qquad
+u^{\star} = -\,\frac{d\, g_r}{2\lambda} .
+\end{equation}
+As $\lambda \to \infty$ we have $\tau \to 0$, $u \to 0$, and the flow reduces to
+$\dot h = -(I-P_r)\nabla_h L_{\mathrm{task}}$, which is Riemannian gradient flow
+on $\mathbb{S}^{d-1}(\sqrt d)$ \citep{absil2008optimization}.
+\end{proposition}
+
+So $\lambda$ does not only control how well the constraint is satisfied; it sets a
+timescale on which the radial coordinate forgets its history, and the
+exactly-enforced limit is the $\tau = 0$ member of that family rather than a
+separate construction.
+
+\paragraph{Prediction 1a.} $\log|u^{\star}|$ against $\log\lambda$ has slope $-1$,
+modulo any dependence of $g_r$ on $\lambda$; if $g_r \propto \lambda^{a}$ the
+slope is $a-1$.
+
+\paragraph{Result.} Measured log--log slopes of steady-state radial excess are
+$\PH{-0.17} \pm \PH{0.16}$ at layer $0$ and $\PH{-0.93} \pm \PH{0.31}$ at
+layer $1$; layer $2$ has too few positive-excess points to fit. Layer $1$ is
+consistent with both the naive $-1$ and with the corrected $a-1$; layer $0$ is
+consistent with neither (Figure~\ref{fig:equilibrium}).
+\eqref{eq:radial_ode} treats $h$ as a free variable,
+whereas $h = Wx$ is constrained by the parameterization and by a fixed input
+distribution, and we take the layer-$0$ discrepancy as a failure of that
+idealization rather than of the decomposition.
+
+\begin{figure}[!tb]
+\centering
+\includegraphics[width=0.47\textwidth]{figs/fig_equilibrium.pdf}
+\hfill
+\includegraphics[width=0.47\textwidth]{figs/fig_ratchet.pdf}
+\caption{\textbf{Left}: steady-state radial excess against $\lambda$, per layer,
+with the slope predicted by \eqref{eq:tau}. \textbf{Right}: weight norm and
+activation radius across the task sequence. Exact projection holds the radius
+flat while the weight norm climbs. \PH{placeholder figures}}
+\label{fig:equilibrium}
+\end{figure}
+
+\paragraph{Prediction 1b.} The penalty suppresses $\phirad$ below the
+unpenalized value, and the suppression tracks retention.
+
+\paragraph{Result.} At layer $0$, $\phirad$ falls from \PH{0.392} at $\lambda=0$
+to \PH{0.116} at $\lambda = \PH{0.003}$, and across the eight soft arms it is
+rank-correlated with retention at $\rho = \PH{-0.905}$, $p = \PH{0.002}$. The
+relation is specific to the first hidden layer: at layers $1$ and $2$ the
+correlations are $\PH{-0.14}$ and $\PH{-0.17}$, neither significant. Layer $1$ is
+already close to tangential without any penalty ($\phirad = \PH{0.065}$) and the
+penalty \emph{raises} it to \PH{0.106}. Table~\ref{tab:phirad}.
+
+\paragraph{The suppression is a denominator effect.}
+Decomposing $\phirad = d\|g_{\mathrm{rad}}\|^2/\|g\|^2$ between $\lambda = 0$ and
+$\lambda = \PH{0.003}$ at layer $0$: the radial gradient changes by \PH{-4.9}\%
+while the total task gradient changes by \PH{+43.5}\%. The penalty does not
+suppress radial gradient energy. It amplifies tangential gradient energy, and
+$\phirad$ falls as a consequence.
+
+\begin{proposition}[Desaturation]
+\label{prop:desat}
+Let $z = Vh$ be the logits and $L_{\mathrm{task}}$ cross-entropy, so that
+$\nabla_h L_{\mathrm{task}} = V^{\top}(\mathrm{softmax}(z) - y)$. For a correctly
+classified example, $\|\mathrm{softmax}(z)-y\| \to 0$ as $\|z\| \to \infty$.
+Reducing $\|h\|$ reduces $\|z\|$, keeps the softmax away from saturation, and
+therefore increases $\|\nabla_h L_{\mathrm{task}}\|$.
+\end{proposition}
+
+This accounts for the $\PH{+43.5}\%$ growth in the denominator and reframes what
+the penalty does: rather than damping motion in one direction, it keeps the task
+gradient alive in the remaining $d-1$.
+
+\begin{table}[!tb]
+\centering
+\caption{Radial gradient energy per layer, and retention. $\phirad = 1$ is the
+isotropic null. Layer $0$ is the only layer whose $\phirad$ tracks retention.
+Two interpolating rows omitted, full sweep in Appendix~\ref{app:battery}.
+$n = \PH{3}$ except $\lambda = 0.1$ where $n = \PH{2}$.}
+\label{tab:phirad}
+\small
+\begin{tabular}{lccccc}
+\toprule
+Arm & Retention & Test acc. & $\phirad^{(0)}$ & $\phirad^{(1)}$ & $\phirad^{(2)}$ \\
+\midrule
+$\lambda = 0$ (baseline)      & \PH{0.2067} & \PH{0.9585} & \PH{0.392} & \PH{0.065} & \PH{0.684} \\
+$\lambda = 3\cdot 10^{-3}$    & \textbf{\PH{0.3416}} & \PH{0.9597} & \PH{0.116} & \PH{0.061} & \PH{0.423} \\
+$\lambda = 6\cdot 10^{-3}$    & \PH{0.3408} & \PH{0.9607} & \PH{0.106} & \PH{0.073} & \PH{0.394} \\
+$\lambda = 10^{-2}$           & \PH{0.3367} & \PH{0.9610} & \PH{0.110} & \PH{0.086} & \PH{0.387} \\
+$\lambda = 10^{-1}$           & \PH{0.3229} & \PH{0.9630} & \PH{0.145} & \PH{0.100} & \PH{0.322} \\
+$\lambda = 10$                & \PH{0.2910} & \PH{0.9624} & \PH{0.186} & \PH{0.106} & \PH{0.318} \\
+\midrule
+Hard projection (exact)       & \PH{0.1994} & \PH{0.9580} & \PH{0.000} & \PH{0.031} & \PH{0.446} \\
+Hard projection (STE)         & \PH{0.2049} & \PH{0.9588} & \PH{1.035} & \PH{0.197} & \PH{0.574} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ---------------------------------------------------------------------
+\subsection{Scale invariance and the weight-norm ratchet}
+\label{sec:projection}
+
+This is the point at which the penalty and its exactly-enforced limit come apart.
+
+\begin{proposition}
+\label{prop:ratchet}
+Let a layer compute $h = Wx$ followed by exact projection
+$\Pi(h) = \sqrt{d}\,h/\|h\|_2$. Then $\Pi(Wx)$ is invariant under
+$W \mapsto cW$ for every $c > 0$, so the layer's contribution to the loss is
+degree-zero homogeneous in $W$. By Euler's theorem,
+\begin{equation}
+\label{eq:orthogonal}
+\bigl\langle \nabla_W L, \, W \bigr\rangle = 0 ,
+\end{equation}
+and consequently a gradient step of size $\eta$ satisfies
+\begin{equation}
+\label{eq:ratchet}
+\bigl\| W - \eta \nabla_W L \bigr\|_F^{2}
+  \;=\; \|W\|_F^{2} \;+\; \eta^{2}\bigl\|\nabla_W L\bigr\|_F^{2}
+  \;\ge\; \|W\|_F^{2}.
+\end{equation}
+The weight norm is non-decreasing under exact projection, whatever the loss.
+Under the soft penalty the corresponding inner product is
+\begin{equation}
+\label{eq:restoring}
+\bigl\langle \nabla_W L_{\mathrm{pen}},\, W \bigr\rangle
+  \;=\; \frac{2\lambda}{d}\bigl(\|h\|_2 - \sqrt d\bigr)\|h\|_2 ,
+\end{equation}
+which is strictly positive whenever $\|h\|_2 > \sqrt d$, so the descent step
+reduces $\|W\|_F$.
+\end{proposition}
+
+The two constructions therefore differ in exactly the coordinate the constraint
+is about. Projection removes the radius from the forward pass, which makes weight
+growth free of charge; the soft penalty leaves the radius in the forward pass, so
+weight growth is still visible to the loss and is charged for. Equation
+\eqref{eq:ratchet} is the same mechanism by which scale-invariant layers under
+normalization schemes accumulate weight norm \citep{vanlaarhoven2017l2,
+arora2019theoretical, lyu2020reconciling}; the observation here is that it
+converts an intended constraint into a ratchet.
+
+\paragraph{Prediction 2.} Under exact projection the activation radius is pinned
+and the weight norm nevertheless inflates across tasks. Under the soft penalty at
+small $\lambda$ both are arrested.
+
+\paragraph{Result.} Table~\ref{tab:ratchet}. Over $150$ tasks the unpenalized
+weight norm grows by \PH{+6.03}. Exact projection pins the radius to
+$\sqrt{d}$ to six digits and still grows the weight norm by \PH{+3.25}; the
+straight-through variant, whose backward pass is not the true gradient of a
+degree-zero map and therefore violates \eqref{eq:orthogonal}, grows it by
+\PH{+7.63}, more than the baseline. The soft penalty at $\lambda = \PH{0.003}$
+holds it to \PH{+0.33}.
+
+\begin{table}[!tb]
+\centering
+\caption{The ratchet. Layer $0$, first task to last. Exact projection holds the
+activation radius fixed and the weight norm inflates anyway.}
+\label{tab:ratchet}
+\small
+\begin{tabular}{lccc}
+\toprule
+Arm & $\|W\|_F:\ t_0 \to t_{149}$ & radius$:\ t_0 \to t_{149}$ & Retention \\
+\midrule
+$\lambda = 0$ (baseline)   & \PH{44.83} $\to$ \PH{50.86} \ (\PH{+6.03}) & \PH{45.47} $\to$ \PH{49.79} \ (\PH{+4.32}) & \PH{0.2067} \\
+$\lambda = 3\cdot10^{-3}$  & \PH{44.81} $\to$ \PH{45.14} \ (\textbf{\PH{+0.33}}) & \PH{44.14} $\to$ \PH{42.90} \ (\PH{-1.25}) & \textbf{\PH{0.3416}} \\
+$\lambda = 10$             & \PH{43.96} $\to$ \PH{29.69} \ (\PH{-14.27}) & \PH{31.64} $\to$ \PH{31.54} \ (\PH{-0.11}) & \PH{0.2910} \\
+Hard projection (exact)    & \PH{44.74} $\to$ \PH{47.99} \ (\PH{+3.25}) & \PH{31.62} $\to$ \PH{31.62} \ (\PH{+0.00}) & \PH{0.1994} \\
+Hard projection (STE)      & \PH{45.10} $\to$ \PH{52.73} \ (\PH{+7.63}) & \PH{31.62} $\to$ \PH{31.62} \ (\PH{+0.00}) & \PH{0.2049} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ---------------------------------------------------------------------
+\subsection{Anisotropic, task-rotating weight regularization}
+\label{sec:aniso}
+
+\begin{proposition}
+\label{prop:aniso}
+Under $h = Wx$ and in the inflated regime $\|h\|_2 \gg \sqrt d$, where
+$(\|h\|_2-\sqrt d)^2 \approx \|h\|_2^2$,
+\begin{equation}
+\label{eq:aniso}
+\mathbb{E}_x\bigl[L_{\mathrm{pen}}\bigr]
+  \;\approx\; \tfrac{1}{d}\,\Tr\!\bigl(W \Sigma_x W^{\top}\bigr),
+  \qquad \Sigma_x = \mathbb{E}_x[xx^{\top}] .
+\end{equation}
+Unlike $\lambda\|W\|_F^2$ this weights directions by the variance of the inputs
+they read, and in a task sequence $\Sigma_x$ changes with the task, so the axes
+of the regularizer rotate with it. The approximation holds early in each task and
+degrades as $\|h\|_2 \to \sqrt d$ (Appendix~\ref{app:derivations}).
+\end{proposition}
+
+\paragraph{Prediction 3.} An isotropic weight penalty of matched strength cannot
+reproduce the benefit, because its axes do not rotate with the task.
+\paragraph{Result.} \PH{TODO S6: weight decay, EWC, SI, LayerNorm+WD.}
+
+% =====================================================================
+\section{The learning rate reaches the same geometry and not the same solution}
+\label{sec:lr}
+
+A natural objection is that the penalty acts as an effective step-size reduction.
+The sweep over learning rates answers this without any matched construction.
+At $\eta = \PH{0.003}$ the unpenalized network reproduces the penalized network's
+static geometry across every diagnostic we log, and reproduces neither its
+accuracy nor its retention (Table~\ref{tab:lr}).
+
+\begin{table}[!tb]
+\centering
+\caption{Same geometry, two ways. The step size reaches the penalty's radius,
+radial excess, weight norm and effective rank, and arrives at a different
+solution. Intermediate rates in Appendix~\ref{app:battery}. $n=\PH{2}$.}
+\label{tab:lr}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lcccccc}
+\toprule
+Arm & Retention & Test acc. & Radial exc. & Radius & $\|W\|_F$ & Eff.\ rank \\
+\midrule
+Penalty $\lambda = 3\cdot10^{-3}$ & \textbf{\PH{0.3416}} & \textbf{\PH{0.9597}} & \PH{11.48} & \PH{43.10} & \PH{45.24} & \PH{243.8} \\
+Step size $\eta = 3\cdot10^{-3}$  & \PH{0.2624} & \PH{0.8675} & \PH{11.37} & \PH{42.99} & \PH{44.86} & \PH{244.1} \\
+\midrule
+$\eta = 10^{-1}$ (default) & \PH{0.2068} & \PH{0.9579} & \PH{18.14} & \PH{49.76} & \PH{50.58} & \PH{239.5} \\
+$\eta = 3\cdot10^{-1}$   & \PH{0.1536} & \PH{0.9649} & \PH{35.97} & \PH{67.59} & \PH{68.34} & \PH{235.8} \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+Across the learning-rate sweep, retention falls as $\eta$ rises and accuracy
+rises with it ($\rho = \PH{-0.77}$, $p = \PH{0.07}$): the step size trades one
+axis against the other. The penalty sweep lies above that trade-off by up to
+\PH{0.169} in retention at matched accuracy (Figure~\ref{fig:frontier}).
+
+\begin{figure}[!tb]
+\centering
+\includegraphics[width=0.47\textwidth]{figs/fig_frontier.pdf}
+\hfill
+\includegraphics[width=0.47\textwidth]{figs/fig_selectivity.pdf}
+\caption{\textbf{Left}: the two sweeps in the (accuracy, retention) plane. The
+step size traces a trade-off; the penalty sweep sits above it. \textbf{Right}:
+per-neuron task selectivity at the end of the sequence. \PH{placeholder figures}}
+\label{fig:frontier}
+\end{figure}
+
+% =====================================================================
+\section{Magnitude-matched controls}
+\label{sec:controls}
+
+To separate magnitude from direction we ran three interventions that replay a
+recorded aspect of the penalized run onto an unpenalized one, per seed and per
+step: its realized per-group gradient magnitude, its total gradient magnitude,
+and its per-group weight-norm trajectory. Each arm is gated on a pre-registered
+matching tolerance (median $|\log$ ratio$| < 0.05$) which is checked before any
+outcome is examined; an arm that fails is not reported. Details in
+Appendix~\ref{app:controls}.
+
+The ordering is monotone across the battery (Table~\ref{tab:controls}, appendix):
+the control reproducing more of the signature reproduces more of the effect.
+Matching gradient magnitude recovers $\PH{-1}\%$ and $\PH{-7}\%$ of the retention
+gain and \emph{raises} $\phirad$ above baseline; matching the weight-norm
+trajectory reproduces the penalized weight norm to $\PH{0.5}\%$, moves $\phirad$
+partway, and recovers $\PH{16}\%$.
+
+% =====================================================================
+\section{The battery}
+\label{sec:battery}
+
+Across the eight soft arms, three diagnostics track retention at layer $0$:
+$\phirad$, cumulative representation drift from task $0$, and the end-of-task
+update norm, all at $\rho = \PH{-0.905}$, $p = \PH{0.002}$. Consecutive drift
+and its tangential part track more weakly ($\rho = \PH{-0.738}$,
+$p = \PH{0.037}$). Radial drift, effective and stable rank, subspace overlap and
+gradient readiness do not track at all; the full table is
+Appendix~\ref{app:battery}. We report the negatives because they constrain the
+account as much as the positives. \PH{TODO: add curvature row (Hessian trace via
+Hutchinson) and $\sigma_{\max}$.}
+
+Two negatives matter. The dead-unit fraction is \PH{0.000} in every arm, so loss
+of plasticity in the sense of \citet{dohare2024loss} is absent and forgetting is
+the only failure mode present. Subspace overlap does not track retention in
+either form, ruling out the most natural representation-preservation account.
+
+Per-neuron task selectivity is shown in Figure~\ref{fig:frontier} (right):
+\PH{TODO, requires end-of-run checkpoints}.
+
+% =====================================================================
+\section{Optimizer interaction}
+\label{sec:optimizers}
+
+\PH{TODO S7. The decomposition in Proposition~\ref{prop:flow} is stated for
+gradient flow. A diagonal preconditioner rescales coordinates independently and
+does not in general preserve the radial/tangential split in activation space, so
+the effect should weaken under adaptive methods and survive under momentum.
+Table with SGD / SGD+momentum / Adam, with and without penalty, learning rate
+chosen per optimizer and stated.}
+
+% =====================================================================
+\section{Limitations}
+\label{sec:limitations}
+
+Proposition~\ref{prop:ratchet} is the only part of the account that is derived
+rather than inferred. The rest is correlational: $\phirad$ tracks retention
+across the sweep, but the sweep is one-dimensional in $\lambda$ and eight
+aggregate points cannot separate $\phirad$ from $\lambda$. The intervention that
+would separate them, an arm that lowers $\phirad$ without constraining the
+radius, we have not run. Proposition~\ref{prop:aniso} holds only in the inflated
+regime and describes early training within each task rather than the whole
+trajectory. Equation~\eqref{eq:radial_ode} treats $h$ as free, and the measured
+equilibrium slope matches at layer $1$ but not at layer $0$, which we attribute
+to the weight parameterization. Finally, this is one task family, one
+architecture, \PH{3} seeds, and one optimizer as the primary setting. We do not
+claim universality; the sequence is an instrument for observing optimization
+geometry, not a benchmark to compete on. \PH{TODO: second task family.}
+
+% =====================================================================
+\section{Conclusion}
+\label{sec:conclusion}
+
+A soft activation-norm penalty and its exactly-enforced limit are not two routes
+to one solution. The penalty arrests a cumulative inflation of activation and
+weight norms across tasks; the projection pins the activation radius, makes the
+layer scale-invariant in its weights, and lets the same inflation proceed in
+weight space, where nothing charges for it. The useful settings of $\lambda$ are
+the ones at which the constraint is barely enforced, and the quantity that tracks
+the benefit is not how well the constraint holds but how much tangential gradient
+survives.
+
+\bibliography{refs}
+
+\newpage
+\appendix
+\section{Metric definitions}
+\label{app:metrics}
+\PH{TODO}
+
+\section{Derivations}
+\label{app:derivations}
+\PH{TODO: full derivations for Propositions 1--4, including the regime of \eqref{eq:aniso}.}
+
+\section{Control construction and acceptance tests}
+\label{app:controls}
+
+\begin{table}[!tb]
+\centering
+\caption{Controls ordered by how much of the penalized signature they reproduce.
+Clipping is relaxed here ($\PH{10}$ rather than $\PH{0.5}$) so that a global
+magnitude difference exists to be matched; under tight clipping both arms are
+pinned to the same total gradient norm and the comparison is vacuous.
+$n=\PH{3}$.}
+\label{tab:controls}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lcccccc}
+\toprule
+Arm & Retention & $\phirad$ & Radius & $\|W\|_F$ & Cum.\ drift \\
+\midrule
+Penalty $\lambda = 3\cdot10^{-3}$ & \textbf{\PH{0.3016}} & \PH{0.102} & \PH{45.92} & \PH{48.01} & \PH{1175} \\
+Weight-norm matched               & \PH{0.2210} & \PH{0.190} & \PH{48.54} & \PH{48.25} & \PH{1253} \\
+Baseline                          & \PH{0.2062} & \PH{0.212} & \PH{58.51} & \PH{59.04} & \PH{1365} \\
+Gradient matched, per group       & \PH{0.2040} & \PH{0.355} & \PH{58.72} & \PH{58.94} & \PH{1354} \\
+Gradient matched, global          & \PH{0.1971} & \PH{0.346} & \PH{57.02} & \PH{57.61} & \PH{1299} \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\PH{TODO: matching procedure, per-seed acceptance reports.}
+
+\section{Full battery}
+\label{app:battery}
+
+\begin{table}[!tb]
+\centering
+\caption{Rank correlation with retention across the eight soft arms, layer $0$.
+Quantities that do not track are reported as such.}
+\label{tab:battery}
+\small
+\begin{tabular}{lcc|lcc}
+\toprule
+Diagnostic & $\rho$ & $p$ & Diagnostic & $\rho$ & $p$ \\
+\midrule
+$\phirad$                 & \PH{-0.905} & \PH{0.002} & radial drift        & \PH{+0.19} & n.s. \\
+cumulative drift from $t_0$ & \PH{-0.905} & \PH{0.002} & effective rank      & \PH{+0.57} & n.s. \\
+update norm               & \PH{-0.905} & \PH{0.002} & stable rank         & \PH{+0.57} & n.s. \\
+consecutive drift         & \PH{-0.738} & \PH{0.037} & subspace overlap    & \PH{+0.29} & n.s. \\
+tangential drift          & \PH{-0.738} & \PH{0.037} & gradient readiness  & \PH{+0.17} & n.s. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\PH{TODO: add per-layer columns and the curvature diagnostics.}
+
+\section{Experimental detail and reproducibility}
+\label{app:setup}
+\PH{TODO}
+
+\end{document}
