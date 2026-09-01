@@ -195,3 +195,64 @@ Specific gaps that block specific claims:
 - S2 is **n=2** at every lr except 0.3.
 - `iso_wnorm` is n=3 in both regimes; its clipped-regime acceptance test cannot
   run because two target runs predate the weight-norm trace.
+
+---
+
+## A candidate positive mechanism (free; falls out of S3 + S1)
+
+`phi_rad_tilde` is the normalized radial fraction of the **task-loss** gradient
+w.r.t. pre-activations (penalty gradient excluded by construction; regression
+test `tests/test_phi_rad.py::test_phi_rad_tilde_leakage`).
+
+**1. Across the soft sweep it tracks retention, at layer 0 only.**
+
+| λ | prev_only | φ_rad L0 | φ_rad L1 | φ_rad L2 |
+|---|---|---|---|---|
+| 0 | 0.2067 | 0.392 | 0.065 | 0.684 |
+| 1e-4 | 0.2340 | 0.366 | 0.069 | 0.789 |
+| 3e-3 | **0.3416** | **0.116** | 0.061 | 0.423 |
+| 6e-3 | 0.3408 | 0.106 | 0.073 | 0.394 |
+| 1e-2 | 0.3367 | 0.110 | 0.086 | 0.387 |
+| 0.1 | 0.3229 | 0.145 | 0.100 | 0.322 |
+| 1.0 | 0.2968 | 0.135 | 0.103 | 0.324 |
+| 10 | 0.2910 | 0.186 | 0.106 | 0.318 |
+
+Layer 0: Spearman **ρ = −0.905, p = 0.0020**. Layers 1 and 2: ρ = −0.14, −0.17
+(nothing). The effect is specific to the first hidden layer.
+
+**2. Imposing it does not work.** `limit_tangential` achieves φ_rad = 0.000 — the
+minimum possible — by deleting the radial component, and has the *worst*
+retention of any arm (0.1994). `limit_ste` sits at φ_rad = 1.035, exactly the
+random-direction value for d=1000, at 0.2049.
+
+**3. S1's controls corroborate it, and S1 was not designed to test this.**
+Loose regime, all five arms, ranked:
+
+| arm | φ_rad L0 | prev_only |
+|---|---|---|
+| penalty λ=0.003 | **0.102** | **0.3047** |
+| iso weight-norm | 0.191 | 0.2231 |
+| baseline | 0.216 | 0.2073 |
+| iso gradient per-layer | 0.362 | 0.2063 |
+| iso gradient global | 0.335 | 0.2000 |
+
+**The φ_rad ordering is the exact inverse of the retention ordering, 5 arms out
+of 5.** Only the penalty lowers φ_rad materially (−0.115, p=2.7e-03); the two
+gradient-magnitude controls *raise* it (+0.145 p=3.5e-03, +0.118 p=0.024); the
+weight-norm control — the only one that recovered any retention — is also the
+only one that lowers it (−0.025, p=0.045).
+
+**Candidate claim.** The benefit is mediated by a *learned* reduction in the
+radial component of the task gradient at the first hidden layer. Matching step
+magnitude does not produce it. Matching weight norm produces a little of it, and
+a little of the benefit. Imposing it by projection produces the statistic with
+none of the benefit.
+
+**Status: correlational.** Eight aggregate points on a one-dimensional λ family
+cannot separate φ_rad from λ itself. The decisive test is an arm that lowers
+φ_rad *without* constraining the radius — see below.
+
+**Note on Round 1–4.** `plan.md` cut the radial-energy diagnostic as "null". That
+verdict came from `analysis/r5_headroom_race.py`, which pooled every `R3_*` run —
+seven different configurations — into one correlation (audit §5.2). In
+configuration-matched data it is the strongest single signal in the project.
