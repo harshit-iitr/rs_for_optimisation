@@ -181,11 +181,11 @@ idealization rather than of the decomposition.
 \centering
 \includegraphics[width=0.47\textwidth]{figs/fig_equilibrium.pdf}
 \hfill
-\includegraphics[width=0.47\textwidth]{figs/fig_ratchet.pdf}
-\caption{\textbf{Left}: steady-state radial excess against $\lambda$, per layer,
-with the slope predicted by \eqref{eq:tau}. \textbf{Right}: weight norm and
-activation radius across the task sequence. Exact projection holds the radius
-flat while the weight norm climbs. \PH{placeholder figures}}
+\includegraphics[width=0.47\textwidth]{figs/fig_frontier.pdf}
+\caption{\textbf{Left}: steady-state radial excess against $\lambda$, per layer.
+Layer $1$ follows the slope $-1$ predicted by \eqref{eq:tau}; layer $0$ is much
+flatter. \textbf{Right}: the two sweeps in the (accuracy, retention) plane. The
+step size traces a trade-off between the axes; the penalty sweep sits above it.}
 \label{fig:equilibrium}
 \end{figure}
 
@@ -292,7 +292,8 @@ converts an intended constraint into a ratchet.
 and the weight norm nevertheless inflates across tasks. Under the soft penalty at
 small $\lambda$ both are arrested.
 
-\paragraph{Result.} Table~\ref{tab:ratchet}. Over $150$ tasks the unpenalized
+\paragraph{Result.} Figure~\ref{fig:ratchet}; exact values in
+Appendix~\ref{app:battery}. Over $150$ tasks the unpenalized
 weight norm grows by \PH{+6.03}. Exact projection pins the radius to
 $\sqrt{d}$ to six digits and still grows the weight norm by \PH{+3.25}; the
 straight-through variant, whose backward pass is not the true gradient of a
@@ -300,24 +301,16 @@ degree-zero map and therefore violates \eqref{eq:orthogonal}, grows it by
 \PH{+7.63}, more than the baseline. The soft penalty at $\lambda = \PH{0.003}$
 holds it to \PH{+0.33}.
 
-\begin{table}[!tb]
+\begin{figure}[!tb]
 \centering
-\caption{The ratchet. Layer $0$, first task to last. Exact projection holds the
-activation radius fixed and the weight norm inflates anyway.}
-\label{tab:ratchet}
-\small
-\begin{tabular}{lccc}
-\toprule
-Arm & $\|W\|_F:\ t_0 \to t_{149}$ & radius$:\ t_0 \to t_{149}$ & Retention \\
-\midrule
-$\lambda = 0$ (baseline)   & \PH{44.83} $\to$ \PH{50.86} \ (\PH{+6.03}) & \PH{45.47} $\to$ \PH{49.79} \ (\PH{+4.32}) & \PH{0.2067} \\
-$\lambda = 3\cdot10^{-3}$  & \PH{44.81} $\to$ \PH{45.14} \ (\textbf{\PH{+0.33}}) & \PH{44.14} $\to$ \PH{42.90} \ (\PH{-1.25}) & \textbf{\PH{0.3416}} \\
-$\lambda = 10$             & \PH{43.96} $\to$ \PH{29.69} \ (\PH{-14.27}) & \PH{31.64} $\to$ \PH{31.54} \ (\PH{-0.11}) & \PH{0.2910} \\
-Hard projection (exact)    & \PH{44.74} $\to$ \PH{47.99} \ (\PH{+3.25}) & \PH{31.62} $\to$ \PH{31.62} \ (\PH{+0.00}) & \PH{0.1994} \\
-Hard projection (STE)      & \PH{45.10} $\to$ \PH{52.73} \ (\PH{+7.63}) & \PH{31.62} $\to$ \PH{31.62} \ (\PH{+0.00}) & \PH{0.2049} \\
-\bottomrule
-\end{tabular}
-\end{table}
+\includegraphics[width=\textwidth]{figs/fig_ratchet.pdf}
+\caption{The ratchet, layer $0$. \textbf{Left}: weight norm across the task
+sequence. \textbf{Right}: activation radius. Exact projection pins the radius to
+$\sqrt d$ and the weight norm climbs anyway; the soft penalty at
+$\lambda = 3\cdot10^{-3}$ arrests both. Plotted separately because the two
+are different measures on different scales.}
+\label{fig:ratchet}
+\end{figure}
 
 % ---------------------------------------------------------------------
 \subsection{Anisotropic, task-rotating weight regularization}
@@ -376,18 +369,9 @@ $\eta = 3\cdot10^{-1}$   & \PH{0.1536} & \PH{0.9649} & \PH{35.97} & \PH{67.59} &
 Across the learning-rate sweep, retention falls as $\eta$ rises and accuracy
 rises with it ($\rho = \PH{-0.77}$, $p = \PH{0.07}$): the step size trades one
 axis against the other. The penalty sweep lies above that trade-off by up to
-\PH{0.169} in retention at matched accuracy (Figure~\ref{fig:frontier}).
+\PH{0.169} in retention at matched accuracy (Figure~\ref{fig:equilibrium}, right).
 
-\begin{figure}[!tb]
-\centering
-\includegraphics[width=0.47\textwidth]{figs/fig_frontier.pdf}
-\hfill
-\includegraphics[width=0.47\textwidth]{figs/fig_selectivity.pdf}
-\caption{\textbf{Left}: the two sweeps in the (accuracy, retention) plane. The
-step size traces a trade-off; the penalty sweep sits above it. \textbf{Right}:
-per-neuron task selectivity at the end of the sequence. \PH{placeholder figures}}
-\label{fig:frontier}
-\end{figure}
+
 
 % =====================================================================
 \section{Magnitude-matched controls}
@@ -427,8 +411,7 @@ of plasticity in the sense of \citet{dohare2024loss} is absent and forgetting is
 the only failure mode present. Subspace overlap does not track retention in
 either form, ruling out the most natural representation-preservation account.
 
-Per-neuron task selectivity is shown in Figure~\ref{fig:frontier} (right):
-\PH{TODO, requires end-of-run checkpoints}.
+\PH{TODO: per-neuron task selectivity figure, requires end-of-run checkpoints.}
 
 % =====================================================================
 \section{Optimizer interaction}
@@ -478,11 +461,117 @@ survives.
 \appendix
 \section{Metric definitions}
 \label{app:metrics}
-\PH{TODO}
+
+All quantities are computed at each task boundary and kept per layer. $h$ denotes
+pre-activations of the layer in question, $d$ its width.
+
+\paragraph{Accuracy and retention.} Let $a_t^{(k)}$ be accuracy on task $k$'s
+held-out set after finishing task $t$, evaluated on the first $\PH{2000}$ test
+examples of that task. We report current-task accuracy $a_t^{(t)}$ and retention
+$\frac{1}{t}\sum_{k<t} a_t^{(k)}$, which excludes the current task and is
+undefined at $t = 0$. We also log
+$\frac{1}{t+1}\sum_{k \le t} a_t^{(k)}$, which includes it; the two differ by
+$\mathcal{O}(1/t)$ and the second is biased toward arms with higher current-task
+accuracy, which is why it is not the reported metric.
+
+\paragraph{Radial quantities.} Radius $\|h\|_2$ and radial excess
+$\|h\|_2 - \sqrt d$, both averaged over the probe batch; \texttt{radius\_std} is
+the standard deviation of $\|h\|_2$ across probe inputs, which is identically
+zero under exact projection.
+
+\paragraph{Radial gradient energy.} $\phirad$ as in \eqref{eq:phirad}, with $g$
+obtained by \texttt{autograd.grad} of the task loss with respect to
+pre-activations. The penalty is never included in the probe loss. A regression
+test asserts that passing the total gradient instead changes the value, and that
+passing the task gradient reproduces the $\lambda = 0$ value exactly.
+
+\paragraph{Drift.} On a probe of $\PH{1000}$ task-$0$ inputs, fixed for the run.
+For representations $h_{\mathrm{cur}}, h_{\mathrm{ref}}$ we log the absolute
+displacement $\|h_{\mathrm{cur}} - h_{\mathrm{ref}}\|_F$, its radial and
+tangential parts with respect to $h_{\mathrm{ref}}$, and each divided by
+$\|h_{\mathrm{ref}}\|_F$. Two references are used: the previous task boundary
+(\emph{consecutive}) and the end of task $0$ (\emph{cumulative}). The relative
+forms are reported for comparability with prior work but are not used for
+cross-$\lambda$ comparison, since the denominator is a quantity the penalty
+directly shrinks.
+
+\paragraph{Subspace overlap.} Top-$k$ left singular subspaces of the two
+representation matrices with $k = \PH{50}$ fixed for every arm; overlap is the
+mean cosine of the principal angles. Bases are computed in float64 on CPU, which
+is deterministic and does not fail on the ill-conditioned matrices that arise at
+large $\lambda$.
+
+\paragraph{Rank and units.} Effective rank $\exp(-\sum_i p_i \log p_i)$ with
+$p_i = \sigma_i/\sum_j \sigma_j$; stable rank $\|A\|_F^2/\|A\|_2^2$; dead
+fraction, the proportion of units with zero output on every probe input; dormant
+fraction, the proportion whose mean absolute activation is below $\PH{0.025}$ of
+the layer mean.
+
+\paragraph{Readiness.} Over $m = \PH{8}$ microbatches of the probe,
+$\|\bar g\|_2 \cdot \|\bar g\|_2^2 / \overline{\|g_i\|_2^2}$, computed
+\emph{per layer}.
 
 \section{Derivations}
 \label{app:derivations}
-\PH{TODO: full derivations for Propositions 1--4, including the regime of \eqref{eq:aniso}.}
+
+\subsection{Proposition~\ref{prop:flow}}
+With $r = \|h\|_2$ and $\hat h = h/r$,
+$\nabla_h L_{\mathrm{pen}} = \frac{2}{d}(r - \sqrt d)\,\hat h$, which lies along
+$\hat h$. Writing $u = r - \sqrt d$ and projecting
+$\dot h = -\nabla_h L_{\mathrm{total}}$ onto $\hat h$ gives \eqref{eq:radial_ode}.
+It is linear in $u$ with coefficient $-2\lambda/d$, hence relaxation time
+$\tau = d/2\lambda$ and stationary point $u^\star = -d g_r / 2\lambda$. As
+$\lambda \to \infty$ the radial mode is infinitely stiff, $u \to 0$, and only the
+tangential term survives, which is gradient flow restricted to
+$\mathbb{S}^{d-1}(\sqrt d)$.
+
+The idealization is that $h$ is treated as a free variable. In the network
+$h = Wx$, so its reachable set is constrained by the parameterization and by the
+input distribution, and the descent is on $W$ rather than on $h$. We report the
+measured slopes against this caveat rather than claiming the ODE governs the
+network.
+
+\subsection{Proposition~\ref{prop:ratchet}}
+$\Pi(cWx) = \sqrt d\,cWx/\|cWx\|_2 = \sqrt d\,Wx/\|Wx\|_2 = \Pi(Wx)$ for $c > 0$,
+so the layer's contribution to $L$ satisfies $L(cW) = L(W)$. Differentiating in
+$c$ at $c = 1$ gives $\langle \nabla_W L, W\rangle = 0$, which is Euler's theorem
+for a degree-zero homogeneous function. Then
+\[
+\|W - \eta \nabla_W L\|_F^2
+ = \|W\|_F^2 - 2\eta\langle \nabla_W L, W\rangle + \eta^2\|\nabla_W L\|_F^2
+ = \|W\|_F^2 + \eta^2\|\nabla_W L\|_F^2 ,
+\]
+which is \eqref{eq:ratchet}. The growth per step is second order in $\eta$ and is
+never opposed, so $\|W\|_F$ increases monotonically. This is the mechanism by
+which scale-invariant layers accumulate weight norm under normalization
+\citep{vanlaarhoven2017l2, arora2019theoretical}; the point here is that it also
+applies when the invariance is introduced by a constraint intended to prevent
+growth.
+
+For the soft penalty, $\nabla_W L_{\mathrm{pen}} = \frac{2}{d}(r - \sqrt d)\hat h x^\top$
+and $\langle \hat h x^\top, W\rangle = \hat h^\top W x = \hat h^\top h = r$, giving
+\eqref{eq:restoring}. Two caveats: the argument is for a single layer with the
+projection applied to its own output, and the straight-through variant does not
+satisfy \eqref{eq:orthogonal} because its backward pass is not the Jacobian of a
+degree-zero map, which is consistent with its inflating faster than the exact
+version.
+
+\subsection{Proposition~\ref{prop:desat}}
+For cross-entropy with logits $z = Vh$,
+$\nabla_h L = V^\top(\mathrm{softmax}(z) - y)$. On a correctly classified example
+$\mathrm{softmax}(z) \to y$ as the correct logit margin grows, so the residual and
+hence $\|\nabla_h L\|$ vanish. Scaling $h$ down scales $z$ down and moves the
+softmax away from that regime. The statement is qualitative: it predicts the sign
+of the change in $\|\nabla_h L\|$, not its size.
+
+\subsection{Proposition~\ref{prop:aniso}}
+If $\|h\|_2 \gg \sqrt d$ then $(\|h\|_2 - \sqrt d)^2 = \|h\|_2^2(1 - \sqrt d/\|h\|_2)^2
+= \|h\|_2^2(1 + \mathcal{O}(\sqrt d/\|h\|_2))$, and
+$\mathbb{E}_x\|Wx\|_2^2 = \Tr(W\Sigma_x W^\top)$ gives \eqref{eq:aniso}. The
+relative error is $\mathcal{O}(\sqrt d / \|h\|_2)$, which at the measured
+$\lambda = \PH{0}$ radius of $\PH{49.8}$ against $\sqrt d = \PH{31.6}$ is roughly
+$\PH{63}\%$: the approximation is loose even where it is best, and we use it only
+to establish the \emph{form} of the regularizer, not its magnitude.
 
 \section{Control construction and acceptance tests}
 \label{app:controls}
@@ -516,6 +605,25 @@ Gradient matched, global          & \PH{0.1971} & \PH{0.346} & \PH{57.02} & \PH{
 
 \begin{table}[!tb]
 \centering
+\caption{The ratchet, exact values for Figure~\ref{fig:ratchet}. Layer $0$,
+first task to last.}
+\label{tab:ratchet}
+\small
+\begin{tabular}{lccc}
+\toprule
+Arm & $\|W\|_F:\ t_0 \to t_{149}$ & radius$:\ t_0 \to t_{149}$ & Retention \\
+\midrule
+$\lambda = 0$ (baseline)   & \PH{44.83} $\to$ \PH{50.86} \ (\PH{+6.03}) & \PH{45.47} $\to$ \PH{49.79} \ (\PH{+4.32}) & \PH{0.2067} \\
+$\lambda = 3\cdot10^{-3}$  & \PH{44.81} $\to$ \PH{45.14} \ (\textbf{\PH{+0.33}}) & \PH{44.14} $\to$ \PH{42.90} \ (\PH{-1.25}) & \textbf{\PH{0.3416}} \\
+$\lambda = 10$             & \PH{43.96} $\to$ \PH{29.69} \ (\PH{-14.27}) & \PH{31.64} $\to$ \PH{31.54} \ (\PH{-0.11}) & \PH{0.2910} \\
+Hard projection (exact)    & \PH{44.74} $\to$ \PH{47.99} \ (\PH{+3.25}) & \PH{31.62} $\to$ \PH{31.62} \ (\PH{+0.00}) & \PH{0.1994} \\
+Hard projection (STE)      & \PH{45.10} $\to$ \PH{52.73} \ (\PH{+7.63}) & \PH{31.62} $\to$ \PH{31.62} \ (\PH{+0.00}) & \PH{0.2049} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[!tb]
+\centering
 \caption{Rank correlation with retention across the eight soft arms, layer $0$.
 Quantities that do not track are reported as such.}
 \label{tab:battery}
@@ -537,6 +645,45 @@ tangential drift          & \PH{-0.738} & \PH{0.037} & gradient readiness  & \PH
 
 \section{Experimental detail and reproducibility}
 \label{app:setup}
-\PH{TODO}
+
+\paragraph{Configuration.} Permuted MNIST, $\PH{150}$ tasks, one fresh input
+permutation per task drawn from the run seed, $\PH{10}$ epochs per task, batch
+$\PH{256}$. MLP with $\PH{3}$ hidden layers of width $\PH{1000}$, ReLU, Kaiming
+uniform initialization, single $10$-way head shared across tasks, no task
+identifier at test time and no replay. SGD without momentum, learning rate
+$\PH{0.1}$, global gradient-norm clip $\PH{0.5}$ except where stated. The penalty
+is applied to pre-activations of all hidden layers.
+
+\paragraph{Seeds and reporting.} $\PH{3}$ seeds per arm. Every table states $n$.
+An arm that has not reached its planned seed count is not reported; comparisons
+are paired on seed and give the test statistic, $p$, $n$ and the sign split.
+Rank correlations across arms are Spearman.
+
+\paragraph{Gradient clipping and its interaction with the controls.} Under the
+default clip of $\PH{0.5}$ the clip binds on $\PH{89}\%$ of steps and pins both
+the penalized and unpenalized arms to the same total gradient norm, so the global
+magnitude confound is zero by construction and a global-magnitude control has
+nothing to remove. The control experiments therefore use a relaxed clip of
+$\PH{10}$, which binds on $\PH{46}\%$ of steps and leaves a global magnitude
+difference of $\PH{20.1}\%$. Removing clipping entirely is not an option: at
+$\eta = \PH{0.1}$ the run diverges, with activation radius reaching $\PH{253}$ by
+task $\PH{10}$.
+
+\paragraph{Ordering of gradient operations.} Any rescaling applied to gradients is
+applied \emph{after} clipping. Applied before, the clip renormalizes it away and
+the intervention silently does nothing. The ordering is asserted at run time and
+covered by a regression test.
+
+\paragraph{Numerics.} All spectral quantities are computed on CPU in float64.
+The GPU decomposition is not used: it raises on ill-conditioned activation
+matrices and its internal fallback is orders of magnitude slower. Any failure
+returns NaN and increments a counter that is written into the run's
+configuration record, so a run with degraded diagnostics is identifiable.
+
+\paragraph{Records.} Each run writes its complete configuration before training
+starts, including every constant that is otherwise implicit (batch size, clip
+norm, probe size, method coefficients), a schema version, the code revision, and
+the hash of any external input file it consumes. \PH{Code and run records will be
+released.}
 
 \end{document}
