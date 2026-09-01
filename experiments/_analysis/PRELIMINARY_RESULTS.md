@@ -132,6 +132,37 @@ beats them on the plasticity axis and still loses 0.17 on retention.
 
 ---
 
+## The same-radius comparison (falls out of S3; no new runs)
+
+Three arms end at **the same activation radius**, within 0.05%:
+
+| arm | n | radius | radial_excess | test_acc | prev_only |
+|---|---|---|---|---|---|
+| baseline λ=0 | 3 | 49.751 | +18.13 | 0.9585 | 0.2067 |
+| **soft penalty λ=10** | 3 | **31.608** | −0.015 | 0.9624 | **0.2910** |
+| hard, tangential | 3 | **31.623** | −0.000 | 0.9580 | 0.1994 |
+| hard, straight-through | 3 | **31.623** | −0.000 | 0.9588 | 0.2049 |
+
+(the sphere target is √1000 = 31.62)
+
+| comparison | delta | t | p | wins |
+|---|---|---|---|---|
+| soft λ=10 vs hard tangential | **+0.0916** | +37.9 | 7.0e-04 | 3/3 |
+| soft λ=10 vs hard straight-through | +0.0861 | +149.2 | 4.5e-05 | 3/3 |
+| soft λ=10 vs baseline | +0.0843 | +56.4 | 3.1e-04 | 3/3 |
+
+**The soft penalty and the hard constraint put the network in the same place and
+get different results.** Identical final geometry, +0.092 retention apart — which
+is 68% of the whole effect at the optimum. The benefit therefore cannot be a
+property of *where* the representation ends up; it is a property of the
+optimization path that gets there.
+
+This is a cleaner mechanism argument than the isotropic control, because it is a
+same-endpoint comparison rather than a matched-intervention one. Together the two
+say: not step magnitude (S1), and not final representation geometry (here).
+
+---
+
 ## S4 — equilibrium law (free, from S3)
 
 Prediction: log-log slope of radial excess vs λ should be −1.
