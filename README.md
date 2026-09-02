@@ -214,27 +214,24 @@ Before starting anything, read [Core metrics](#core-metrics) and
 [Conventions](#conventions-that-are-not-optional) above. If you are using a
 coding agent, give it this README.
 
-## Harshit — baselines, and curvature
+## Harshit — second task family, and curvature
 
-### T5. Baselines (`S6_baselines`, 39 runs, no new code)
+### T7. Second task family (`S8_rotating_mnist`, 18 runs, no new code)
 
-The paper argues the penalty acts as an anisotropic weight regularizer whose axes
-rotate with the task, and predicts that an isotropic weight penalty of matched
-strength cannot reproduce the benefit. There is currently no data for this. It is
-the only claim in the paper with none.
+The paper is one task family, one architecture. This is the first thing a
+reviewer will raise.
 
 ```bash
-PYTHONPATH=. python3 -m src.launch --study S6_baselines --dry-run
-PYTHONPATH=. python3 -m src.launch --study S6_baselines --gpus 0 --concurrency 8 --threads 16 --tmux
-PYTHONPATH=. python3 analysis/sweeps.py S6_baselines
+PYTHONPATH=. python3 -m src.launch --study S8_rotating_mnist --gpus 0 --concurrency 8 --threads 16 --tmux
+PYTHONPATH=. python3 analysis/sweeps.py S8_rotating_mnist
 ```
 
-Arms: baseline, weight decay at two strengths, LayerNorm+WD, regularize-to-init,
-shrink-and-perturb, EWC at three strengths, SI, MAS, the penalty, and
-penalty+EWC. Report the frontier scatter, not a single column: the claim is
-Pareto position, not dominance. Note in `STUDY.md` that MAS reaches very low
-current-task accuracy, so its retention is an artifact of a network that never
-trained, and say so rather than letting it read as a strong baseline.
+Rotating MNIST is a continuous input transformation rather than a permutation, so
+it is a real test of the account and not only a generality box-tick: the
+anisotropy argument makes a *different* prediction when the input covariance
+rotates smoothly. Report whether `phi_rad_tilde` at layer 0 still tracks
+retention there. Round 1-4 tested only penalty strengths far past the optimum on
+this benchmark, so use the sweep as defined.
 
 ### T9. Curvature diagnostics (~40 lines)
 
@@ -294,24 +291,27 @@ Follow the figure conventions already in `analysis/figures.py`: categorical
 colours in fixed slot order, no dual axes, text in ink colours rather than series
 colours, and look at the rendered output before calling it done.
 
-## Sarthak — second benchmark, and the causal arm
+## Sarthak — baselines, and the causal arm
 
-### T7. Second task family (`S8_rotating_mnist`, 18 runs, no new code)
+### T5. Baselines (`S6_baselines`, 39 runs, no new code)
 
-The paper is one task family, one architecture. This is the first thing a
-reviewer will raise.
+The paper argues the penalty acts as an anisotropic weight regularizer whose axes
+rotate with the task, and predicts that an isotropic weight penalty of matched
+strength cannot reproduce the benefit. There is currently no data for this. It is
+the only claim in the paper with none.
 
 ```bash
-PYTHONPATH=. python3 -m src.launch --study S8_rotating_mnist --gpus 0 --concurrency 8 --threads 16 --tmux
-PYTHONPATH=. python3 analysis/sweeps.py S8_rotating_mnist
+PYTHONPATH=. python3 -m src.launch --study S6_baselines --dry-run
+PYTHONPATH=. python3 -m src.launch --study S6_baselines --gpus 0 --concurrency 8 --threads 16 --tmux
+PYTHONPATH=. python3 analysis/sweeps.py S6_baselines
 ```
 
-Rotating MNIST is a continuous input transformation rather than a permutation, so
-it is a real test of the account and not only a generality box-tick: the
-anisotropy argument makes a *different* prediction when the input covariance
-rotates smoothly. Report whether `phi_rad_tilde` at layer 0 still tracks
-retention there. Round 1-4 tested only penalty strengths far past the optimum on
-this benchmark, so use the sweep as defined.
+Arms: baseline, weight decay at two strengths, LayerNorm+WD, regularize-to-init,
+shrink-and-perturb, EWC at three strengths, SI, MAS, the penalty, and
+penalty+EWC. Report the frontier scatter, not a single column: the claim is
+Pareto position, not dominance. Note in `STUDY.md` that MAS reaches very low
+current-task accuracy, so its retention is an artifact of a network that never
+trained, and say so rather than letting it read as a strong baseline.
 
 ### T11. The causal arm (~60 lines, design first)
 
