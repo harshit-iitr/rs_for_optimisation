@@ -1,6 +1,4 @@
 # Datasets (re-downloadable)
-data/
-*/data/
 *.tar.gz
 *-batches-py/
 *-python/
