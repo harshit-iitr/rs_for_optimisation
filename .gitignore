@@ -1,6 +1,7 @@
-# Datasets (re-downloadable)
-data/
-*/data/
+# Downloaded datasets, re-fetched automatically on first run.
+# Anchored to the repository root: `*/data/` would also match src/data/, which is
+# the dataset-loader module and must be tracked.
+/data/
 *.tar.gz
 *-batches-py/
 *-python/
