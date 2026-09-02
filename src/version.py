@@ -9,7 +9,7 @@ Round 5 starts at 100 to leave the archived 20/21/22/23/26/28/30/31-column
 generations unambiguously in the 0-31 range.
 """
 
-SCHEMA_VERSION = 100
+SCHEMA_VERSION = 101  # 100 -> 101: added hessian_trace, sigma_max columns (T9)
 
 # Round-5 canonical experiment configuration. Any study that deviates must say so
 # in its STUDY.md. Consumed by src/config.py so it lands in every config.json.

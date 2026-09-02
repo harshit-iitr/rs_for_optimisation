@@ -4,7 +4,7 @@
 
 **Supports.** Supporting. Round 1-4's version lacked per-width baselines at the canonical budget.
 
-**Status.** planned â€” 0 complete, 0 failed, 24 not started, of 24 planned runs.
+**Status.** planned — 0 complete, 0 failed, 24 not started, of 24 planned runs.
 
 ## Finding
 
@@ -37,18 +37,18 @@ Seeds: `[1, 2, 3]`
 
 | arm | seeds complete | status |
 |---|---|---|
-| `width_1000/baseline` | 0/3 | 0/3 done |
-| `width_1000/penalty` | 0/3 | 0/3 done |
-| `width_2048/baseline` | 0/3 | 0/3 done |
-| `width_2048/penalty` | 0/3 | 0/3 done |
-| `width_256/baseline` | 0/3 | 0/3 done |
-| `width_256/penalty` | 0/3 | 0/3 done |
-| `width_512/baseline` | 0/3 | 0/3 done |
-| `width_512/penalty` | 0/3 | 0/3 done |
+| `width_1000\baseline` | 0/3 | 0/3 done |
+| `width_1000\penalty` | 0/3 | 0/3 done |
+| `width_2048\baseline` | 0/3 | 0/3 done |
+| `width_2048\penalty` | 0/3 | 0/3 done |
+| `width_256\baseline` | 0/3 | 0/3 done |
+| `width_256\penalty` | 0/3 | 0/3 done |
+| `width_512\baseline` | 0/3 | 0/3 done |
+| `width_512\penalty` | 0/3 | 0/3 done |
 
 ## Phases
 
-0. `sweep` â€” 8 arm(s)
+0. `sweep` — 8 arm(s)
 
 ---
 

@@ -47,6 +47,7 @@ from src.metrics.gradients import group_grad_norms, param_groups
 from src.metrics.neurons import compute_dead_fraction, compute_dormant_fraction
 from src.metrics.norms import compute_activation_radius, compute_grad_norm, compute_weight_norm
 from src.metrics.phi_rad import compute_phi_rad_tilde
+from src.metrics.curvature import hutchinson_trace, power_iteration_sigma_max
 from src.metrics.linalg import FALLBACKS, reset_counters
 from src.metrics.rank import compute_ranks
 from src.metrics.readiness import compute_readiness
@@ -125,6 +126,14 @@ def build_args():
                    help="compute the SVD-based metrics (eff_rank, stable_rank, "
                         "drift, subspace overlap) every N tasks. The final 20 "
                         "tasks -- the reported window -- are ALWAYS computed.")
+    p.add_argument("--hessian_probes", type=int, default=50,
+                   help="number of Rademacher probes for Hutchinson Hessian "
+                        "trace estimate. 50 gives <5%% relative error (Table 8 "
+                        "in the paper).")
+    p.add_argument("--curvature_batch", type=int, default=256,
+                   help="batch size for curvature probes (Hessian trace and "
+                        "sigma_max). Smaller than probe_size because each probe "
+                        "requires a full backward pass.")
     return p.parse_args()
 
 
@@ -334,6 +343,21 @@ def main():
         g_tasks = torch.autograd.grad(loss_p, pre_p, retain_graph=True)
         loss_p.backward()
 
+        # ---- curvature diagnostics (T9) ----
+        # Hessian trace and top eigenvalue, per the paper's Proposition 3.
+        # Uses a smaller batch than the full probe to keep cost manageable:
+        # n_probes backward passes for trace, n_iters for sigma_max.
+        model.eval()
+        curv_n = min(args.curvature_batch, n_probe)
+        curv_x, curv_y = probe_x[:curv_n], probe_y[:curv_n]
+        h_trace = hutchinson_trace(
+            model, criterion, curv_x, curv_y,
+            n_probes=args.hessian_probes, fwd_kwargs=fwd)
+        s_max = power_iteration_sigma_max(
+            model, criterion, curv_x, curv_y,
+            n_iters=20, fwd_kwargs=fwd)
+        model.train()
+
         # Spectral metrics are the expensive part. Compute them on a stride, but
         # ALWAYS in the final 20 tasks, which is the window every table reports.
         in_window = t >= args.n_tasks - 20
@@ -362,6 +386,8 @@ def main():
                 "g_rad_norm": torch.sqrt((g_rad ** 2).sum(-1)).mean().item(),
                 "g_norm_task": torch.norm(g, p=2, dim=-1).mean().item(),
                 "readiness": readiness.get(l, float("nan")),
+                "hessian_trace": h_trace,
+                "sigma_max": s_max,
             })
 
         drift_keys = ["drift_abs", "drift_rad_abs", "drift_tan_abs", "ref_norm",

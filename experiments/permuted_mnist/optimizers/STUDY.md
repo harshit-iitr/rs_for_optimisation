@@ -4,7 +4,7 @@
 
 **Supports.** Supporting. Single code generation; lr stated per optimizer.
 
-**Status.** planned â€” 0 complete, 0 failed, 18 not started, of 18 planned runs.
+**Status.** planned — 0 complete, 0 failed, 18 not started, of 18 planned runs.
 
 ## Finding
 
@@ -37,16 +37,16 @@ Seeds: `[1, 2, 3]`
 
 | arm | seeds complete | status |
 |---|---|---|
-| `adam/baseline` | 0/3 | 0/3 done |
-| `adam/penalty` | 0/3 | 0/3 done |
-| `sgd/baseline` | 0/3 | 0/3 done |
-| `sgd/penalty` | 0/3 | 0/3 done |
-| `sgd_momentum/baseline` | 0/3 | 0/3 done |
-| `sgd_momentum/penalty` | 0/3 | 0/3 done |
+| `adam\baseline` | 0/3 | 0/3 done |
+| `adam\penalty` | 0/3 | 0/3 done |
+| `sgd\baseline` | 0/3 | 0/3 done |
+| `sgd\penalty` | 0/3 | 0/3 done |
+| `sgd_momentum\baseline` | 0/3 | 0/3 done |
+| `sgd_momentum\penalty` | 0/3 | 0/3 done |
 
 ## Phases
 
-0. `sweep` â€” 6 arm(s)
+0. `sweep` — 6 arm(s)
 
 ---
 

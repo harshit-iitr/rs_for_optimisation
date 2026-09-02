@@ -4,7 +4,7 @@
 
 **Supports.** Paper claims 2 and 4; supplies the data for the equilibrium-law fit (S4).
 
-**Status.** INCOMPLETE (failures present) â€” 28 complete, 11 failed, 0 not started, of 39 planned runs.
+**Status.** INCOMPLETE (failures present) — 28 complete, 11 failed, 0 not started, of 39 planned runs.
 
 ## Finding
 
@@ -54,7 +54,7 @@ Seeds: `[1, 2, 3]`
 
 ## Phases
 
-0. `sweep` â€” 13 arm(s)
+0. `sweep` — 13 arm(s)
 
 ---
 

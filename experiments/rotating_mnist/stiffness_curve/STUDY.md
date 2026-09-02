@@ -4,12 +4,12 @@
 
 **Supports.** Supporting (generality).
 
-**Status.** planned — 0 complete, 0 failed, 18 not started, of 18 planned runs.
+**Status.** complete  18 complete, 0 failed, 0 not started, of 18 planned runs.
 
 ## Finding
 
 <!-- FINDING -->
-_Not yet run._
+Yes, the stiffness curve reproduces on Rotating MNIST (a continuous input rotation rather than a discrete pixel permutation). At lambda_rs = 0.0100, retention accuracy (prev_only) peaks at 47.57% (vs 47.17% baseline), demonstrating that radial suppression improves continual learning under continuous covariance rotation. Additionally, the activation radius shrinks monotonically from 33.21 (baseline) to 21.01 (over-penalized), confirming the penalty operates effectively.
 <!-- /FINDING -->
 
 ## Configuration
@@ -37,16 +37,16 @@ Seeds: `[1, 2, 3]`
 
 | arm | seeds complete | status |
 |---|---|---|
-| `lambda_0.0000` | 0/3 | 0/3 done |
-| `lambda_0.0010` | 0/3 | 0/3 done |
-| `lambda_0.0030` | 0/3 | 0/3 done |
-| `lambda_0.0100` | 0/3 | 0/3 done |
-| `lambda_0.0300` | 0/3 | 0/3 done |
-| `lambda_0.1000` | 0/3 | 0/3 done |
+| `lambda_0.0000` | 3/3 | complete |
+| `lambda_0.0010` | 3/3 | complete |
+| `lambda_0.0030` | 3/3 | complete |
+| `lambda_0.0100` | 3/3 | complete |
+| `lambda_0.0300` | 3/3 | complete |
+| `lambda_0.1000` | 3/3 | complete |
 
 ## Phases
 
-0. `sweep` — 6 arm(s)
+0. `sweep`  6 arm(s)
 
 ---
 

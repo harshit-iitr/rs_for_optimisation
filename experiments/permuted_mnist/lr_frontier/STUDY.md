@@ -4,7 +4,7 @@
 
 **Supports.** Paper claim 1. Becomes the reference frontier for claim 2.
 
-**Status.** INCOMPLETE (failures present) â€” 13 complete, 8 failed, 0 not started, of 21 planned runs.
+**Status.** INCOMPLETE (failures present) — 13 complete, 8 failed, 0 not started, of 21 planned runs.
 
 ## Finding
 
@@ -48,7 +48,7 @@ Seeds: `[1, 2, 3]`
 
 ## Phases
 
-0. `sweep` â€” 7 arm(s)
+0. `sweep` — 7 arm(s)
 
 ---
 

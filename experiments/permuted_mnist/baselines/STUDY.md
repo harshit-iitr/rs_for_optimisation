@@ -4,7 +4,7 @@
 
 **Supports.** Supporting (Pareto position and additivity).
 
-**Status.** planned â€” 0 complete, 0 failed, 39 not started, of 39 planned runs.
+**Status.** planned — 0 complete, 0 failed, 39 not started, of 39 planned runs.
 
 ## Finding
 
@@ -53,7 +53,7 @@ Seeds: `[1, 2, 3]`
 
 ## Phases
 
-0. `sweep` â€” 13 arm(s)
+0. `sweep` — 13 arm(s)
 
 ---
 

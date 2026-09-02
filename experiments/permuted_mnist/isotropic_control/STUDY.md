@@ -4,7 +4,7 @@
 
 **Supports.** Paper claim 3 (mechanism: direction vs magnitude). Decisive.
 
-**Status.** INCOMPLETE (failures present) â€” 38 complete, 4 failed, 8 not started, of 50 planned runs.
+**Status.** INCOMPLETE (failures present) — 38 complete, 4 failed, 8 not started, of 50 planned runs.
 
 ## Finding
 
@@ -74,23 +74,23 @@ Seeds: `[1, 2, 3, 4, 5]`
 
 | arm | seeds complete | status |
 |---|---|---|
-| `clipped/arm_baseline` | 5/5 | complete |
-| `clipped/arm_iso_wnorm` | 3/5 | 3/5 done |
-| `clipped/arm_isotropic_global` | 5/5 | complete |
-| `clipped/arm_isotropic_per_layer` | 5/5 | complete |
-| `clipped/arm_penalty_lam0.003` | 3/5 | FAILED: seed_1, seed_3 |
-| `loose/arm_baseline` | 5/5 | complete |
-| `loose/arm_iso_wnorm` | 3/5 | 3/5 done |
-| `loose/arm_isotropic_global` | 3/5 | 3/5 done |
-| `loose/arm_isotropic_per_layer` | 3/5 | 3/5 done |
-| `loose/arm_penalty_lam0.003` | 3/5 | FAILED: seed_3, seed_5 |
+| `clipped\arm_baseline` | 5/5 | complete |
+| `clipped\arm_iso_wnorm` | 3/5 | 3/5 done |
+| `clipped\arm_isotropic_global` | 5/5 | complete |
+| `clipped\arm_isotropic_per_layer` | 5/5 | complete |
+| `clipped\arm_penalty_lam0.003` | 3/5 | FAILED: seed_1, seed_3 |
+| `loose\arm_baseline` | 5/5 | complete |
+| `loose\arm_iso_wnorm` | 3/5 | 3/5 done |
+| `loose\arm_isotropic_global` | 3/5 | 3/5 done |
+| `loose\arm_isotropic_per_layer` | 3/5 | 3/5 done |
+| `loose\arm_penalty_lam0.003` | 3/5 | FAILED: seed_3, seed_5 |
 
 ## Phases
 
-0. `clipped_A_targets` â€” 2 arm(s)
-1. `clipped_B_controls` â€” 3 arm(s)
-2. `loose_A_targets` â€” 2 arm(s)
-3. `loose_B_controls` â€” 3 arm(s)
+0. `clipped_A_targets` — 2 arm(s)
+1. `clipped_B_controls` — 3 arm(s)
+2. `loose_A_targets` — 2 arm(s)
+3. `loose_B_controls` — 3 arm(s)
 
 ---
 

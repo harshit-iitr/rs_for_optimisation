@@ -12,7 +12,7 @@ Regenerate this file and every `STUDY.md` with `python3 -m src.docs`. Status is 
 | [`permuted_mnist/width_scaling`](permuted_mnist/width_scaling/STUDY.md) | Does the penalty's advantage grow with width? | Supporting. Round 1-4's version lacked per-width baselines at the canonical budget. | planned | 0/24 |
 | [`permuted_mnist/baselines`](permuted_mnist/baselines/STUDY.md) | Where does the penalty sit on the plasticity-stability frontier relative to parameter-regularization baselines, and does it compose? | Supporting (Pareto position and additivity). | planned | 0/39 |
 | [`permuted_mnist/optimizers`](permuted_mnist/optimizers/STUDY.md) | Does the effect survive momentum, and does it survive adaptive preconditioning? | Supporting. Single code generation; lr stated per optimizer. | planned | 0/18 |
-| [`rotating_mnist/stiffness_curve`](rotating_mnist/stiffness_curve/STUDY.md) | Does the stiffness curve reproduce on a second benchmark? | Supporting (generality). | planned | 0/18 |
+| [`rotating_mnist/stiffness_curve`](rotating_mnist/stiffness_curve/STUDY.md) | Does the stiffness curve reproduce on a second benchmark? | Supporting (generality). | complete | 18/18 |
 | [`permuted_mnist/plasticity_vs_forgetting`](permuted_mnist/plasticity_vs_forgetting/STUDY.md) | Which failure mode does this benchmark exhibit at the canonical config -- loss of plasticity or forgetting? | Setup. Establishes what the paper is measuring. | INCOMPLETE (failures present) | 0/6 |
 
 ## Layout

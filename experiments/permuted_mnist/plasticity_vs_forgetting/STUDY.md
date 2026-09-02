@@ -4,7 +4,7 @@
 
 **Supports.** Setup. Establishes what the paper is measuring.
 
-**Status.** INCOMPLETE (failures present) â€” 0 complete, 6 failed, 0 not started, of 6 planned runs.
+**Status.** INCOMPLETE (failures present) — 0 complete, 6 failed, 0 not started, of 6 planned runs.
 
 ## Finding
 
@@ -42,7 +42,7 @@ Seeds: `[1, 2, 3]`
 
 ## Phases
 
-0. `sweep` â€” 2 arm(s)
+0. `sweep` — 2 arm(s)
 
 ---
 
