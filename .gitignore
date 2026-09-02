@@ -20,3 +20,15 @@ __pycache__/
 *.log.tex
 *.out
 *.toc
+
+# Per-step gradient/weight traces. Regenerable with --log_grad_trace, and the
+# launcher's phase ordering rebuilds them before any arm that consumes them.
+# 335 MB across 60 files, so they stay out of the repository.
+*.npz
+
+# Other manuscripts that live on this machine but are not part of this project.
+grok_at_first_sight/
+tmlr_algorithmic_generalisation/
+
+# Unpublished multi-author draft belonging to other people.
+experiments/_archive/old_multiauthor_report/
