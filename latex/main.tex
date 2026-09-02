@@ -74,35 +74,51 @@ of a previously fitted solution an optimization path destroys. We are not
 proposing a continual-learning method and do not compete with replay or
 parameter-importance schemes; the sequence is a probe.
 
-\paragraph{What we find.}
-\begin{enumerate}
-\item Unpenalized training inflates both activation radius and weight norm
-      \emph{monotonically across tasks}. The penalty arrests both
-      (\S\ref{sec:ratchet}).
-\item The normalized radial gradient energy $\phirad$ falls sharply at the first
-      hidden layer and tracks retention across the sweep. It falls because the
-      \emph{tangential} gradient grows by \PH{43.5}\%, not because the radial
-      gradient shrinks, which it does by \PH{4.9}\% (\S\ref{sec:radial}).
-\item Reducing the learning rate reproduces the penalty's entire static geometric
-      signature (radius, radial excess, weight norm, effective rank) and
-      reproduces neither its accuracy nor its retention (\S\ref{sec:lr}).
-\item Exactly enforcing the constraint removes the benefit. We give a short
-      argument for why: projection makes the layer degree-zero homogeneous in
-      $W$, the loss gradient becomes orthogonal to $W$, and the weight norm
-      becomes non-decreasing (\S\ref{sec:projection}).
-\end{enumerate}
+\paragraph{What we find.} Unpenalized training inflates activation radius and
+weight norm monotonically across tasks, and the penalty arrests both
+(\S\ref{sec:ratchet}). Normalized radial gradient energy falls sharply at the
+first hidden layer and tracks retention, but it falls because the tangential
+gradient grows by \PH{43.5}\%, not because the radial gradient shrinks, which it
+does by \PH{4.9}\% (\S\ref{sec:radial}). Reducing the step size reproduces the
+penalty's entire static geometric signature and reproduces neither its accuracy
+nor its retention (\S\ref{sec:lr}). Enforcing the constraint exactly removes the
+benefit, for a reason we can derive (\S\ref{sec:projection}).
+
+\paragraph{Relation to existing work.}
+The mathematics behind our Proposition~\ref{prop:ratchet} is not new. That a
+scale-invariant layer has $\langle \nabla_W L, W\rangle = 0$, and that its weight
+norm therefore grows as $\|W_{t+1}\|^2 = \|W_t\|^2 + \eta^2\|\nabla_W L\|^2$, is
+established for normalization layers \citep{vanlaarhoven2017l2, hoffer2018norm,
+arora2019theoretical}, is the reason $L_2$ regularization acts on the effective
+learning rate rather than on the function under batch normalization
+\citep{vanlaarhoven2017l2, zhang2019three}, and motivates optimizers that
+explicitly remove the norm-increasing component of the update
+\citep{heo2021adamp}. Our contribution is not the identity but where it applies:
+a projection introduced \emph{in order to bound} activation norms creates exactly
+the invariance that lets weight norms grow without opposition, so the constraint
+defeats its own purpose. We give the measurement in \S\ref{sec:projection}.
+
+Activation-norm penalties themselves are not new either
+\citep{merity2018regularizing}, and normalization layers impose a hard
+per-example version of the same constraint \citep{ba2016layer,
+salimans2016weight}. The distinction we care about is soft versus enforced, and
+it is the one that turns out to matter. On the continual-learning side we use the
+standard setting \citep{goodfellow2013empirical} only as an instrument; we do not
+compare against parameter-importance methods \citep{kirkpatrick2017ewc,
+zenke2017si} on their own terms, and the failure mode present here is forgetting
+rather than the loss of plasticity studied by \citet{dohare2024loss}.
 
 % =====================================================================
 \section{Setup}
 \label{sec:setup}
 
-\paragraph{Task sequence.} Permuted MNIST, $T = 150$ tasks, a fresh input
-permutation per task, 10 epochs per task, no replay and no task identifier at
-test time. Network: \PH{3}-hidden-layer MLP of width \PH{1000}, ReLU, single head.
-SGD, learning rate \PH{0.1}, batch \PH{256}, global gradient-norm clip
-\PH{0.5}. The penalty is applied to pre-activations of all hidden layers, per
-sample, averaged over the batch. Unless stated otherwise, quantities are reported
-at layer $0$, averaged over the final $20$ tasks, over \PH{3} seeds.
+\paragraph{Task sequence.} Permuted MNIST, $T = \PH{150}$ tasks, a fresh input
+permutation per task, \PH{10} epochs per task, no replay and no task identifier
+at test time. A \PH{3}-hidden-layer MLP of width \PH{1000}, ReLU, single head;
+SGD at \PH{0.1}, batch \PH{256}, global gradient-norm clip \PH{0.5}. The
+penalty applies to pre-activations of all hidden layers. Unless stated otherwise
+quantities are at layer $0$, averaged over the final $20$ tasks, \PH{3} seeds.
+Full detail in Appendix~\ref{app:setup}.
 
 \paragraph{Metrics.} We report current-task accuracy and \emph{retention}, the
 mean accuracy over previously seen tasks, excluding the current one. Geometric
@@ -282,11 +298,12 @@ reduces $\|W\|_F$.
 The two constructions therefore differ in exactly the coordinate the constraint
 is about. Projection removes the radius from the forward pass, which makes weight
 growth free of charge; the soft penalty leaves the radius in the forward pass, so
-weight growth is still visible to the loss and is charged for. Equation
-\eqref{eq:ratchet} is the same mechanism by which scale-invariant layers under
-normalization schemes accumulate weight norm \citep{vanlaarhoven2017l2,
-arora2019theoretical, lyu2020reconciling}; the observation here is that it
-converts an intended constraint into a ratchet.
+weight growth is still visible to the loss and is charged for. Equation \eqref{eq:ratchet} is the standard scale-invariance argument
+\citep{vanlaarhoven2017l2, hoffer2018norm, arora2019theoretical}; what is new is
+the setting. Normalization layers are not introduced to bound weights, so their
+norm growth is a side effect one may choose to correct \citep{heo2021adamp}.
+Here the invariance is created by a constraint whose stated purpose is to bound
+the very quantity it then allows to grow unopposed.
 
 \paragraph{Prediction 2.} Under exact projection the activation radius is pinned
 and the weight norm nevertheless inflates across tasks. Under the soft penalty at
@@ -399,30 +416,24 @@ partway, and recovers $\PH{16}\%$.
 Across the eight soft arms, three diagnostics track retention at layer $0$:
 $\phirad$, cumulative representation drift from task $0$, and the end-of-task
 update norm, all at $\rho = \PH{-0.905}$, $p = \PH{0.002}$. Consecutive drift
-and its tangential part track more weakly ($\rho = \PH{-0.738}$,
-$p = \PH{0.037}$). Radial drift, effective and stable rank, subspace overlap and
-gradient readiness do not track at all; the full table is
-Appendix~\ref{app:battery}. We report the negatives because they constrain the
-account as much as the positives. \PH{TODO: add curvature row (Hessian trace via
-Hutchinson) and $\sigma_{\max}$.}
-
-Two negatives matter. The dead-unit fraction is \PH{0.000} in every arm, so loss
-of plasticity in the sense of \citet{dohare2024loss} is absent and forgetting is
-the only failure mode present. Subspace overlap does not track retention in
-either form, ruling out the most natural representation-preservation account.
-
-\PH{TODO: per-neuron task selectivity figure, requires end-of-run checkpoints.}
+tracks more weakly ($\rho = \PH{-0.738}$). Radial drift, effective and stable
+rank, subspace overlap and gradient readiness do not track at all
+(Appendix~\ref{app:battery}). Two of those negatives constrain the account. The
+dead-unit fraction is \PH{0.000} in every arm, so loss of plasticity in the sense
+of \citet{dohare2024loss} is absent and forgetting is the only failure mode
+present. Subspace overlap does not track in either its consecutive or its
+cumulative form, which rules out the most natural representation-preservation
+explanation. \PH{TODO: curvature row; per-neuron task selectivity figure.}
 
 % =====================================================================
 \section{Optimizer interaction}
 \label{sec:optimizers}
 
-\PH{TODO S7. The decomposition in Proposition~\ref{prop:flow} is stated for
-gradient flow. A diagonal preconditioner rescales coordinates independently and
-does not in general preserve the radial/tangential split in activation space, so
-the effect should weaken under adaptive methods and survive under momentum.
-Table with SGD / SGD+momentum / Adam, with and without penalty, learning rate
-chosen per optimizer and stated.}
+Proposition~\ref{prop:flow} is stated for gradient flow. A diagonal
+preconditioner rescales coordinates independently and does not preserve the
+radial/tangential split in activation space, so the effect should survive
+momentum and weaken under adaptive methods. \PH{TODO S7: SGD, SGD+momentum and
+Adam, with and without the penalty, step size chosen per optimizer and stated.}
 
 % =====================================================================
 \section{Limitations}

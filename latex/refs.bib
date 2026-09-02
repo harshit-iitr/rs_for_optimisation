@@ -1,73 +1,115 @@
 % Encoding: UTF-8
+% All entries verified against arXiv / publisher pages, September 2026.
 
-@inproceedings{absil2008optimization,
-  title={Optimization Algorithms on Matrix Manifolds},
-  author={Absil, P.-A. and Mahony, R. and Sepulchre, R.},
-  publisher={Princeton University Press}, year={2008}}
-
-@article{ba2016layer,
-  title={Layer Normalization}, author={Ba, Jimmy Lei and Kiros, Jamie Ryan and Hinton, Geoffrey E.},
-  journal={arXiv:1607.06450}, year={2016}}
-
-@inproceedings{salimans2016weight,
-  title={Weight Normalization: A Simple Reparameterization to Accelerate Training of Deep Neural Networks},
-  author={Salimans, Tim and Kingma, Diederik P.}, booktitle={NeurIPS}, year={2016}}
-
-@inproceedings{vanlaarhoven2017l2,
-  title={{L2} Regularization versus Batch and Weight Normalization},
-  author={van Laarhoven, Twan}, journal={arXiv:1706.05350}, year={2017}}
-
-@inproceedings{cohen2021gradient,
-  title={Gradient Descent on Neural Networks Typically Occurs at the Edge of Stability},
-  author={Cohen, Jeremy M. and Kaur, Simran and Li, Yuanzhi and Kolter, J. Zico and Talwalkar, Ameet},
-  booktitle={ICLR}, year={2021}}
-
-@inproceedings{kirkpatrick2017ewc,
-  title={Overcoming Catastrophic Forgetting in Neural Networks},
-  author={Kirkpatrick, James and others}, journal={PNAS}, volume={114}, number={13}, year={2017}}
-
-@inproceedings{zenke2017si,
-  title={Continual Learning Through Synaptic Intelligence},
-  author={Zenke, Friedemann and Poole, Ben and Ganguli, Surya}, booktitle={ICML}, year={2017}}
-
-@inproceedings{goodfellow2013empirical,
-  title={An Empirical Investigation of Catastrophic Forgetting in Gradient-Based Neural Networks},
-  author={Goodfellow, Ian J. and Mirza, Mehdi and Xiao, Da and Courville, Aaron and Bengio, Yoshua},
-  journal={arXiv:1312.6211}, year={2013}}
-
-@article{dohare2024loss,
-  title={Loss of Plasticity in Deep Continual Learning},
-  author={Dohare, Shibhansh and Hernandez-Garcia, J. Fernando and Lan, Qingfeng and Rahman, Parash
-          and Mahmood, A. Rupam and Sutton, Richard S.},
-  journal={Nature}, volume={632}, year={2024}}
-
-@inproceedings{lyu2020reconciling,
-  title={Reconciling Modern Deep Learning with Traditional Optimization Analyses: The Intrinsic Learning Rate},
-  author={Li, Zhiyuan and Arora, Sanjeev}, booktitle={NeurIPS}, year={2020}}
+@article{vanlaarhoven2017l2,
+  author  = {Twan van Laarhoven},
+  title   = {{L2} Regularization versus Batch and Weight Normalization},
+  journal = {arXiv:1706.05350},
+  year    = {2017}}
 
 @inproceedings{arora2019theoretical,
-  title={Theoretical Analysis of Auto Rate-Tuning by Batch Normalization},
-  author={Arora, Sanjeev and Li, Zhiyuan and Lyu, Kaifeng}, booktitle={ICLR}, year={2019}}
+  author    = {Sanjeev Arora and Zhiyuan Li and Kaifeng Lyu},
+  title     = {Theoretical Analysis of Auto Rate-Tuning by Batch Normalization},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2019},
+  note      = {arXiv:1812.03981}}
 
-@inproceedings{gunasekar2018implicit,
-  title={Characterizing Implicit Bias in Terms of Optimization Geometry},
-  author={Gunasekar, Suriya and Lee, Jason and Soudry, Daniel and Srebro, Nathan},
-  booktitle={ICML}, year={2018}}
+@inproceedings{hoffer2018norm,
+  author    = {Elad Hoffer and Ron Banner and Itay Golan and Daniel Soudry},
+  title     = {Norm Matters: Efficient and Accurate Normalization Schemes in Deep Networks},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2018},
+  note      = {arXiv:1803.01814}}
 
-@inproceedings{nocedal2006numerical,
-  title={Numerical Optimization}, author={Nocedal, Jorge and Wright, Stephen J.},
-  publisher={Springer}, year={2006}}
+@inproceedings{heo2021adamp,
+  author    = {Byeongho Heo and Sanghyuk Chun and Seong Joon Oh and Dongyoon Han
+               and Sangdoo Yun and Gyuwan Kim and Youngjung Uh and Jung-Woo Ha},
+  title     = {{AdamP}: Slowing Down the Slowdown for Momentum Optimizers on
+               Scale-invariant Weights},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2021},
+  note      = {arXiv:2006.08217}}
 
-@inproceedings{prieto2025stablemax,
-  title={Grokking at the Edge of Numerical Stability},
-  author={Prieto, Lucas and Barsbey, Melih and Mediano, Pedro A. M. and Birdal, Tolga},
-  journal={arXiv:2501.04697}, year={2025}}
+@inproceedings{zhang2019three,
+  author    = {Guodong Zhang and Chaoqi Wang and Bowen Xu and Roger Grosse},
+  title     = {Three Mechanisms of Weight Decay Regularization},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2019},
+  note      = {arXiv:1810.12281}}
 
-@inproceedings{anon2026radial,
-  title={Radial Suppression Accelerates Algorithmic Generalization: A Geometric Analysis of Delayed Generalization},
-  author={Anonymous}, booktitle={ICML Workshop (non-archival)}, year={2026}}
+@inproceedings{cohen2021gradient,
+  author    = {Jeremy M. Cohen and Simran Kaur and Yuanzhi Li and J. Zico Kolter
+               and Ameet Talwalkar},
+  title     = {Gradient Descent on Neural Networks Typically Occurs at the Edge
+               of Stability},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2021},
+  note      = {arXiv:2103.00065}}
 
-@inproceedings{merity2018regularizing,
-  title={Regularizing and Optimizing {LSTM} Language Models},
-  author={Merity, Stephen and Keskar, Nitish Shirish and Socher, Richard},
-  booktitle={ICLR}, year={2018}}
+@book{absil2008optimization,
+  author    = {P.-A. Absil and R. Mahony and R. Sepulchre},
+  title     = {Optimization Algorithms on Matrix Manifolds},
+  publisher = {Princeton University Press},
+  year      = {2008}}
+
+@book{nocedal2006numerical,
+  author    = {Jorge Nocedal and Stephen J. Wright},
+  title     = {Numerical Optimization},
+  edition   = {2nd},
+  publisher = {Springer},
+  year      = {2006}}
+
+@article{ba2016layer,
+  author  = {Jimmy Lei Ba and Jamie Ryan Kiros and Geoffrey E. Hinton},
+  title   = {Layer Normalization},
+  journal = {arXiv:1607.06450},
+  year    = {2016}}
+
+@inproceedings{salimans2016weight,
+  author    = {Tim Salimans and Diederik P. Kingma},
+  title     = {Weight Normalization: A Simple Reparameterization to Accelerate
+               Training of Deep Neural Networks},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2016}}
+
+@article{kirkpatrick2017ewc,
+  author  = {James Kirkpatrick and Razvan Pascanu and Neil Rabinowitz and
+             Joel Veness and Guillaume Desjardins and Andrei A. Rusu and
+             Kieran Milan and John Quan and Tiago Ramalho and
+             Agnieszka Grabska-Barwinska and Demis Hassabis and Claudia Clopath
+             and Dharshan Kumaran and Raia Hadsell},
+  title   = {Overcoming Catastrophic Forgetting in Neural Networks},
+  journal = {Proceedings of the National Academy of Sciences},
+  volume  = {114}, number = {13}, pages = {3521--3526}, year = {2017}}
+
+@inproceedings{zenke2017si,
+  author    = {Friedemann Zenke and Ben Poole and Surya Ganguli},
+  title     = {Continual Learning Through Synaptic Intelligence},
+  booktitle = {International Conference on Machine Learning (ICML)},
+  pages     = {3987--3995}, year = {2017}}
+
+@article{dohare2024loss,
+  author  = {Shibhansh Dohare and J. Fernando Hernandez-Garcia and Qingfeng Lan
+             and Parash Rahman and A. Rupam Mahmood and Richard S. Sutton},
+  title   = {Loss of Plasticity in Deep Continual Learning},
+  journal = {Nature},
+  volume  = {632}, pages = {768--774}, year = {2024}}
+
+@article{goodfellow2013empirical,
+  author  = {Ian J. Goodfellow and Mehdi Mirza and Da Xiao and Aaron Courville
+             and Yoshua Bengio},
+  title   = {An Empirical Investigation of Catastrophic Forgetting in
+             Gradient-Based Neural Networks},
+  journal = {arXiv:1312.6211},
+  year    = {2013}}
+
+@article{merity2018regularizing,
+  author  = {Stephen Merity and Nitish Shirish Keskar and Richard Socher},
+  title   = {Regularizing and Optimizing {LSTM} Language Models},
+  journal = {arXiv:1708.02182}, year = {2017}}
+
+@misc{anon2026radial,
+  author = {Anonymous},
+  title  = {Radial Suppression Accelerates Algorithmic Generalization},
+  note   = {Non-archival workshop paper, 2026. Citation withheld for anonymity.},
+  year   = {2026}}
