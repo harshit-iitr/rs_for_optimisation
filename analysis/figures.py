@@ -172,3 +172,61 @@ def fig_frontier():
 if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)
     fig_ratchet(); fig_equilibrium(); fig_frontier()
+
+
+# ------------------------------------------------------- per-neuron selectivity
+def fig_selectivity(layer=0, seed=1, n_units=300, conditions=None):
+    """Units x tasks normalised-response heatmap, one panel per condition.
+
+    Rows are sorted by preferred task, so a task-specific network reads as a
+    diagonal band and a task-shared one as uniform brightness. The sort is
+    presentational; the selectivity index and participation ratio in the panel
+    titles are the quantitative claim and do not depend on it.
+
+    Sequential colormap, not diverging: the quantity is normalised response in
+    [0, 1] with a meaningful zero.
+    """
+    from matplotlib.colors import Normalize
+
+    SEL = os.path.join(EXP, "permuted_mnist/selectivity")
+    conditions = conditions or [("baseline", "baseline"),
+                                ("penalty", "penalty (lambda*)"),
+                                ("limit_tangential", "hard projection (tangential)")]
+    panels = []
+    for d, label in conditions:
+        f = os.path.join(SEL, d, f"seed_{seed}", "selectivity.npz")
+        if not os.path.exists(f):
+            print(f"  [missing] {f}")
+            continue
+        z = np.load(f)
+        panels.append((label, z[f"sel_layer{layer}"], z[f"index_layer{layer}"],
+                       z[f"pr_layer{layer}"], z["tasks"]))
+    if not panels:
+        print("fig_selectivity: no selectivity.npz found; run analysis/selectivity.py first")
+        return
+
+    fig, axes = plt.subplots(1, len(panels), figsize=(2.3 * len(panels), 2.5),
+                             constrained_layout=True)
+    axes = np.atleast_1d(axes)
+    norm = Normalize(0, 1)
+    for ax, (label, sel, index, pr, tasks) in zip(axes, panels):
+        order = np.argsort(sel.argmax(axis=1))
+        show = sel[order][:n_units]
+        im = ax.imshow(show, aspect="auto", cmap="magma", norm=norm,
+                       interpolation="nearest",
+                       extent=[tasks[0], tasks[-1], show.shape[0], 0])
+        ax.set_title(f"{label}\nindex {index.mean():.3f}   PR {pr.mean():.1f}",
+                     color=INK, pad=3)
+        ax.set_xlabel("task")
+        for s in ("top", "right"):
+            ax.spines[s].set_visible(False)
+    axes[0].set_ylabel(f"hidden unit (layer {layer}, sorted)")
+    cb = fig.colorbar(im, ax=list(axes), fraction=0.025, pad=0.01)
+    cb.set_label("response, normalised per unit", color=INK)
+    cb.outline.set_visible(False)
+    os.makedirs(OUT, exist_ok=True)
+    path = os.path.join(OUT, f"selectivity_layer{layer}.pdf")
+    fig.savefig(path)
+    fig.savefig(path.replace(".pdf", ".png"))
+    plt.close(fig)
+    print("wrote", path)
