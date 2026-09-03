@@ -298,7 +298,7 @@ study(
          "args": _canon(method="rs" if lam else "bp", lambda_rs=lam,
                         dataset="split_mnist", n_tasks=5, epochs=3,
                         width=256, depth=2, lr=0.01, domain_incremental=True)}
-        for lam in [0.0, 0.001, 0.003, 0.01, 0.03, 0.1]
+        for lam in [0.0, 0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1.0, 3.0]
     ]}],
 )
 
