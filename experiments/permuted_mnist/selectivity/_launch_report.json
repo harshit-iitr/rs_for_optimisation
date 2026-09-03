@@ -1,0 +1,21 @@
+{
+  "study": "S10_selectivity",
+  "started_at": 1788383274.3821971,
+  "complete": [
+    "experiments/permuted_mnist/selectivity/baseline/seed_1",
+    "experiments/permuted_mnist/selectivity/baseline/seed_2",
+    "experiments/permuted_mnist/selectivity/baseline/seed_3",
+    "experiments/permuted_mnist/selectivity/penalty/seed_1",
+    "experiments/permuted_mnist/selectivity/penalty/seed_2",
+    "experiments/permuted_mnist/selectivity/penalty/seed_3",
+    "experiments/permuted_mnist/selectivity/limit_tangential/seed_1",
+    "experiments/permuted_mnist/selectivity/limit_tangential/seed_2",
+    "experiments/permuted_mnist/selectivity/limit_tangential/seed_3",
+    "experiments/permuted_mnist/selectivity/limit_ste/seed_1",
+    "experiments/permuted_mnist/selectivity/limit_ste/seed_2",
+    "experiments/permuted_mnist/selectivity/limit_ste/seed_3"
+  ],
+  "skipped": [],
+  "failed": [],
+  "finished_at": 1788391964.7008007
+}

@@ -272,3 +272,30 @@ def iter_runs(study_name, exp_root="experiments"):
 
 def total_runs(study_name):
     return sum(1 for _ in iter_runs(study_name))
+
+
+# ---------------------------------------------------------------- S10
+# Checkpointed re-runs of the canonical conditions, for analysis/selectivity.py.
+# Same configuration as the corresponding S3 arms; the only difference is that
+# these write final_model.pt. save_final_checkpoint is I/O only and is excluded
+# from config_hash (src/config.py), so it does not fork the comparability class.
+study(
+    "S10_selectivity",
+    root="permuted_mnist/selectivity",
+    question="Are hidden units task-shared or task-specific, and does the "
+             "penalty move the network between those regimes?",
+    claim="Supporting (mechanism, descriptive). Supplies the selectivity figure.",
+    seeds=SEEDS_CURVE,
+    phases=[{"name": "sweep", "arms": [
+        {"dir": "baseline",
+         "args": _canon(method="bp", lambda_rs=0.0, save_final_checkpoint=True)},
+        {"dir": "penalty",
+         "args": _canon(method="rs", lambda_rs=LAMBDA_STAR, save_final_checkpoint=True)},
+        {"dir": "limit_tangential",
+         "args": _canon(method="bp", lambda_rs=0.0, projection="tangential",
+                        save_final_checkpoint=True)},
+        {"dir": "limit_ste",
+         "args": _canon(method="bp", lambda_rs=0.0, projection="ste",
+                        save_final_checkpoint=True)},
+    ]}],
+)

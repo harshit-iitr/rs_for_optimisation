@@ -1,0 +1,27 @@
+{
+  "study": "S7_optimizers",
+  "started_at": 1788383360.6066313,
+  "complete": [
+    "experiments/permuted_mnist/optimizers/sgd/baseline/seed_1",
+    "experiments/permuted_mnist/optimizers/sgd/baseline/seed_2",
+    "experiments/permuted_mnist/optimizers/sgd/baseline/seed_3",
+    "experiments/permuted_mnist/optimizers/sgd/penalty/seed_1",
+    "experiments/permuted_mnist/optimizers/sgd/penalty/seed_2",
+    "experiments/permuted_mnist/optimizers/sgd/penalty/seed_3",
+    "experiments/permuted_mnist/optimizers/sgd_momentum/baseline/seed_1",
+    "experiments/permuted_mnist/optimizers/sgd_momentum/baseline/seed_2",
+    "experiments/permuted_mnist/optimizers/sgd_momentum/baseline/seed_3",
+    "experiments/permuted_mnist/optimizers/sgd_momentum/penalty/seed_1",
+    "experiments/permuted_mnist/optimizers/sgd_momentum/penalty/seed_2",
+    "experiments/permuted_mnist/optimizers/sgd_momentum/penalty/seed_3",
+    "experiments/permuted_mnist/optimizers/adam/baseline/seed_1",
+    "experiments/permuted_mnist/optimizers/adam/baseline/seed_2",
+    "experiments/permuted_mnist/optimizers/adam/baseline/seed_3",
+    "experiments/permuted_mnist/optimizers/adam/penalty/seed_1",
+    "experiments/permuted_mnist/optimizers/adam/penalty/seed_2",
+    "experiments/permuted_mnist/optimizers/adam/penalty/seed_3"
+  ],
+  "skipped": [],
+  "failed": [],
+  "finished_at": 1788396823.8928354
+}
