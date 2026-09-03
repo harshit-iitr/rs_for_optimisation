@@ -117,6 +117,8 @@ def build_args():
     p.add_argument("--run_dir", type=str, required=True)
     p.add_argument("--task_incremental", action="store_true",
                    help="if true, uses task-incremental evaluation (masking invalid classes)")
+    p.add_argument("--domain_incremental", action="store_true",
+                   help="if true, maps targets to 0 and 1 (domain-incremental)")
     p.add_argument("--track_drift", action="store_true")
     p.add_argument("--log_grad_trace", action="store_true",
                    help="record realized per-step gradient magnitudes "
@@ -187,7 +189,10 @@ def main():
         args.n_tasks = 5
 
     ds_cls = {"permuted_mnist": PermutedMNIST, "rotating_mnist": RotatingMNIST, "split_mnist": SplitMNIST}[args.dataset]
-    dataset = ds_cls(n_tasks=args.n_tasks, device=device, seed=args.seed)
+    if args.dataset == "split_mnist":
+        dataset = ds_cls(n_tasks=args.n_tasks, device=device, seed=args.seed, domain_incremental=args.domain_incremental)
+    else:
+        dataset = ds_cls(n_tasks=args.n_tasks, device=device, seed=args.seed)
 
     wd = args.weight_decay if args.method in ("l2", "ln_l2") else 0.0
     if args.optimizer == "sgd":

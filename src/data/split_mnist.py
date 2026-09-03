@@ -12,7 +12,7 @@ class SplitMNIST:
     Task 3: digits 6, 7
     Task 4: digits 8, 9
     """
-    def __init__(self, root='./data', n_tasks=5, device='cuda', seed=42):
+    def __init__(self, root='./data', n_tasks=5, device='cuda', seed=42, domain_incremental=False):
         # We enforce exactly 5 tasks for Split MNIST
         if n_tasks != 5:
             print(f"Warning: SplitMNIST naturally has 5 tasks. Overriding n_tasks={n_tasks} to 5.")
@@ -50,9 +50,19 @@ class SplitMNIST:
             train_mask = (self.y_train == c1) | (self.y_train == c2)
             test_mask = (self.y_test == c1) | (self.y_test == c2)
             
+            ytrain = self.y_train[train_mask].clone()
+            ytest = self.y_test[test_mask].clone()
+            
+            if domain_incremental:
+                # Remap labels to 0 and 1
+                ytrain[ytrain == c1] = 0
+                ytrain[ytrain == c2] = 1
+                ytest[ytest == c1] = 0
+                ytest[ytest == c2] = 1
+            
             self.task_data.append((
-                self.x_train[train_mask], self.y_train[train_mask],
-                self.x_test[test_mask], self.y_test[test_mask]
+                self.x_train[train_mask], ytrain,
+                self.x_test[test_mask], ytest
             ))
             
     def get_task_data(self, task_idx):

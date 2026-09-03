@@ -30,7 +30,7 @@ import time
 from src.studies import STUDIES, iter_runs
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BOOL_FLAGS = {"track_drift", "log_grad_trace"}
+BOOL_FLAGS = {"track_drift", "log_grad_trace", "task_incremental", "domain_incremental"}
 
 
 def gpu_free_mb(allowed=None):
