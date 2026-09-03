@@ -34,6 +34,7 @@ from tqdm import tqdm
 from src.config import build_config, file_sha256, finalize_config, write_config
 from src.data.permuted_mnist import PermutedMNIST
 from src.data.rotating_mnist import RotatingMNIST
+from src.data.split_mnist import SplitMNIST
 from src.methods.baselines import apply_shrink_and_perturb, compute_l2_init_penalty
 from src.methods.ewc import EWC
 from src.methods.isotropic import (GradTrace, IsotropicControl,
@@ -93,7 +94,7 @@ def build_args():
     p.add_argument("--sp_noise", type=float, default=0.01)
 
     p.add_argument("--dataset", type=str, default="permuted_mnist",
-                   choices=["permuted_mnist", "rotating_mnist"])
+                   choices=["permuted_mnist", "rotating_mnist", "split_mnist"])
     p.add_argument("--n_tasks", type=int, default=150)
     p.add_argument("--epochs", type=int, default=10)
     p.add_argument("--width", type=int, default=1000)
@@ -179,7 +180,11 @@ def main():
     trace = GradTrace(group_names) if (args.log_grad_trace or iso is not None
                                        or wnorm_ctl is not None) else None
 
-    ds_cls = {"permuted_mnist": PermutedMNIST, "rotating_mnist": RotatingMNIST}[args.dataset]
+    if args.dataset == "split_mnist" and args.n_tasks != 5:
+        print(f"Warning: split_mnist has exactly 5 tasks. Overriding n_tasks={args.n_tasks} -> 5")
+        args.n_tasks = 5
+
+    ds_cls = {"permuted_mnist": PermutedMNIST, "rotating_mnist": RotatingMNIST, "split_mnist": SplitMNIST}[args.dataset]
     dataset = ds_cls(n_tasks=args.n_tasks, device=device, seed=args.seed)
 
     wd = args.weight_decay if args.method in ("l2", "ln_l2") else 0.0
