@@ -31,6 +31,16 @@ PYTHONPATH=. python3 -m src.launch --study S3_stiffness_curve --dry-run
 
 MNIST downloads on first run into `data/`, which is gitignored.
 
+### Supported Datasets & Continual Learning Paradigms
+- **Permuted MNIST** (Domain-Incremental Learning)
+- **Rotating MNIST** (Domain-Incremental Learning)
+- **Split MNIST**: Fully supported across three learning paradigms:
+  - **Class-Incremental (CIL)**: Standard 10-way output head (`S10_split_mnist`).
+  - **Task-Incremental (TIL)**: Test-time Task ID provided via masked logits (`S11_split_mnist_til`).
+  - **Domain-Incremental (DIL)**: Binary classification with fixed output dimensions (`S12_split_mnist_dil`).
+
+See [SPLIT_MNIST_SUMMARY.md](SPLIT_MNIST_SUMMARY.md) for a comprehensive breakdown of Radial Suppression vs EWC across these three paradigms.
+
 ## Adding an experiment
 
 Studies are **data**, not code. Add an entry to `STUDIES` in

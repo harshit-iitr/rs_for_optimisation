@@ -3,7 +3,7 @@ import torchvision
 from torchvision import transforms
 
 class SplitMNIST:
-    """Split MNIST benchmark for Class-Incremental Learning.
+    """Split MNIST benchmark for Continual Learning (CIL, TIL, and DIL).
     
     Divides MNIST into 5 tasks of 2 digits each:
     Task 0: digits 0, 1
@@ -11,6 +11,11 @@ class SplitMNIST:
     Task 2: digits 4, 5
     Task 3: digits 6, 7
     Task 4: digits 8, 9
+    
+    Supports:
+    - Class-Incremental (CIL): Default setting. Output dimension is 10.
+    - Task-Incremental (TIL): Use CIL setting, but pass `--task_incremental` to training script.
+    - Domain-Incremental (DIL): Set `domain_incremental=True`. Targets are remapped to 0 and 1.
     """
     def __init__(self, root='./data', n_tasks=5, device='cuda', seed=42, domain_incremental=False):
         # We enforce exactly 5 tasks for Split MNIST
