@@ -18,7 +18,7 @@ import torch
 
 
 @torch.no_grad()
-def evaluate_tasks(model, task_tests, probe_size, forward_kwargs=None):
+def evaluate_tasks(model, task_tests, probe_size, forward_kwargs=None, task_incremental=False, dataset=None):
     """Accuracy on each task seen so far, in task order.
 
     task_tests: list of (x_test, y_test), index 0 == task 0, last == current task.
@@ -29,8 +29,16 @@ def evaluate_tasks(model, task_tests, probe_size, forward_kwargs=None):
     was_training = model.training
     model.eval()
     accs = []
-    for px, py in task_tests:
+    for task_idx, (px, py) in enumerate(task_tests):
         logits = model(px[:probe_size], **forward_kwargs)
+        
+        if task_incremental and dataset == "split_mnist":
+            # Mask out all classes except 2*task_idx and 2*task_idx + 1
+            mask = torch.full_like(logits, float('-inf'))
+            mask[:, 2 * task_idx] = 0
+            mask[:, 2 * task_idx + 1] = 0
+            logits = logits + mask
+            
         accs.append((logits.argmax(dim=1) == py[:probe_size]).float().mean().item())
     if was_training:
         model.train()

@@ -115,6 +115,8 @@ def build_args():
                    help="CPU intra-op threads for this job")
 
     p.add_argument("--run_dir", type=str, required=True)
+    p.add_argument("--task_incremental", action="store_true",
+                   help="if true, uses task-incremental evaluation (masking invalid classes)")
     p.add_argument("--track_drift", action="store_true")
     p.add_argument("--log_grad_trace", action="store_true",
                    help="record realized per-step gradient magnitudes "
@@ -434,13 +436,21 @@ def main():
         # into an arm would be worse than having no data at all.
         diverged = any(not torch.isfinite(h).all().item() for h in pre_p)
 
-        accs = evaluate_tasks(model, task_tests, args.probe_size, fwd)
+        accs = evaluate_tasks(model, task_tests, args.probe_size, fwd, 
+                              task_incremental=args.task_incremental, dataset=args.dataset)
         ret = summarize(accs)
         model.eval()
         with torch.no_grad():
             test_acc = accs[-1]
-            train_acc = (model(x_train[:args.probe_size], **fwd).argmax(1)
-                         == y_train[:args.probe_size]).float().mean().item()
+            
+            train_logits = model(x_train[:args.probe_size], **fwd)
+            if args.task_incremental and args.dataset == "split_mnist":
+                mask = torch.full_like(train_logits, float('-inf'))
+                mask[:, 2 * t] = 0
+                mask[:, 2 * t + 1] = 0
+                train_logits = train_logits + mask
+                
+            train_acc = (train_logits.argmax(1) == y_train[:args.probe_size]).float().mean().item()
         model.train()
 
         common = dict(

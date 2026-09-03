@@ -270,6 +270,22 @@ study(
     ]}],
 )
 
+# ---------------------------------------------------------------- S11
+study(
+    "S11_split_mnist_til",
+    root="split_mnist_til/stiffness_curve",
+    question="How does Radial Suppression perform on Task-Incremental Split MNIST?",
+    claim="Supporting (generality without output-layer interference).",
+    seeds=SEEDS_CURVE,
+    phases=[{"name": "sweep", "arms": [
+        {"dir": _lam_dir(lam),
+         "args": _canon(method="rs" if lam else "bp", lambda_rs=lam,
+                        dataset="split_mnist", n_tasks=5, epochs=3,
+                        width=256, depth=2, lr=0.01, task_incremental=True)}
+        for lam in [0.0, 0.001, 0.003, 0.01, 0.03, 0.1]
+    ]}],
+)
+
 
 def iter_runs(study_name, exp_root="experiments"):
     """Yield (phase_index, run_dir, args_dict, iso_target_dir_or_None) in
