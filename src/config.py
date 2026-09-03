@@ -69,6 +69,7 @@ def config_hash(cfg):
         "wall_clock_sec", "provenance", "n_rows", "n_steps",
         "iso_target_exhausted", "config_hash", "linalg_fallbacks",
         "diverged_at_task", "num_threads",
+        "save_final_checkpoint",
     }
     payload = {k: v for k, v in sorted(cfg.items()) if k not in ignore}
     return hashlib.sha256(

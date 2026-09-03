@@ -115,6 +115,10 @@ def build_args():
 
     p.add_argument("--run_dir", type=str, required=True)
     p.add_argument("--track_drift", action="store_true")
+    p.add_argument("--save_final_checkpoint", action="store_true",
+                   help="write final_model.pt at end of run, for "
+                        "analysis/selectivity.py. I/O only: excluded from "
+                        "config_hash in src/config.py")
     p.add_argument("--log_grad_trace", action="store_true",
                    help="record realized per-step gradient magnitudes "
                         "(required for any run used as an isotropic target)")
@@ -464,6 +468,16 @@ def main():
     df.to_parquet(os.path.join(args.run_dir, "metrics.parquet"))
     if trace is not None:
         trace.save(os.path.join(args.run_dir, "grad_trace.npz"))
+
+    if args.save_final_checkpoint:
+        torch.save({"state_dict": model.state_dict(),
+                    "width": args.width, "depth": args.depth,
+                    "act_fn": args.act_fn, "use_ln": use_ln,
+                    "dataset": args.dataset, "n_tasks": args.n_tasks,
+                    "seed": args.seed, "projection": args.projection,
+                    "config_hash": cfg["config_hash"],
+                    "schema_version": cfg["schema_version"]},
+                   os.path.join(args.run_dir, "final_model.pt"))
 
     extra = {"n_rows": len(df), "n_steps": global_step,
              "linalg_fallbacks": dict(FALLBACKS)}
