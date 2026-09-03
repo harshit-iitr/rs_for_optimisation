@@ -302,6 +302,38 @@ study(
     ]}],
 )
 
+# ---------------------------------------------------------------- S13
+study(
+    "S13_split_mnist_dil_ewc",
+    root="split_mnist_dil/ewc_baselines",
+    question="How does EWC perform on Domain-Incremental Split MNIST?",
+    claim="Supporting (comparison to weight-space regularization).",
+    seeds=SEEDS_CURVE,
+    phases=[{"name": "sweep", "arms": [
+        {"dir": f"ewc_{lam}",
+         "args": _canon(method="ewc", ewc_lambda=lam,
+                        dataset="split_mnist", n_tasks=5, epochs=3,
+                        width=256, depth=2, lr=0.01, domain_incremental=True)}
+        for lam in [10, 100, 1000, 10000]
+    ]}],
+)
+
+# ---------------------------------------------------------------- S14
+study(
+    "S14_split_mnist_ewc",
+    root="split_mnist/ewc_baselines",
+    question="How does EWC perform on Class-Incremental Split MNIST?",
+    claim="Supporting (comparison to weight-space regularization in CIL).",
+    seeds=SEEDS_CURVE,
+    phases=[{"name": "sweep", "arms": [
+        {"dir": f"ewc_{lam}",
+         "args": _canon(method="ewc", ewc_lambda=lam,
+                        dataset="split_mnist", n_tasks=5, epochs=3,
+                        width=256, depth=2, lr=0.01)}
+        for lam in [10, 100, 1000, 10000]
+    ]}],
+)
+
 
 def iter_runs(study_name, exp_root="experiments"):
     """Yield (phase_index, run_dir, args_dict, iso_target_dir_or_None) in
