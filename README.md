@@ -39,8 +39,6 @@ MNIST downloads on first run into `data/`, which is gitignored.
   - **Task-Incremental (TIL)**: Test-time Task ID provided via masked logits (`S11_split_mnist_til`).
   - **Domain-Incremental (DIL)**: Binary classification with fixed output dimensions (`S12_split_mnist_dil`).
 
-See [SPLIT_MNIST_SUMMARY.md](SPLIT_MNIST_SUMMARY.md) for a comprehensive breakdown of Radial Suppression vs EWC across these three paradigms.
-
 ## Adding an experiment
 
 Studies are **data**, not code. Add an entry to `STUDIES` in
