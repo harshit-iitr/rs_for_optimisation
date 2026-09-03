@@ -334,6 +334,22 @@ study(
     ]}],
 )
 
+# ---------------------------------------------------------------- S15
+study(
+    "S15_split_mnist_til_ewc",
+    root="split_mnist_til/ewc_baselines",
+    question="How does EWC perform on Task-Incremental Split MNIST?",
+    claim="Supporting (comparison to weight-space regularization in TIL).",
+    seeds=SEEDS_CURVE,
+    phases=[{"name": "sweep", "arms": [
+        {"dir": f"ewc_{lam}",
+         "args": _canon(method="ewc", ewc_lambda=lam,
+                        dataset="split_mnist", n_tasks=5, epochs=3,
+                        width=256, depth=2, lr=0.01, task_incremental=True)}
+        for lam in [10, 100, 1000, 10000]
+    ]}],
+)
+
 
 def iter_runs(study_name, exp_root="experiments"):
     """Yield (phase_index, run_dir, args_dict, iso_target_dir_or_None) in
